@@ -19,21 +19,19 @@ def index():
 
 @app.route('/get_chart_data', methods=['POST'])
 def get_chart_data():
+
     selected_option = request.json['selected_option']
 
     # Establish a connection to MySQL
     connection = mysql.connector.connect(**mysql_config)
     cursor = connection.cursor()
 
-    # Execute the MySQL query based on the selected option
-    if selected_option == 'A':
-        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = 'A' AND MONTH(m.time) = 5;"
-    elif selected_option == 'B':
-        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = 'A' AND MONTH(m.time) = 5 AND DAY(m.time) = 18;"
+    query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = 6;"
+    
+    if not selected_option:
+        cursor.execute("SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = 'A' AND MONTH(m.time) = 6;")
     else:
-        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = 'A' AND MONTH(m.time) = 6;"
-
-    cursor.execute(query)
+        cursor.execute(query, (selected_option,))
 
     # Retrieve the data
     queryoutput = cursor.fetchall()
