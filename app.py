@@ -50,7 +50,30 @@ def get_chart_data():
     cursor.close()
     connection.close()
 
-    return jsonify(chart_data, chart_labels)
+    averaged_data, unique_labels = calculate_average(chart_data, chart_labels)
+    print(averaged_data)
+    print(unique_labels)
+    return jsonify(unique_labels, averaged_data)
+
+def calculate_average(values, labels):
+    label_dict = {}
+    
+    # Map labels to corresponding values
+    for value, label in zip(values, labels):
+        if label in label_dict:
+            label_dict[label].append(value)
+        else:
+            label_dict[label] = [value]
+    
+    unique_labels = []
+    averages = []
+    
+    # Calculate average for each label
+    for label, value_list in label_dict.items():
+        unique_labels.append(label)
+        averages.append(sum(value_list) / len(value_list))
+    
+    return unique_labels, averages
 
 if __name__ == '__main__':
     app.run(debug=True)
