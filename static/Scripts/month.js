@@ -99,12 +99,14 @@ function updateSecondDropdown() {
 
 //STOCKWERK UND BEREICH SICHTBAR MACHEN
 function checkSelectionMonth() {
-    const firstDropdown = document.getElementById('firstDropdown');
+    const firstDropdown = document.getElementById('month_selection');
     const secondDropdown = document.getElementById('secondDropdown');
-    const month = document.getElementsByClassName('week-month-display');
+    const month = document.getElementsByClassName('today-week-month-display');
+
 
     if (firstDropdown.value !== '' && secondDropdown.value !== '') {
         for (let i = 0; i < month.length; i++) {
+            console.log('Geht ins Console.log')
             month[i].style.display = 'flex';
         }
     } else {

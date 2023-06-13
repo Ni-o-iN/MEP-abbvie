@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="menu">
+                <p>
+                    <a href="{{url_for('index')}}">Übersicht</a>
+                </p>
+                <p>Heute</p>
+                <p>
+                    <a href="{{url_for('woche')}}">Kalender&shywoche</a>
+                </p>
+                <p>
+                    <a href="{{url_for('monat')}}">Monat</a>
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('heute')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        </a>
+                        <a href="{{url_for('today')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <button id="infoButton">i</button>
+            <div id="infoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Info:</h2>
+                    <p>
+                        Sie befinden sich auf der "Heute" Seite.<br>
+                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
+                    <ul>
+                        <li>Schritt 1: Wählen Sie ein Stockwerk aus</li>
+                        <li>Schritt 2: Wählen Sie einen entsprechenden Bereich aus</li>
+                    </ul>
+                    </p>
+                    <p>
+                        Die Anzeige des jeweiligen Bereiches sollte sich nun geöffnet haben, dort sehen sie
+                        einen Graphen der die
+                        entsprechende Lautstärke zu der entsprechenden Zeit anzeigt.
+                    </p>
+                    Rechts sehen Sie die an den Bereich angepasste Soll höchstwert Lautstärke und darunter die
+                    derzeitige Lautstärke.
+                </div>
+            </div>
+            <div class="floor-area">
+                <div class="choose">
+                    Stockwerk:
+                    <select id="firstDropdown" onchange="updateSecondDropdown()" onchange="checkSelectionDay()">
+                        <option value="" disabled selected hidden></option>
+                        <option value="floor1">1</option>
+                        <option value="floor2">2</option>
+                    </select>
+                    Bereich:
+                    <select id="secondDropdown" onchange="checkSelectionDay()" disabled>
+                        <option value="" disabled selected hidden></option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="today-week-month-display">
+                <div class="today-week-month-graph">
+                    <canvas id="graph-fuer-tag"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            var myChart = null;
+            
+            const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
+            const statusTracker = {
+                id: 'statusTracker',
+                beforeDatasetsDraw(chart, args, pluginOptions) {
+                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                    ctx.save();
+    
+                    drawBlocks(50, min_y, bgcolors[0]);
+                    drawBlocks(55, 50, bgcolors[1]);
+                    drawBlocks(max_y, 55, bgcolors[2]);
+                    function drawBlocks(yStart, yEnd, color) {
+                        ctx.fillStyle = color;
+                        ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+                    }
+                }
+            }
+    
+            function updateChart(selectedOption2) {    // 2 is the secondOption
+                $.ajax({
+                    url: '/get_chart_data',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'selected_option2': selectedOption2 }),
+                    success: function(response) {
+                        // Handle the response and refresh the chart
+                        var newData = response[0];
+                        var newLabel = response[1];
+                        var min_y = response[2];    //die beiden für später mit dem Graphen
+                        var max_y = response[3];
+                        
+                        // Clear the existing chart
+                        if (myChart !== null) {
+                            myChart.destroy();
+                        }
+                        
+                        const bgcolors = ['rgba(0, 158, 0, 0.5)', 'rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
+                        const statusTracker = {
+                        id: 'statusTracker',
+                        beforeDatasetsDraw(chart, args, pluginOptions) {
+                            const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                            ctx.save();
+    
+                            drawBlocks(50, Math.floor(min_y/10)*10, bgcolors[0]);
+                            drawBlocks(55, 50, bgcolors[1]);
+                            drawBlocks(Math.ceil(max_y/10)*10, 55, bgcolors[2]);
+                        function drawBlocks(yStart, yEnd, color) {
+                            ctx.fillStyle = color;
+                            ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+                                }
+                            }
+                        }
+    
+                        var ctx = document.getElementById('graph-fuer-tag').getContext('2d');
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: newLabel,
+                                datasets: [{
+                                    label: 'Dezibel',
+                                    data: newData,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(255, 255, 255, 0.7)',
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        min: Math.floor(min_y/10)*10,
+                                        position: 'right',
+                                        title: {
+                                            display:true,
+                                            text: 'Dezibel',
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Uhrzeit',
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: [statusTracker]
+                        });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+    
+            $('#secondDropdown').on('change', function() {
+                var selectedOption2 = $(this).val();
+                if (selectedOption2) {
+                    updateChart(selectedOption2);
+                }
+            });
+        });
+    </script>
+    
+
+
+    <!-- Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
+    <!---->
+
+</body>
+</html>

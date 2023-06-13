@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="menu">
+                <p>Übersicht</p>
+                <p>
+                    <a href="{{url_for('heute')}}">Heute</a>
+                </p>
+                <p>
+                    <a href="{{url_for('woche')}}">Kalender&shywoche</a>
+                </p>
+                <p>
+                    <a href="{{url_for('monat')}}">Monat</a>
+                </p>
+                <p>
+                    <a href="{{url_for('admin_german')}}">Admin</a>
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('index')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        </a>
+                        <a href="{{url_for('overview')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger-menu">
+                <div class="menu-icons">
+                    <a href="{{url_for('heute')}}">
+                        <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.jpg')}}">
+                    </a>
+                    <a href="{{url_for('woche')}}">
+                        <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.jpg')}}">
+                    </a>
+                    <a href="{{url_for('monat')}}">
+                        <img class="menu-icon" src="{{url_for('static', filename='bilder/Monat.jpg')}}">
+                    </a>
+                    <div class="language-container" onmouseover="showOtherFlag()" onmouseout="hideOtherFlag()">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge" class="current-language">
+                        <a href="{{url_for('overview')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge" class="other-language">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <button id="infoButton">i</button>
+            <div id="infoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Info:</h2>
+                    <p>
+                        Sie befinden sich auf der "Übersichts" Seite.<br>
+                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
+                    <ul>
+                        <li>Sie sollten beide Stockwerke sehen und deren Bereiche</li>
+                        <li>Klicken Sie auf ein Bereich Ihrer Wahl um zur Heute Ansicht dieses Bereiches zu gelangen
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="overview">
+                <div class="floor1-overview">
+                    Stockwerk 1
+                    <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor" alt="stockwerk1">
+                    <a id="area-a" data-name="area-a" href="{{url_for('heute', stockwerk='floor1', bereich='area-a')}}">A</a>
+                    <a id="area-b" data-name="area-b" href="{{url_for('heute', stockwerk='floor1', bereich='area-b')}}">B</a>
+                    <a id="area-c" data-name="area-c" href="{{url_for('heute', stockwerk='floor1', bereich='area-c')}}">C</a>
+                    <div id="steps1"></div>
+                </div>
+                <div class="floor2-overview">
+                    Stockwerk 2
+                    <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}" class="responsiv-floor" alt="Stockwerkplan 2">
+                    <a id="area-d" data-name="area-d" href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a> <!--idk man das so mit machen kann-->
+                    <a id="area-e" data-name="area-e" href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
+                    <a id="area-f" data-name="area-f" href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
+                    <a id="area-g" data-name="area-g" href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
+                    <a id="area-h" data-name="area-h" href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
+                    <div id="couch"></div>
+                    <div id="steps2"></div>
+                    <div id="tableBetweenDandE"></div>
+                    <div id="tableAboveF"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Javascript-->
+    <script src="{{url_for('static', filename= 'uebersicht.js')}}"></script>
+    <!---->
+
+</body>
+
+</html>

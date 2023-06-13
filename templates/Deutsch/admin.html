@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <!---
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        --->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einstellungen</title>
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="menu">
+                <p>
+                    <a href="{{url_for('index')}}">Übersicht</a>
+                </p>
+                <p>
+                    <a href="{{url_for('heute')}}">Heute</a>
+                </p>
+                <p>
+                    <a href="{{url_for('woche')}}">Kalender&shywoche</a>
+                </p>
+                <p>
+                    <a href="{{url_for('monat')}}">Monat</a>
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="englische Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('admin_german')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        </a>
+                        <a href="{{url_for('admin_english')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger-menu">
+                <div class="menu-icons">
+                    <a href="{{url_for('heute')}}">
+                        <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.jpg')}}">
+                    </a>
+                    <a href="{{url_for('woche')}}">
+                        <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.jpg')}}">
+                    </a>
+                    <a href="{{url_for('monat')}}">
+                        <img class="menu-icon" src="{{url_for('static', filename='bilder/Monat.jpg')}}">
+                    </a>
+                    <div class="language-container" onmouseover="showOtherFlag()" onmouseout="hideOtherFlag()">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge" class="current-language">
+                        <a href="{{url_for('admin_english')}}">
+                            <img src="{{url_for('static', filename='englische-flagge.jpg')}}" alt="englische Flagge" class="other-language">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="right">
+        <div class="settings">
+            <div class="settings-headline-block">
+                <div class="settings-headline">
+                    <!--
+                        Was brauchen wir alles für Funktionen beim System?
+                        x1. Lautstärkeschwellwerte für spezifische Messgeräte/Messbereiche festlegen
+                        x2. Wann keine Notficications? (Mittagszeit als Beispiel)
+                        3. System an-/ausschalten -> keine Messungen mehr, bis wieder an ( wirklich nötig)
+                        x4. Wann soll gemessen werden? 
+                        5. Neue Messgeräte hinzufügen/löschen
+                        6. Meldung wenn Messgerät nicht misst, über eigenen Raspberry
+                    -->
+                    <!--<div class="setting-block">
+                   <p> -->
+
+
+                    Wann soll gemessen werden?
+                </div>
+                <!-- </p> -->
+                <form>
+                    <div class="settings-block">
+                        <p>
+                            <label for="start-time">Start der Messungen</label>
+                            <input type="time" id="start-time" name="start-time">
+                            <label for="end-time">Ende der Messungen</label>
+                            <input type="time" id="end-time" name="end-time">
+                        </p>
+                        <p>
+                            <label for="start-pause">Beginn der Mittagspause</label>
+                            <input type="time" id="start-pause" name="start-pause">
+                            <label for="end-pause">Ende der Mittagspause</label>
+                            <input type="time" id="end-pause" name="end-pause">
+                        </p>
+                        <input type="submit" id="time-submit" type="submit" value="Speichern">
+                    </div>
+                </form>
+            </div>
+            <div class="settings-headline-block">
+                <div class="settings-headline">
+                    Lautstärkeschwellwerte für Bereich anpassen
+                </div>
+                <form>
+                    <div class="settings-block">
+                        <p>
+                            <label for="area-select">Bereich</label>
+                            <select id="area-select" name="area-select">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="G">G</option>
+                            </select>
+                        </p>
+                        <div class="volume-selection">
+                            <div class="color-box-yellow"></div>
+                            <input type="number" class="volume-selection-input" id="yellow-decibel"
+                                name="yellow-decibel" min="0">
+                            <label class="decibel-label" for="yellow-decibel">dB</label>
+                            <div class="color-box-red"></div>
+                            <input type="number" class="volume-selection-input" id="red-decibel" name="red-decibel"
+                                min="0">
+                            <label class="decibel-label" for="red-decibel">dB</label>
+
+                        </div>
+                        <input type="submit" id="volume-submit" type="submit" value="Speichern">
+                    </div>
+                </form>
+            </div>
+            <div class="settings-headline-block">
+                <div class="settings-headline">
+                    Wann sollen keine Benachrichtigungen bei einer Lautstärkeüberschreitung gesendet werden?
+                </div>
+                <div class="settings-block">
+                    <p>
+                        <label for="start-no-notification">abc</label>
+                        <input type="time" id="start-no-notification" name="start-no-notification">
+                        <label for="end-no-notification">def</label>
+                        <input type="time" id="end-no-notification" name="end-no-notification">
+                    </p>
+                    <input type="submit" id="no-notification-submit" type="submit" value="Speichern">
+                </div>
+            </div>
+            <div class="settings-headline-block">
+                <div class="settings-headline">
+                    Welches Messgerät wollen Sie entfernen?
+                </div>
+                <form>
+                    <div class="settings-block">
+                        <label for="soundmeter-id">Messgerät</label>
+                        <select id="soundmeter" name="soundmeter-id">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="...">...</option>
+                        </select>
+                        <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
+                    </div>
+                </form>
+            </div>
+            <div class="setting-headline-block">
+                <div class="settings-headline">
+                    Was für ein Messgerät wollen Sie hinzufügen?
+                </div>
+                <div class="settings-block">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Mehr Abstand zwischen den Setting-Blocks  -->
+    <!--
+            <div class="setting-block"> 
+            
+                <p>
+                    Neue Lautstärkeschwellwerte für einen Bereich festlegen
+                </p>
+
+            </div>
+            
+        
+    </div>
+-->
+</body>
+
+</html>

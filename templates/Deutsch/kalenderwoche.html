@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="menu">
+                <p>
+                    <a href="{{url_for('index')}}">Übersicht</a>
+                </p>
+                <p>
+                    <a href="{{url_for('heute')}}">Heute</a>
+                </p>
+                <p>
+                    Kalender&shywoche
+                    <span class="time-box">
+                        <textarea></textarea>
+                    </span>
+                </p>
+                <p>
+                    <a href="{{url_for('monat')}}">Monat</a>
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="englische Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('woche')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        </a>
+                        <a href="{{url_for('week')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <button id="infoButton">i</button>
+            <div id="infoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Info:</h2>
+                    <p>
+                        Sie befinden sich auf der "Kalenderwoche" Seite.<br>
+                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
+                    <ul>
+                        <li>Schritt 1: Geben Sie in dem Eingabefeld unterhalb "Kalenderwoche" eine gültige
+                            Kalenderwoche an, mit dem zugehörigem Jahr dahinter. <br> Bsp:"15 2023"</li>
+                        <li>Schritt 2: Wählen Sie ein Stockwerk aus</li>
+                        <li>Schritt 3: Wählen Sie einen entsprechenden Bereich aus</li>
+                    </ul>
+                    </p>
+                    Die Anzeige dieser Kalenderwoche sollte nun durch die einzelnen Tage anhand Graphen angezeigt
+                    werden.<br>
+                    In der Legende können einzelne Tage durch anklicken ab- und ausgewählt werden.
+                </div>
+            </div>
+            <div class="floor-area">
+                <div class="choose">
+                    Stockwerk:
+                    <select id="firstDropdown" onchange="updateSecondDropdown()" onchange="checkSelectionWeek()">
+                        <option value="" disabled selected hidden></option>
+                        <option value="floor1">1</option>
+                        <option value="floor2">2</option>
+                    </select>
+                    Bereich:
+                    <select id="secondDropdown" onchange="checkSelectionWeek()" disabled>
+                        <option value="" disabled selected hidden></option>
+                    </select>
+                </div>
+            </div>
+            <div class="today-week-month-display">
+                KW: 15, &nbsp; Zeitraum: 10.04.23 - 14.04.23
+                <div class="legend-box">
+                    <button id="mo" onclick="toggleData(0, 'button1')" class="item">
+                        <span id="button1Text">Montag</span>
+                    </button>
+                    <button id="di" onclick="toggleData(1, 'button2')" class="item">
+                        <span id="button2Text">Dienstag</span>
+                    </button>
+                    <button id="mi" onclick="toggleData(2, 'button3')" class="item">
+                        <span id="button3Text">Mittwoch</span>
+                    </button>
+                    <button id="do" onclick="toggleData(3, 'button4')" class="item">
+                        <span id="button4Text">Donnerstag</span>
+                    </button>
+                    <button id="fr" onclick="toggleData(4, 'button5')" class="item">
+                        <span id="button5Text">Freitag</span>
+                    </button>
+                </div>
+                <div class="today-week-month-graph">
+                    <canvas id="graph-fuer-woche"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="{{url_for('static', filename='Scripts/week.js')}}"></script>
+    <!---->
+
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="menu">
+                <p>Overview</p>
+                <p>
+                    <a href="{{url_for('today')}}">Today</a>
+                </p>
+                <p>
+                    <a href="{{url_for('week')}}">Calendar Week</a>
+                </p>
+                <p>
+                    <a href="{{url_for('month')}}">Month</a>
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('index')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        </a>
+                        <a href="{{url_for('overview')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <button id="infoButton">i</button>
+            <div id="infoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Info:</h2>
+                    <p>
+                        You are on the "Overview" page.<br>
+                        Here is a short introduction how to use this site.
+                    <ul>
+                        <li>Schritt 1: Geben Sie in dem Eingabefeld unterhalb "Kalenderwoche" eine gültige
+                            Kalenderwoche an, mit dem zugehörigem Jahr dahinter. <br> Bsp:"15 2023"</li>
+                        <li>Schritt 2: Wählen Sie ein Stockwerk aus</li>
+                        <li>Schritt 3: Wählen Sie einen entsprechenden Bereich au</li>
+                    </ul>
+                    </p>
+                    Die Anzeige dieser Kalenderwoche sollte nun durch die einzelnen Tage anhand Graphen angezeigt
+                    werden.<br>
+                    In der Legende können einzelne Tage durch anklicken ab- und ausgewählt werden.
+                </div>
+            </div>
+            <div class="overview">
+                <div class="floor1-overview">
+                    Floor 1
+                    <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor" alt="stockwerk1">
+                    <a id="area-a" data-name="area-a" href="../English/today.html?stockwerk=floor1&bereich=area-a">A</a>
+                    <a id="area-b" data-name="area-b" href="../English/today.html?stockwerk=floor1&bereich=area-b">B</a>
+                    <a id="area-c" data-name="area-c" href="../English/today.html?stockwerk=floor1&bereich=area-c">C</a>
+                    <div id="steps1"></div>
+                </div>
+                <div class="floor2-overview">
+                    Floor 2
+                    <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}" class="responsiv-floor" alt="Stockwerkplan 2">
+                    <a id="area-d" data-name="area-d" href="../English/today.html?stockwerk=floor2&bereich=area-d">D</a>
+                    <a id="area-e" data-name="area-e" href="../English/today.html?stockwerk=floor2&bereich=area-e">E</a>
+                    <a id="area-f" data-name="area-f" href="../English/today.html?stockwerk=floor2&bereich=area-f">F</a>
+                    <a id="area-g" data-name="area-g" href="../English/today.html?stockwerk=floor2&bereich=area-g">G</a>
+                    <a id="area-h" data-name="area-h" href="../English/today.html?stockwerk=floor2&bereich=area-h">H</a>
+                    <div id="couch"></div>
+                    <div id="steps2"></div>
+                    <div id="tableBetweenDandE"></div>
+                    <div id="tableAboveF"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Javascript-->
+    <script src="{{url_for('static', filename='Scripts/uebersicht.js')}}"></script>
+    <!---->
+
+</body>
+
+</html>

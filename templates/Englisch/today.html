@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <div class="menu">
+                <p>
+                    <a href="{{url_for('overview')}}">Overview</a>
+                </p>
+                <p>Today</p>
+                <p>
+                    <a href="{{url_for('week')}}">Calendar Week</a>
+                </p>
+                <p>
+                    <a href="{{url_for('month')}}">Month</a>
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('heute')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        </a>
+                        <a href="{{url_for('today')}}">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <button id="infoButton">i</button>
+            <div id="infoModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Info:</h2>
+                    <p>
+                        You are on the "Today" page.<br>
+                        Here is a short introduction how to use this site.
+                    <ul>
+                        <li>Step 1: Select a floor</li>
+                        <li>Step 2: Select an appropriate area</li>
+                    </ul>
+                    </p>
+                    <p>
+                        The display of the respective area should have opened now, there you will see a graph
+                        that shows the volume at the corresponding time.
+                    </p>
+                    On the right, you can see the target maximum volume adjusted to the range, and below that,
+                    the current volume.
+                </div>
+            </div>
+            <div class="floor-area">
+                <div class="choose">
+                    Floor:
+                    <select id="firstDropdown" onchange="updateSecondDropdown()" onchange="checkSelectionDay()">
+                        <option value="" disabled selected hidden></option>
+                        <option value="floor1">1</option>
+                        <option value="floor2">2</option>
+                    </select>
+                    Area:
+                    <select id="secondDropdown" onchange="checkSelectionDay()" disabled>
+                        <option value="" disabled selected hidden></option>
+                    </select>
+                </div>
+            </div>
+            <div class="today-week-month-display">
+                <div class="today-week-month-graph">
+                    <canvas id="graph-for-today"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
+    <!---->
+
+</body>
+
+</html>
