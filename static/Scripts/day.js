@@ -6,12 +6,18 @@ const statusTracker = {
         const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
         ctx.save();
 
-        drawBlocks(50, 30, bgcolors[0]);
-        drawBlocks(55, 50, bgcolors[1]);
-        drawBlocks(60, 55, bgcolors[2]);
-        function drawBlocks(yStart, yEnd, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+        drawLines(30, bgcolors[0]);
+        drawLines(50, bgcolors[1]);
+        drawLines(55, bgcolors[2]);
+        function drawLines(yValue, color) {
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = color;
+            ctx.moveTo(left, y.getPixelForValue(yValue));
+            ctx.lineTo(right, y.getPixelForValue(yValue));
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
         }
     }
 }

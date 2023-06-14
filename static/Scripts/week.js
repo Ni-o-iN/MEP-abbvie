@@ -6,12 +6,18 @@ const statusTracker = {
         const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
         ctx.save();
 
-        drawBlocks(50, 30, bgcolors[0]);
-        drawBlocks(55, 50, bgcolors[1]);
-        drawBlocks(66, 55, bgcolors[2]);
-        function drawBlocks(yStart, yEnd, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+        drawLines(30, bgcolors[0]);
+        drawLines(50, bgcolors[1]);
+        drawLines(55, bgcolors[2]);
+        function drawLines(yValue, color) {
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = color;
+            ctx.moveTo(left, y.getPixelForValue(yValue));
+            ctx.lineTo(right, y.getPixelForValue(yValue));
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
         }
     }
 }
@@ -234,6 +240,8 @@ const myChartE = new Chart(week, {
     plugins: [statusTracker]
 });
 
+const legendColors = ['rgba(255, 215, 230, 1)', 'rgba(125, 0, 224, 1)', 'rgba(255, 204, 0, 1)', 'rgba(125, 252, 255, 1)', 'rgba(199, 148, 203, 1)']
+
 //Legt Hintergrundfarbe der Legende dynamisch an
 document.getElementById('mo').style.backgroundColor = myChart.data.datasets[0].backgroundColor;
 document.getElementById('di').style.backgroundColor = myChart.data.datasets[1].backgroundColor;
@@ -243,30 +251,40 @@ document.getElementById('fr').style.backgroundColor = myChart.data.datasets[4].b
 
 
 //Entfernen oder hinzufügen einer Linie bei Deutsch
-function toggleData(value, buttonId) {
+function toggleData(value, buttonId, day) {
     const visibiltyData = myChart.isDatasetVisible(value);
     var textElement = document.getElementById(buttonId + "Text");
     if (visibiltyData === true) {
         myChart.hide(value);
         textElement.classList.add("strikethrough");
+        document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+    }
+    else {
+        document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
     }
     if (visibiltyData === false) {
         myChart.show(value);
         textElement.classList.remove("strikethrough");
+        document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
     }
 }
 
 //Entfernen oder hinzufügen einer Linie bei Englsich
-function toggleDataE(value, buttonId) {
+function toggleDataE(value, buttonId, day) {
     const visibiltyData = myChartE.isDatasetVisible(value);
     var textElement = document.getElementById(buttonId + "Text");
     if (visibiltyData === true) {
         myChartE.hide(value);
         textElement.classList.add("strikethrough");
+        document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+    }
+    else {
+        document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
     }
     if (visibiltyData === false) {
         myChartE.show(value);
         textElement.classList.remove("strikethrough");
+        document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
     }
 }
 
