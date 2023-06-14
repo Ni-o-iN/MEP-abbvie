@@ -105,6 +105,12 @@ def get_chart_data():
     return jsonify(averaged_data,unique_labels, min(averaged_data), max(averaged_data),)
 
 def calculate_average(values, labels):
+    if len(values) != len(labels):
+        return None
+    
+    if len(values) == 0 or len(labels) == 0:
+        return None
+    
     label_dict = {}
     
     # Map labels to corresponding values
