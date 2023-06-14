@@ -151,7 +151,7 @@
                 if(monthly_average != NaN){
                     document.getElementById('average_of_month').innerHTML = ('dB ⌀ : ' + monthly_average);
                 }
-                
+
                 // Clear the existing chart
                 if (myChart !== null) {
                     myChart.destroy();
@@ -163,13 +163,29 @@
                 beforeDatasetsDraw(chart, args, pluginOptions) {
                     const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
                     ctx.save();
+            
+                    if(newData.some(value => value <= 50)==true){
+                        drawBlocks(50, min_y-3, bgcolors[0]);
+                    }
 
-            drawBlocks(50, Math.floor(min_y/10)*10, bgcolors[0]);
-            drawBlocks(55, 50, bgcolors[1]);
-            drawBlocks(Math.ceil(max_y/10)*10, 55, bgcolors[2]);
+                    if(newData.some(value => value >= 50 && value <= 55)==true){
+                        drawBlocks(55, 50, bgcolors[1]);
+                    }
+
+                    if(newData.some(value => value >= 55)==true){
+                        if(newData.every((item) => item > 55)){
+                            drawBlocks(max_y+3, min_y-3, bgcolors[2]);
+                        } else {
+                            drawBlocks(max_y+3,55, bgcolors[2]);
+                        }
+                    }
+
+            
+            
             function drawBlocks(yStart, yEnd, color) {
                 ctx.fillStyle = color;
                 ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+                //ctx.fillRect(left, bottom - (height * (yStart - min_y) / (max_y - min_y)), width, (height * (yStart - yEnd) / (max_y - min_y)));
             }
         }}
 
@@ -199,7 +215,7 @@
                         },
                         scales: {
                             y: {
-                                min: Math.floor(min_y/10)*10,
+                                min: min_y-3,
                                 position: 'right',
                                 title: {
                                     display:true,

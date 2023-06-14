@@ -78,7 +78,11 @@
                     </p>
                 </div>
             </div>
+            <div class="überschrift">   <!--NEU-->
+                <h1>Live Übersicht der Lautstärke</h1>
+            </div>
             <div class="overview">
+            <div class="row">
                 <div class="floor1-overview">
                     Stockwerk 1
                     <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor" alt="stockwerk1">
@@ -99,6 +103,12 @@
                     <div id="steps2"></div>
                     <div id="tableBetweenDandE"></div>
                     <div id="tableAboveF"></div>
+                </div>
+                </div>
+                <div class="overview-legend">   <!--NEU-->
+                    <div id="grün"></div>&nbsp; < 50dB
+                    <div id="gelb"></div>&nbsp; 50 - 55dB
+                    <div id="rot"></div>&nbsp; > 55dB
                 </div>
             </div>
         </div>
