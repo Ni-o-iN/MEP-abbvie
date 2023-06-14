@@ -9,7 +9,7 @@ a {
 
 select {
   height: fit-content;
-  width: 3vw;
+  width: fit-content;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 1vw;
