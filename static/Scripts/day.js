@@ -50,7 +50,6 @@ new Chart(tag, {
                 position: 'right',
                 title: {
                     display: true,
-                    color: 'white',
                     text: 'Dezibel',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -58,7 +57,6 @@ new Chart(tag, {
                     }
                 },
                 ticks: {
-                    color: 'white',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
@@ -71,7 +69,6 @@ new Chart(tag, {
             x: {
                 title: {
                     display: true,
-                    color: 'white',
                     text: 'Uhrzeit',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -79,7 +76,6 @@ new Chart(tag, {
                     }
                 },
                 ticks: {
-                    color: 'white',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
@@ -120,7 +116,6 @@ new Chart(day, {
                 position: 'right',
                 title: {
                     display: true,
-                    color: 'white',
                     text: 'Decibel',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -128,7 +123,6 @@ new Chart(day, {
                     }
                 },
                 ticks: {
-                    color: 'white',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
@@ -141,7 +135,6 @@ new Chart(day, {
             x: {
                 title: {
                     display: true,
-                    color: 'white',
                     text: 'Time',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -149,7 +142,6 @@ new Chart(day, {
                     }
                 },
                 ticks: {
-                    color: 'white',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20

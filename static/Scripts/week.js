@@ -29,7 +29,6 @@ const myChart = new Chart(woche, {
     type: 'line',
     data: {
         labels: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
-        fontColor: 'white',
         datasets: [{
             label: 'Montag',
             borderColor: 'rgba(255, 215, 230, 1)',
@@ -88,7 +87,7 @@ const myChart = new Chart(woche, {
                 position: 'right',
                 title: {
                     display: true,
-                    color: 'white',
+                    color: 'black',
                     text: 'Dezibel',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -96,7 +95,7 @@ const myChart = new Chart(woche, {
                     }
                 },
                 ticks: {
-                    color: 'white',
+                    color: 'black',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
@@ -109,7 +108,7 @@ const myChart = new Chart(woche, {
             x: {
                 title: {
                     display: true,
-                    color: 'white',
+                    color: 'black',
                     text: 'Uhrzeit',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -117,7 +116,7 @@ const myChart = new Chart(woche, {
                     }
                 },
                 ticks: {
-                    color: 'white',
+                    color: 'black',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
@@ -196,7 +195,7 @@ const myChartE = new Chart(week, {
                 position: 'right',
                 title: {
                     display: true,
-                    color: 'white',
+                    color: 'black',
                     text: 'Decibel',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -204,7 +203,7 @@ const myChartE = new Chart(week, {
                     }
                 },
                 ticks: {
-                    color: 'white',
+                    color: 'black',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
@@ -217,7 +216,7 @@ const myChartE = new Chart(week, {
             x: {
                 title: {
                     display: true,
-                    color: 'white',
+                    color: 'black',
                     text: 'Time',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
@@ -225,7 +224,7 @@ const myChartE = new Chart(week, {
                     }
                 },
                 ticks: {
-                    color: 'white',
+                    color: 'black',
                     font: {
                         family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
                         size: 20
