@@ -19,7 +19,7 @@ select {
   font-size: calc(24px + (24 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
-h1{
+h1 {
   white-space: nowrap;
   font-size: calc(32px + (32 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -48,14 +48,15 @@ h1{
   overflow: hidden;
 }
 
-.navbar p a{
+.navbar p a {
   color: white;
   transition: color 0.3s, box-shadow 0.3s;
 }
 
-.navbar p a:hover{
+.navbar p a:hover {
   color: black;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Small shadow effect */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Small shadow effect */
 }
 
 .hamburger {
@@ -79,7 +80,7 @@ h1{
 }
 
 /* Media Query für Bildschirmbreite kleiner als 850px */
-@media (max-width: 850px) {
+@media (max-width: 1300px) {
   .navbar {
     display: flex;
     flex-direction: column;
@@ -137,23 +138,24 @@ h1{
   gap: .75vw;
 }
 
-.language-container > * {
+.language-container>* {
   padding: 0.5vw;
 }
-  
-.language-container img{
+
+.language-container img {
   max-width: 3.5vw;
-  display: block; /* Entfernt das Padding der Flaggen. */
+  display: block;
+  /* Entfernt das Padding der Flaggen. */
 }
 
-.all-languages{
+.all-languages {
   background-color: white;
-  border-radius:8px;
+  border-radius: 8px;
   display: none;
   gap: 0.5vw;
 }
 
-.language-container:hover .all-languages{
+.language-container:hover .all-languages {
   display: flex;
 }
 
@@ -171,7 +173,7 @@ h1{
   margin-top: auto;
   margin-bottom: auto;
   width: 85%;
-  
+
 }
 
 
@@ -403,7 +405,7 @@ h1{
   bottom: 56%;
   right: 46%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  
+
 }
 
 #tableAboveF {
@@ -414,7 +416,7 @@ h1{
   left: 44%;
   border-radius: 50%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  
+
 }
 
 #couch {
@@ -425,7 +427,7 @@ h1{
   right: 20.5%;
   border-radius: 50%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  
+
 }
 
 
@@ -452,13 +454,14 @@ h1{
 
 
 
-/*KALENDERWOCHE UND MONAT*/
+/*HEUTE, KALENDERWOCHE UND MONAT*/
 .today-week-month-display {
   display: none;
   flex-direction: column;
   align-items: center;
-  width: 97%;
-  padding: 1%;
+  width: 95%;
+  margin-bottom: 1%;
+  padding: 2%;
   background-color: rgb(136, 165, 255);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
   border-radius: 0.5vw;
@@ -466,13 +469,44 @@ h1{
 }
 
 .today-week-month-graph {
-  width: 72.5%;
+  width: 100%;
   background-clip: padding-box;
   margin-right: auto;
   margin-left: auto;
   background-color: white;
 }
 
+/*HEUTE*/
+.überschrift {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: calc(30px + (30 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+/*KALENDERWOCHE*/
+.legend-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 3%;
+}
+
+.item {
+  width: 15%;
+  padding: 5px 10px;
+  margin: 1%;
+  border-radius: 20px;
+  color: black;
+  cursor: pointer;
+  font-size: calc(20px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
 
 .time-box {
   width: 10vw;
@@ -492,24 +526,22 @@ textarea {
 
 
 /*EINSTELLUNGEN*/
-.settings-headline{
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 75vw;
-    height: fit-content;
-    background-color: rgb(136, 165, 255);
-    font-size: calc(40px + (28 - 16) * ((100vw - 320px) / (1600 - 320)));
-    box-shadow: 0.2vw 0.5vw 0.37vw silver;
-    border-radius: 0.5vw;
-    position: relative;
-    border-bottom: 1vh;
-    text-align:center;
-    
+.settings-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 75vw;
+  height: fit-content;
+  background-color: rgb(136, 165, 255);
+  font-size: calc(40px + (28 - 16) * ((100vw - 320px) / (1600 - 320)));
+  box-shadow: 0.2vw 0.5vw 0.37vw silver;
+  border-radius: 0.5vw;
+  position: relative;
+  border-bottom: 1vh;
+  text-align: center;
 }
 
-.settings-block{
+.settings-block {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -517,29 +549,27 @@ textarea {
   width: 75vw;
   height: fit-content;
   font-size: calc((40px + (28 - 16) * ((100vw - 320px) / (1600 - 320)))/1.5);
-  background-color:rgba(224, 226, 210, 0.6);
-  
+  background-color: rgba(224, 226, 210, 0.6);
   box-shadow: 0.2vw 0.5vw 0.37vw silver;
   border-radius: 0.5vw;
   margin-top: 2vh;
-    /*
+  /*
     border: 1px solid black;
     border-radius: 20px;
     */
 }
 
-.settings-headline-block{
+.settings-headline-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 75vw;
   height: fit-content;
   position: relative;
-  margin-bottom:4vh;
+  margin-bottom: 4vh;
 }
 
-.setting-block-text{
+.setting-block-text {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -547,16 +577,14 @@ textarea {
   font-size: calc((40px + (28 - 16) * ((100vw - 320px) / (1600 - 320)))/2);
 }
 
-.settings{
-  
+.settings {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 75vw;
   height: fit-content;
   position: relative;
-  color:rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
 }
 
 .color-box-yellow {
@@ -572,37 +600,38 @@ textarea {
   width: 1.5vw;
   height: 3vh;
   display: flex;
-  background-color: rgb(255,0, 0);
+  background-color: rgb(255, 0, 0);
   position: relative;
   border-radius: 15%;
   margin-left: 2vw;
 }
 
-.volume-selection{
+.volume-selection {
   display: flex;
   flex-direction: row;
-  column-gap:0.5vw;
-  justify-content:center;
-  align-items:center;
+  column-gap: 0.5vw;
+  justify-content: center;
+  align-items: center;
 }
 
-.volume-selection-input{
-  width:4vw;
-  height:2.5vh;
+.volume-selection-input {
+  width: 4vw;
+  height: 2.5vh;
 }
 
-.decibel-label{
+.decibel-label {
   font-size: 3.0vh;
   margin-right: 6vw;
 }
 
-input[type=submit]{ /*wird sehr klein, wenn es zu einem handy-Format wird*/
-  text-align: center; 
+input[type=submit] {
+  /*wird sehr klein, wenn es zu einem handy-Format wird*/
+  text-align: center;
   justify-content: center;
-  margin-bottom:1vw;
+  margin-bottom: 1vw;
   width: 5vw;
   height: 2vw;
-  font-size:1vw;
+  font-size: 1vw;
   display: flex;
 }
 
@@ -659,35 +688,6 @@ input[type=submit]{ /*wird sehr klein, wenn es zu einem handy-Format wird*/
 
 
 
-
-.legend-box {
-  width: 65vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5vh;
-}
-
-.item {
-  padding: 5px 10px;
-  margin: 1vw;
-  border-radius: 20px;
-  color: black;
-  cursor: pointer;
-  font-size: calc(20px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-}
-
-.strikethrough {
-  text-decoration: line-through;
-}
-
-.überschrift {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-size: calc(30px + (30 - 16) * ((100vw - 320px) / (1600 - 320)));
-}
 
 
 .row {

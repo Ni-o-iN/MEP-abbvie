@@ -371,3 +371,30 @@ window.addEventListener('resize', function () {
         menu.classList.remove('open');
     }
 });
+
+var mondayButton = document.getElementById("mo");
+var tuesdayButton = document.getElementById("di");
+var wednesdayButton = document.getElementById("mi");
+var thursdayButton = document.getElementById("do");
+var fridayButton = document.getElementById("fr");
+
+function updateButtonContent() {
+  var windowWidth = window.innerWidth;
+
+  if (windowWidth < 1300) {
+    mondayButton.textContent = "Mo";
+    tuesdayButton.textContent = "Di";
+    wednesdayButton.textContent = "Mi";
+    thursdayButton.textContent = "Do";
+    fridayButton.textContent = "Fr";
+  } else {
+    mondayButton.textContent = "Montag";
+    tuesdayButton.textContent = "Dienstag";
+    wednesdayButton.textContent = "Mittwoch";
+    thursdayButton.textContent = "Donnerstag";
+    fridayButton.textContent = "Freitag";
+  }
+}
+
+window.addEventListener("resize", updateButtonContent);
+updateButtonContent();
