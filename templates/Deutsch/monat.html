@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -29,9 +30,9 @@
                     <a href="{{url_for('woche')}}">Kalender&shywoche</a>
                 </p>
                 <p>
-                    Monat
+                    Monat<br>
                     <span class="time-box">
-                        <input type="number" id="month_selection" min="1" max="12" placeholder="Monat als Zahl" list="months"></input>
+                        <input type="number" id="month_selection" min="1" max="12" placeholder="als Zahl" list="months"></input>
                         <datalist id="months">
                             <option value="1"></option>
                             <option value="2"></option>
@@ -47,6 +48,12 @@
                             <option value="12"></option>
                           </datalist>
                     </span>
+                </p>
+                <p>
+                    <a href="{{url_for('admin_german')}}">Admin</a>
+                </p>
+                <p>
+                    <a href="{{url_for('download_german')}}">Download</a>
                 </p>
                 <div class="language-container">
                     <div>

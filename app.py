@@ -54,6 +54,14 @@ def admin_german():
 def admin_english():
     return render_template('Englisch/settings.html')
 
+@app.route('/downlaod')
+def download_german():
+    return render_template('Deutsch/download.html')
+
+@app.route('/download_english')
+def download_english():
+    return render_template('Englisch/download.html')
+
 @app.route('/get_chart_data', methods=['POST'])
 def get_chart_data():
 

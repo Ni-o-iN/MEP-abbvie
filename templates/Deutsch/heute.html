@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
 </head>
 
@@ -24,6 +25,12 @@
                 <p>
                     <a href="{{url_for('monat')}}">Monat</a>
                 </p>
+                <p>
+                    <a href="{{url_for('admin_german')}}">Admin</a>
+                </p>
+                <p>
+                    <a href="{{url_for('download_german')}}">Download</a>
+                </p>
                 <div class="language-container">
                     <div>
                         <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
@@ -44,22 +51,6 @@
             <div id="infoModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        Sie befinden sich auf der "Heute" Seite.<br>
-                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
-                    <ul>
-                        <li>Schritt 1: Wählen Sie ein Stockwerk aus</li>
-                        <li>Schritt 2: Wählen Sie einen entsprechenden Bereich aus</li>
-                    </ul>
-                    </p>
-                    <p>
-                        Die Anzeige des jeweiligen Bereiches sollte sich nun geöffnet haben, dort sehen sie
-                        einen Graphen der die
-                        entsprechende Lautstärke zu der entsprechenden Zeit anzeigt.
-                    </p>
-                    Rechts sehen Sie die an den Bereich angepasste Soll höchstwert Lautstärke und darunter die
-                    derzeitige Lautstärke.
                 </div>
             </div>
             <div class="floor-area">
@@ -74,11 +65,10 @@
                     <select id="secondDropdown" onchange="checkSelectionDay()" disabled>
                         <option value="" disabled selected hidden></option>
                     </select>
-
                 </div>
             </div>
             <div class="today-week-month-display">
-                <div class="überschrift">   <!--NEU-->
+                <div class="überschrift">
                     <h3>Übersicht der Lautstärke von Heute</h3>
                 </div>
                 <div class="today-week-month-graph">
