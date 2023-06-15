@@ -33,14 +33,17 @@
                 </p>
                 <div class="language-container">
                     <div>
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="Deutschland Flagge">
                     </div>
                     <div class="all-languages">
                         <a href="{{url_for('index')}}">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
                         </a>
                         <a href="{{url_for('overview')}}" id="english_page">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                                alt="englische Flagge">
                         </a>
                     </div>
                 </div>
@@ -57,16 +60,17 @@
                         <img class="menu-icon" src="{{url_for('static', filename='bilder/Monat.jpg')}}">
                     </a>
                     <div class="language-container" onmouseover="showOtherFlag()" onmouseout="hideOtherFlag()">
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge" class="current-language">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="Deutschland Flagge" class="current-language">
                         <a href="{{url_for('overview')}}">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge" class="other-language">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                                alt="englische Flagge" class="other-language">
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="right">
-            <button id="infoButton">i</button>
+        <button id="infoButton">i</button>
             <div id="infoModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
@@ -82,37 +86,57 @@
                     </p>
                 </div>
             </div>
-            <div class="überschrift">   <!--NEU-->
+        <div class="right">
+            <div class="überschrift">
                 <h1>Live Übersicht der Lautstärke</h1>
             </div>
             <div class="overview">
-            <div class="row">
-                <div class="floor1-overview">
-                    Stockwerk 1
-                    <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor" alt="stockwerk1">
-                    <a id="area-a" data-name="area-a" href="{{url_for('heute', stockwerk='floor1', bereich='area-a')}}">A</a>
-                    <a id="area-b" data-name="area-b" href="{{url_for('heute', stockwerk='floor1', bereich='area-b')}}">B</a>
-                    <a id="area-c" data-name="area-c" href="{{url_for('heute', stockwerk='floor1', bereich='area-c')}}">C</a>
-                    <div id="steps1"></div>
-                </div>
-                <div class="floor2-overview">
-                    Stockwerk 2
-                    <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}" class="responsiv-floor" alt="Stockwerkplan 2">
-                    <a id="area-d" data-name="area-d" href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a> <!--idk man das so mit machen kann-->
-                    <a id="area-e" data-name="area-e" href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
-                    <a id="area-f" data-name="area-f" href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
-                    <a id="area-g" data-name="area-g" href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
-                    <a id="area-h" data-name="area-h" href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
-                    <div id="couch"></div>
-                    <div id="steps2"></div>
-                    <div id="tableBetweenDandE"></div>
-                    <div id="tableAboveF"></div>
-                </div>
-                </div>
-                <div class="overview-legend">   <!--NEU-->
-                    <div id="grün"></div>&nbsp; < 50dB
-                    <div id="gelb"></div>&nbsp; 50 - 55dB
-                    <div id="rot"></div>&nbsp; > 55dB
+                <div class="row">
+                    <div class="col">
+                        <div class="mittig-floor1">
+                            <span class="floor-name">Stockwerk 1</span>
+                        </div>
+                        <div class="floor1-overview">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}"
+                                class="responsiv-floor" alt="stockwerk1">
+                            <a id="area-a" data-name="area-a"
+                                href="{{url_for('heute', stockwerk='floor1', bereich='area-a')}}">A</a>
+                            <a id="area-b" data-name="area-b"
+                                href="{{url_for('heute', stockwerk='floor1', bereich='area-b')}}">B</a>
+                            <a id="area-c" data-name="area-c"
+                                href="{{url_for('heute', stockwerk='floor1', bereich='area-c')}}">C</a>
+                            <div id="steps1"></div>
+                        </div>
+                    </div>
+                    <div class="overview-legend">
+                        <div id="grün">&nbsp; < 50dB</div>
+                        <div id="gelb">&nbsp; 50 - 55dB</div>
+                        <div id="rot">&nbsp; > 55dB</div>
+                    </div>
+                    <div class="col">
+                        <div class="mittig-floor2">
+                            <span class="floor-name">Stockwerk 2</span>
+                        </div>
+                        <div class="floor2-overview">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
+                                class="responsiv-floor" alt="Stockwerkplan 2">
+                            <a id="area-d" data-name="area-d"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a>
+                            <!--idk man das so mit machen kann-->
+                            <a id="area-e" data-name="area-e"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
+                            <a id="area-f" data-name="area-f"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
+                            <a id="area-g" data-name="area-g"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
+                            <a id="area-h" data-name="area-h"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
+                            <div id="couch"></div>
+                            <div id="steps2"></div>
+                            <div id="tableBetweenDandE"></div>
+                            <div id="tableAboveF"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

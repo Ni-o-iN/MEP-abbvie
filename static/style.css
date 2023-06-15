@@ -12,15 +12,19 @@ select {
   width: fit-content;
   margin-top: auto;
   margin-bottom: auto;
-  margin-left: 1vw;
-  margin-right: 3vw;
+  margin-left: 1%;
+  margin-right: 15%;
   background-color: white;
   background-clip: padding-box;
   font-size: calc(24px + (24 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
+h1{
+  white-space: nowrap;
+  font-size: calc(32px + (32 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
 .container {
-  display: flex;
   position: relative;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: black;
@@ -32,17 +36,14 @@ select {
 .navbar {
   display: flex;
   position: fixed;
-  top: 1vh;
-  left: 1vw;
-  width: 15vw;
-  height: 95vh;
+  margin: 0.8%;
+  width: 10%;
+  height: 95%;
   background-color: rgb(136, 165, 255);
-  padding: 0 10px;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
   border-radius: 0.5vw;
-  margin-top: 1vh;
-  margin-left: 1vw;
-  padding-left: 1vw;
+  padding-left: 1%;
+  padding-right: 1%;
   box-shadow: 0.2vw 0.5vw 0.37vw silver;
   overflow: hidden;
 }
@@ -161,33 +162,46 @@ select {
 /*ALLES NEBEN DAS MENÜ PACKEN*/
 .right {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
+  margin-top: 1%;
   margin-left: auto;
-  width: 75vw;
-  margin-top: 1.3vh;
-  margin-right: 3vw;
+  margin-right: 1%;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 85%;
+  
 }
 
 
 
-/*STOCKWERKPLÄNE*/
+/*ÜBERSICHT*/
 .overview {
-  display: flex;
-  /*flex-direction: row;*/
   flex-direction: column;
-  /*align-items: center;*/
-  width: 75vw;
-  height: fit-content;
+  width: 100%;
   background-color: rgb(136, 165, 255);
   font-size: calc(32px + (32 - 16) * ((100vw - 320px) / (1600 - 320)));
   border-radius: 0.5vw;
-  /*margin-top: 18vh;*/
   box-shadow: 0.2vw 0.5vw 0.37vw silver;
 }
 
+.mittig-floor1 {
+  position: relative;
+}
+
+.mittig-floor2 {
+  position: relative;
+}
+
+.floor-name {
+  left: auto;
+  right: auto;
+  white-space: nowrap;
+}
+
 .responsiv-floor {
-  width: 30vw;
-  height: 40vh;
+  width: 100%;
 }
 
 .floorplan {
@@ -196,193 +210,223 @@ select {
 
 .floor1-overview {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-top: 3vh;
-  margin-bottom: 3vh;
   position: relative;
-  width: 50%;
+  width: 95%;
+  margin: 1%;
 }
 
 #area-a {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 12.7vw;
-  height: 12vh;
+  width: 42%;
+  height: 30%;
+  bottom: 67%;
+  left: 1.8%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 27vh;
-  left: 4.2vw;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
 }
 
 #area-b {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 9vw;
-  height: 10vh;
+  width: 31%;
+  height: 25%;
+  bottom: 5%;
+  left: 1.8%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 2vh;
-  left: 4.5vw;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
 }
 
 #area-c {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 7.5vw;
-  height: 13vh;
+  width: 27%;
+  height: 32%;
+  bottom: 5%;
+  left: 35%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 2vh;
-  left: 14.5vw;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
 }
 
 #steps1 {
-  display: flex;
   position: absolute;
-  width: 6vw;
-  height: 11vh;
+  width: 14%;
+  height: 20%;
+  bottom: 45%;
+  left: 40%;
   border-radius: 50%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  bottom: 16vh;
-  right: 16vw;
+}
+
+.overview-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 10%;
+  font-size: 50%;
+  margin-top: 3%;
+  white-space: nowrap;
+}
+
+#grün {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  background-color: rgba(0, 158, 0, 0.7);
+  margin: 10%;
+}
+
+#gelb {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  background-color: rgba(255, 206, 86, 1);
+  margin: 10%;
+}
+
+#rot {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  background-color: rgba(255, 0, 0, 1);
+  margin: 10%;
 }
 
 .floor2-overview {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-top: 3vh;
-  margin-bottom: 3vh;
   position: relative;
-  width: 50%;
+  width: 95%;
+  margin: 1%;
 }
 
 #area-d {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 12.7vw;
-  height: 12vh;
+  width: 42%;
+  height: 30%;
+  bottom: 67%;
+  left: 1.8%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 27vh;
-  left: 4.2vw;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
 }
 
 #area-e {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 6.5vw;
-  height: 10vh;
+  width: 21%;
+  height: 25%;
+  bottom: 6%;
+  left: 3%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 2vh;
-  left: 4.5vw;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
 }
 
 #area-f {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 6.5vw;
-  height: 10vh;
+  width: 22%;
+  height: 25%;
+  bottom: 6%;
+  left: 26%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 2vh;
-  left: 11.5vw;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
 }
 
 #area-g {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 3.5vw;
-  height: 10vh;
+  width: 11%;
+  height: 25%;
+  bottom: 10%;
+  left: 63%;
   background-color: rgba(0, 158, 0, 0.5);
   color: white;
-  bottom: 4vh;
-  left: 22.5vw;
-  font-size: calc(26px + (26 - 20) * ((100vw - 320px) / (1600 - 320)));
-  align-items: center;
-  justify-content: center;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
 #area-h {
   display: flex;
-  position: absolute;
-  width: 6vw;
-  height: 19vh;
-  background-color: rgba(0, 158, 0, 0.5);
-  color: white;
-  bottom: 6vh;
-  left: 27vw;
-  clip-path: polygon(1vw 0vh, 6vw 0vh, 6vw 19vh, 0vw 19vh, 0vw 11vh, 1vw 11vh);
-  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
   align-items: center;
   justify-content: center;
+  position: absolute;
+  width: 21.5%;
+  height: 50%;
+  bottom: 13%;
+  left: 76%;
+  background-color: rgba(0, 158, 0, 0.5);
+  color: white;
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 25% 50%);
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
 #tableBetweenDandE {
-  display: flex;
   position: absolute;
-  width: 4vw;
-  height: 7vh;
+  width: 10%;
+  height: 15%;
+  bottom: 44%;
+  left: 6%;
   border-radius: 50%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  bottom: 17.8vh;
-  left: 5.3vw;
 }
 
 #steps2 {
-  display: flex;
   position: absolute;
-  width: 4vw;
-  height: 7vh;
+  width: 10%;
+  height: 15%;
   border-radius: 50%;
+  bottom: 56%;
+  right: 46%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  bottom: 22vh;
-  right: 17vw;
+  
 }
 
 #tableAboveF {
-  display: flex;
   position: absolute;
-  width: 4vw;
-  height: 7vh;
+  width: 10%;
+  height: 15%;
+  bottom: 36%;
+  left: 44%;
   border-radius: 50%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  bottom: 14vh;
-  left: 16.5vw;
+  
 }
 
 #couch {
-  display: flex;
   position: absolute;
-  width: 4vw;
-  height: 7vh;
+  width: 10%;
+  height: 15%;
+  bottom: 41%;
+  right: 20.5%;
   border-radius: 50%;
   background: radial-gradient(circle, #ff0000, rgba(255, 0, 0, 0));
-  bottom: 16vh;
-  right: 9.5vw;
+  
 }
-
-
 
 
 
@@ -391,12 +435,12 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 15vh;
-  width: 75vw;
+  width: 95%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  padding: 2%;
   background-color: rgb(136, 165, 255);
   border-radius: 0.5vw;
-  margin-right: 3vw;
-  margin-bottom: 3vh;
   box-shadow: 0.2vw 0.5vw 0.37vw silver;
 }
 
@@ -412,22 +456,17 @@ select {
 .today-week-month-display {
   display: none;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 76.8vh;
-  width: 75vw;
+  width: 97%;
+  padding: 1%;
   background-color: rgb(136, 165, 255);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
   border-radius: 0.5vw;
-  margin-top: auto;
-  margin-right: 3vw;
-  margin-bottom: 1vh;
   box-shadow: 0.2vw 0.5vw 0.37vw silver;
 }
 
 .today-week-month-graph {
-  height: 55vh;
-  width: 55vw;
+  width: 72.5%;
   background-clip: padding-box;
   margin-right: auto;
   margin-left: auto;
@@ -656,36 +695,12 @@ input[type=submit]{ /*wird sehr klein, wenn es zu einem handy-Format wird*/
   flex-direction: row;
 }
 
-.overview-legend {
+.col {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: calc(20px + (20 - 16) * ((100vw - 320px) / (1600 - 320)));
-  margin-bottom: 3vh;
 }
-
-#grün {
-  display: flex;
-  width: 3vw;
-  height: 3vh;
-  background-color: rgba(0, 158, 0, 0.7);
-}
-
-#gelb {
-  width: 3vw;
-  height: 3vh;
-  background-color: rgba(255, 206, 86, 1);
-  margin-left: 5vw;
-}
-
-#rot {
-  display: flex;
-  width: 3vw;
-  height: 3vh;
-  background-color: rgba(255, 0, 0, 1);
-  margin-left: 5vw;
-}
-
 
 
 #month_selection {
