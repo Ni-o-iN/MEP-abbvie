@@ -46,7 +46,8 @@ new Chart(tag, {
         },
         scales: {
             y: {
-                min: 30,
+                min: 40,
+                max: 90,
                 position: 'right',
                 title: {
                     display: true,
@@ -112,7 +113,8 @@ new Chart(day, {
         },
         scales: {
             y: {
-                min: 30,
+                min: 40,
+                max: 90,
                 position: 'right',
                 title: {
                     display: true,

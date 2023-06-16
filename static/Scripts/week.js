@@ -31,8 +31,8 @@ const myChart = new Chart(woche, {
         labels: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
         datasets: [{
             label: 'Montag',
-            borderColor: 'rgba(255, 215, 230, 1)',
-            backgroundColor: 'rgba(255, 215, 230, 1)',
+            borderColor: 'rgb(70, 0, 250)',
+            backgroundColor: 'rgb(70, 0, 250)',
             data: [35, 39, 42, 48, 53, 50, 57, 60, 58, 55],
             tension: 0.3,
             pointRadius: 5,
@@ -40,8 +40,8 @@ const myChart = new Chart(woche, {
         },
         {
             label: 'Dienstag',
-            borderColor: 'rgba(125, 0, 224, 1)',
-            backgroundColor: 'rgba(125, 0, 224, 1)',
+            borderColor: 'rgb(135, 206, 250)',
+            backgroundColor: 'rgb(135, 206, 250)',
             data: [30, 34, 40, 49, 56, 60, 55, 62, 54, 56],
             tension: 0.3,
             pointRadius: 5,
@@ -49,8 +49,8 @@ const myChart = new Chart(woche, {
         },
         {
             label: 'Mittwoch',
-            borderColor: 'rgba(255, 204, 0, 1)',
-            backgroundColor: 'rgba(255, 204, 0, 1)',
+            borderColor: 'rgb(64, 224, 208)',
+            backgroundColor: 'rgb(64, 224, 208)',
             data: [33, 36, 48, 60, 53, 50, 57, 50, 54, 51],
             tension: 0.3,
             pointRadius: 5,
@@ -58,8 +58,8 @@ const myChart = new Chart(woche, {
         },
         {
             label: 'Donnerstag',
-            borderColor: 'rgba(125, 252, 255, 1)',
-            backgroundColor: 'rgba(125, 252, 255, 1)',
+            borderColor: 'rgb(150, 131, 236)',
+            backgroundColor: 'rgb(150, 131, 236)',
             data: [37, 41, 42, 53, 61, 60, 55, 63, 55, 57],
             tension: 0.3,
             pointRadius: 5,
@@ -67,8 +67,8 @@ const myChart = new Chart(woche, {
         },
         {
             label: 'Freitag',
-            borderColor: 'rgba(199, 148, 203, 1)',
-            backgroundColor: 'rgba(199, 148, 203, 1)',
+            borderColor: 'rgb(204, 204, 255)',
+            backgroundColor: 'rgb(204, 204, 255)',
             data: [34, 36, 40, 53, 55, 48, 50, 54, 48, 41],
             tension: 0.3,
             pointRadius: 5,
@@ -83,7 +83,8 @@ const myChart = new Chart(woche, {
         },
         scales: {
             y: {
-                min: 30,
+                min: 40,
+                max: 90,
                 position: 'right',
                 title: {
                     display: true,
@@ -139,8 +140,8 @@ const myChartE = new Chart(week, {
         labels: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
         datasets: [{
             label: 'Monday',
-            borderColor: 'rgba(255, 215, 230, 1)',
-            backgroundColor: 'rgba(255, 215, 230, 1)',
+            borderColor: 'rgb(70, 0, 250)',
+            backgroundColor: 'rgb(70, 0, 250)',
             data: [35, 39, 42, 48, 53, 50, 57, 60, 58, 55],
             tension: 0.3,
             pointRadius: 5,
@@ -148,8 +149,8 @@ const myChartE = new Chart(week, {
         },
         {
             label: 'Tuesday',
-            borderColor: 'rgba(125, 0, 224, 1)',
-            backgroundColor: 'rgba(125, 0, 224, 1)',
+            borderColor: 'rgb(135, 206, 250)',
+            backgroundColor: 'rgb(135, 206, 250)',
             data: [30, 34, 40, 49, 56, 52, 55, 62, 54, 56],
             tension: 0.3,
             pointRadius: 5,
@@ -157,8 +158,8 @@ const myChartE = new Chart(week, {
         },
         {
             label: 'Wednesday',
-            borderColor: 'rgba(255, 204, 0, 1)',
-            backgroundColor: 'rgba(255, 204, 0, 1)',
+            borderColor: 'rgb(64, 224, 208)',
+            backgroundColor: 'rgb(64, 224, 208)',
             data: [33, 36, 48, 60, 53, 50, 57, 50, 54, 51],
             tension: 0.3,
             pointRadius: 5,
@@ -166,8 +167,8 @@ const myChartE = new Chart(week, {
         },
         {
             label: 'Thursday',
-            borderColor: 'rgba(125, 252, 255, 1)',
-            backgroundColor: 'rgba(125, 252, 255, 1)',
+            borderColor: 'rgb(150, 131, 236)',
+            backgroundColor: 'rgb(150, 131, 236)',
             data: [37, 41, 42, 53, 61, 60, 55, 63, 55, 57],
             tension: 0.3,
             pointRadius: 5,
@@ -175,8 +176,8 @@ const myChartE = new Chart(week, {
         },
         {
             label: 'Friday',
-            borderColor: 'rgba(199, 148, 203, 1)',
-            backgroundColor: 'rgba(199, 148, 203, 1)',
+            borderColor: 'rgb(204, 204, 255)',
+            backgroundColor: 'rgb(204, 204, 255)',
             data: [34, 36, 40, 53, 55, 48, 50, 54, 48, 41],
             tension: 0.3,
             pointRadius: 5,
@@ -191,7 +192,8 @@ const myChartE = new Chart(week, {
         },
         scales: {
             y: {
-                min: 30,
+                min: 40,
+                max: 90,
                 position: 'right',
                 title: {
                     display: true,
@@ -239,7 +241,7 @@ const myChartE = new Chart(week, {
     plugins: [statusTracker]
 });
 
-const legendColors = ['rgba(255, 215, 230, 1)', 'rgba(125, 0, 224, 1)', 'rgba(255, 204, 0, 1)', 'rgba(125, 252, 255, 1)', 'rgba(199, 148, 203, 1)']
+const legendColors = ['rgb(70, 0, 250)', 'rgb(135, 206, 250)', 'rgb(64, 224, 208)', 'rgb(150, 131, 236)', 'rgb(204, 204, 255)']
 const shortDays = ['Mo', 'Di', 'Mi', 'Do', 'Fr']
 const longDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
