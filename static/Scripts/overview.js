@@ -45,7 +45,7 @@ function toggleMenu() {
 window.addEventListener('resize', function () {
     const hamburgerMenu = document.querySelector('.hamburger-menu');
     const menuIcons = document.querySelector('.menu-icons');
-    if (window.innerWidth > 700) {
+    if (window.innerWidth > 1300) {
         hamburgerMenu.classList.remove('open');
         menuIcons.classList.remove('open');
     }

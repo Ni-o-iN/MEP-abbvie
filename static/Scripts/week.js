@@ -240,6 +240,8 @@ const myChartE = new Chart(week, {
 });
 
 const legendColors = ['rgba(255, 215, 230, 1)', 'rgba(125, 0, 224, 1)', 'rgba(255, 204, 0, 1)', 'rgba(125, 252, 255, 1)', 'rgba(199, 148, 203, 1)']
+const shortDays = ['Mo', 'Di', 'Mi', 'Do', 'Fr']
+const longDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
 
 //Legt Hintergrundfarbe der Legende dynamisch an
 document.getElementById('mo').style.backgroundColor = myChart.data.datasets[0].backgroundColor;
@@ -250,7 +252,7 @@ document.getElementById('fr').style.backgroundColor = myChart.data.datasets[4].b
 
 
 //Entfernen oder hinzufügen einer Linie bei Deutsch
-function toggleData(value, buttonId, day) {
+function toggleData(value, buttonId, day, short) {
     const visibiltyData = myChart.isDatasetVisible(value);
     var textElement = document.getElementById(buttonId + "Text");
     if (visibiltyData === true) {
@@ -267,6 +269,37 @@ function toggleData(value, buttonId, day) {
         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
     }
 }
+
+
+var mondayButton = document.getElementById("button1Text");
+var tuesdayButton = document.getElementById("button2Text");
+var wednesdayButton = document.getElementById("button3Text");
+var thursdayButton = document.getElementById("button4Text");
+var fridayButton = document.getElementById("button5Text");
+
+function updateButtonContent() {
+  var windowWidth = window.innerWidth;
+
+  if (windowWidth < 1300) {
+    mondayButton.textContent = "Mo";
+    tuesdayButton.textContent = "Di";
+    wednesdayButton.textContent = "Mi";
+    thursdayButton.textContent = "Do";
+    fridayButton.textContent = "Fr";
+  } else {
+    mondayButton.textContent = "Montag";
+    tuesdayButton.textContent = "Dienstag";
+    wednesdayButton.textContent = "Mittwoch";
+    thursdayButton.textContent = "Donnerstag";
+    fridayButton.textContent = "Freitag";
+  }
+}
+
+window.addEventListener("resize", updateButtonContent);
+updateButtonContent();
+
+
+
 
 //Entfernen oder hinzufügen einer Linie bei Englsich
 function toggleDataE(value, buttonId, day) {
@@ -371,30 +404,3 @@ window.addEventListener('resize', function () {
         menu.classList.remove('open');
     }
 });
-
-var mondayButton = document.getElementById("mo");
-var tuesdayButton = document.getElementById("di");
-var wednesdayButton = document.getElementById("mi");
-var thursdayButton = document.getElementById("do");
-var fridayButton = document.getElementById("fr");
-
-function updateButtonContent() {
-  var windowWidth = window.innerWidth;
-
-  if (windowWidth < 1300) {
-    mondayButton.textContent = "Mo";
-    tuesdayButton.textContent = "Di";
-    wednesdayButton.textContent = "Mi";
-    thursdayButton.textContent = "Do";
-    fridayButton.textContent = "Fr";
-  } else {
-    mondayButton.textContent = "Montag";
-    tuesdayButton.textContent = "Dienstag";
-    wednesdayButton.textContent = "Mittwoch";
-    thursdayButton.textContent = "Donnerstag";
-    fridayButton.textContent = "Freitag";
-  }
-}
-
-window.addEventListener("resize", updateButtonContent);
-updateButtonContent();
