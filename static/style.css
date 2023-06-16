@@ -28,6 +28,7 @@ h1 {
   position: relative;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: black;
+  margin: 1%;
 }
 
 
@@ -36,9 +37,8 @@ h1 {
 .navbar {
   display: flex;
   position: fixed;
-  margin: 0.8%;
   width: 10%;
-  height: 95%;
+  height: 96%;
   background-color: rgb(136, 165, 255);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
   border-radius: 0.5vw;
@@ -163,17 +163,8 @@ h1 {
 
 /*ALLES NEBEN DAS MENÜ PACKEN*/
 .right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 1%;
   margin-left: auto;
-  margin-right: 1%;
-  margin-top: auto;
-  margin-bottom: auto;
   width: 85%;
-
 }
 
 
@@ -460,7 +451,6 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 95%;
-  margin-bottom: 1%;
   padding: 2%;
   background-color: rgb(136, 165, 255);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
@@ -530,7 +520,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75vw;
+  width: 100%;
   height: fit-content;
   background-color: rgb(136, 165, 255);
   font-size: calc(40px + (28 - 16) * ((100vw - 320px) / (1600 - 320)));
