@@ -32,7 +32,7 @@
                 <p>
                     Monat<br>
                     <span class="time-box">
-                        <input type="number" id="month_selection" min="1" max="12" placeholder="als Zahl" list="months"></input>
+                        <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
                         <datalist id="months">
                             <option value="1"></option>
                             <option value="2"></option>
@@ -46,7 +46,7 @@
                             <option value="10"></option>
                             <option value="11"></option>
                             <option value="12"></option>
-                          </datalist>
+                        </datalist>
                     </span>
                 </p>
                 <p>

@@ -30,7 +30,7 @@ class AppTestCase(unittest.TestCase):
 
         # Create a new instance of the Microsoft Edge WebDriver
         self.driver = webdriver.Edge(service=Service(edge_driver_path))
-        self.driver.implicitly_wait(3)  # Wait for elements to load
+        self.driver.implicitly_wait(5)  # Wait for elements to load
 
     def tearDown(self):
         # Quit the WebDriver and terminate the Flask app process
@@ -81,7 +81,7 @@ class AppTestCase(unittest.TestCase):
 
     def test_overview_to_uebersicht(self):
         self.prepare_test('http://localhost:5000/overview')
-        self.click_element_by_id("german_page")
+        self.click_element_by_id('german_page')
         self.assertTrue(self.is_same_url('http://localhost:5000'))
 
     def test_heute_to_today(self):
@@ -119,12 +119,12 @@ class AppTestCase(unittest.TestCase):
     def test_monat_area_clickable(self):
         self.driver.get('http://localhost:5000/monat')
 
-        secondDropdown_element = self.driver.find_element_by_id("secondDropdown")
+        secondDropdown_element = self.driver.find_element("id", "secondDropdown")
         is_disabled = not secondDropdown_element.is_enabled()
 
         assert is_disabled
 
-        first_dropdown = Select(self.driver.find_element_by_id("firstDropdown"))
+        first_dropdown = Select(self.driver.find_element("id", "firstDropdown"))
 
         # Select an option by value
         first_dropdown.select_by_value("floor1")
