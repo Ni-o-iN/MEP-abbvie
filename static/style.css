@@ -625,6 +625,30 @@ input[type=submit] {
   display: flex;
 }
 
+
+
+/*DOWNLOAD*/
+.overview-download {
+  width: 100%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  background-color: rgb(136, 165, 255);
+  border-radius: 0.5vw;
+  font-size: calc(32px + (32 - 16) * ((100vw - 320px) / (1600 - 320)));
+  box-shadow: 0.2vw 0.5vw 0.37vw silver;
+}
+
+.floor-download {
+  width: 90%;
+  padding: 2%;
+}
+
+.custom-radio {
+  transform: scale(1.5); /* Ändere den Wert, um die Größe des Symbols anzupassen */
+  margin-right: 5px; /* Optional: Füge einen Abstand zwischen Symbol und Text hinzu */
+}
+
+
 /*INFO*/
 #infoButton {
   border-radius: 50%;
