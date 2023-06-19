@@ -72,7 +72,7 @@ def get_chart_data():
         selected_month = request.json['selected_option1'].split("-")[1]
         selected_year = request.json['selected_option1'].split("-")[0]
     
-    if(request.referrer == "http://127.0.0.1:5000/heute" or request.referrer == "http://127.0.0.1:5000/today"):
+    if("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
         selected_option = request.json['selected_option1']
         match selected_option:
             case "area-a":
@@ -96,21 +96,20 @@ def get_chart_data():
     # Establish a connection to MySQL
     connection = mysql.connector.connect(**mysql_config)
     cursor = connection.cursor()
-
+    query=0
     if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
         query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
         if not selected_option and not selected_month:
             return (0,0)
         else:
             cursor.execute(query, (selected_option,selected_month,selected_year))
-    elif(request.referrer =="http://127.0.0.1:5000/heute" or request.referrer=="http://127.0.0.1:5000/today"):
+    elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
         query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
         if not selected_option:
             return (0,0)
-        else:
+        else:     
             print(selected_option)
             cursor.execute(query, (selected_option,))
-
 
     # Retrieve the data
     queryoutput = cursor.fetchall()
@@ -124,7 +123,7 @@ def get_chart_data():
         # Assuming the chart data is in a specific column of the retrieved data
         if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
             chart_labels.append(row[0].split()[0].split("-")[2])
-        elif(request.referrer =="http://127.0.0.1:5000/heute" or request.referrer =="http://127.0.0.1:5000/today"):
+        elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
             chart_labels.append(row[0].split()[1].split(":")[0])
         chart_data.append(row[1])
         

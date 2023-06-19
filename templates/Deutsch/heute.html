@@ -1,329 +1,460 @@
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
 
-<body>
-    <button id="infoButton">i</button>
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            Test
-        </div>
-    </div>
-    <div class="container">
-        <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
+    <body>
+        <button id="infoButton">i</button>
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                Test
             </div>
-            <div class="menu">
-                <p>
-                    <a href="{{url_for('index')}}">Übersicht</a>
-                </p>
-                <p>Heute</p>
-                <p>
-                    <a href="{{url_for('woche')}}">Kalender&shywoche</a>
-                </p>
-                <p>
-                    <a href="{{url_for('monat')}}">Monat</a>
-                </p>
-                <p>
-                    <a href="{{url_for('download_german')}}">Download</a>
-                </p>
-                <p>
-                    <a href="{{url_for('admin_german')}}">Admin</a>
-                </p>
-                <div class="language-container">
-                    <div>
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
-                            alt="Deutschland Flagge">
-                    </div>
-                    <div class="all-languages">
-                        <a href="{{url_for('heute')}}">
+        </div>
+        <div class="container">
+            <div class="navbar">
+                <div class="hamburger" onclick="toggleMenu()">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <div class="menu">
+                    <p>
+                        <a href="{{url_for('index')}}">Übersicht</a>
+                    </p>
+                    <p>Heute</p>
+                    <p>
+                        <a href="{{url_for('woche')}}">Kalender&shywoche</a>
+                    </p>
+                    <p>
+                        <a href="{{url_for('monat')}}">Monat</a>
+                    </p>
+                    <p>
+                        <a href="{{url_for('download_german')}}">Download</a>
+                    </p>
+                    <p>
+                        <a href="{{url_for('admin_german')}}">Admin</a>
+                    </p>
+                    <div class="language-container">
+                        <div>
                             <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
                                 alt="Deutschland Flagge">
-                        </a>
-                        <a href="{{url_for('today')}}" id="english_page">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
-                                alt="englische Flagge">
-                        </a>
+                        </div>
+                        <div class="all-languages">
+                            <a href="{{url_for('heute')}}">
+                                <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                    alt="Deutschland Flagge">
+                            </a>
+                            <a href="{{url_for('today')}}" id="english_page">
+                                <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                                    alt="englische Flagge">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="floor-area">
+                    <div class="choose">
+                        Stockwerk:
+                        <select id="firstDropdown" onchange="updateSecondDropdown()" onchange="checkSelectionDay()">
+                            <option value="" disabled selected hidden></option>
+                            <option value="floor1">1</option>
+                            <option value="floor2">2</option>
+                        </select>
+                        Bereich:
+                        <select id="secondDropdown" onchange="checkSelectionDay()" disabled>
+                            <option value="" disabled selected hidden></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="today-week-month-display">
+                    <div class="überschrift">
+                        <h3>Übersicht der Lautstärke von Heute</h3>
+                    </div>
+                    <div class="today-week-month-graph">
+                        <canvas id="graph-fuer-tag"></canvas>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="right">
-            <div class="floor-area">
-                <div class="choose">
-                    Stockwerk:
-                    <select id="firstDropdown" onchange="updateSecondDropdown()" onchange="checkSelectionDay()">
-                        <option value="" disabled selected hidden></option>
-                        <option value="floor1">1</option>
-                        <option value="floor2">2</option>
-                    </select>
-                    Bereich:
-                    <select id="secondDropdown" onchange="checkSelectionDay()" disabled>
-                        <option value="" disabled selected hidden></option>
-                    </select>
-                </div>
-            </div>
-            <div class="today-week-month-display">
-                <div class="überschrift">
-                    <h3>Übersicht der Lautstärke von Heute</h3>
-                </div>
-                <div class="today-week-month-graph">
-                    <canvas id="graph-fuer-tag"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
-    <script>
-        $(document).ready(function () {
-            var myChart = null;
-
+        <script>
+             var myChart = null;
+                
             function updateChart(selectedOption1) {    // 2 is the secondOption
-                $.ajax({
-                    url: '/get_chart_data',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ 'selected_option1': selectedOption1 }),
-                    success: function (response) {
-                        // Handle the response and refresh the chart
-                        var newData = response[0];
-                        var newLabel = response[1];
-                        var min_y = response[2];    //die beiden für später mit dem Graphen
-                        var max_y = response[3];
+                    $.ajax({
+                        url: '/get_chart_data',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ 'selected_option1': selectedOption1 }),
+                        success: function (response) {
+                            // Handle the response and refresh the chart
+                            var newData = response[0];
+                            var newLabel = response[1];
+                            var min_y = response[2];    //die beiden für später mit dem Graphen
+                            var max_y = response[3];
 
-                        // Clear the existing chart
-                        if (myChart !== null) {
-                            myChart.destroy();
-                        }
+                            // Clear the existing chart
+                            if (myChart !== null) {
+                                myChart.destroy();
+                            }
 
-                        const bgcolors = ['rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
-                        const statusTracker = {
-                            id: 'statusTracker',
-                            beforeDatasetsDraw(chart, args, pluginOptions) {
-                                const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-                                ctx.save();
+                            const bgcolors = ['rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
+                            const statusTracker = {
+                                id: 'statusTracker',
+                                beforeDatasetsDraw(chart, args, pluginOptions) {
+                                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                                    ctx.save();
 
-                                drawLines(50, bgcolors[0]);
-                                drawLines(55, bgcolors[1]);
-                                function drawLines(yValue, color) {
-                                    ctx.beginPath();
-                                    ctx.lineWidth = 5;
-                                    ctx.strokeStyle = color;
-                                    ctx.moveTo(left, y.getPixelForValue(yValue));
-                                    ctx.lineTo(right, y.getPixelForValue(yValue));
-                                    ctx.stroke();
-                                    ctx.closePath();
-                                    ctx.restore();
+                                    drawLines(50, bgcolors[0]);
+                                    drawLines(55, bgcolors[1]);
+                                    function drawLines(yValue, color) {
+                                        ctx.beginPath();
+                                        ctx.lineWidth = 5;
+                                        ctx.strokeStyle = color;
+                                        ctx.moveTo(left, y.getPixelForValue(yValue));
+                                        ctx.lineTo(right, y.getPixelForValue(yValue));
+                                        ctx.stroke();
+                                        ctx.closePath();
+                                        ctx.restore();
+                                    }
                                 }
                             }
-                        }
 
-                        var ctx = document.getElementById('graph-fuer-tag').getContext('2d');
-                        myChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: newLabel,
-                                datasets: [{
-                                    label: 'Dezibel',
-                                    data: newData,
-                                    backgroundColor: 'rgb(70, 0, 250)',
-                                    borderColor: 'rgb(70, 0, 250)',
-                                    tension: 0.3,
-                                    pointRadius: 5,
-                                    pointHoverRadius: 7
-                                }]
-                            },
-                            options: {
-                                plugins: {
-                                    legend: {
-                                        display: false
-                                    }
+                            var ctx = document.getElementById('graph-fuer-tag').getContext('2d');
+                            myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: newLabel,
+                                    datasets: [{
+                                        label: 'Dezibel',
+                                        data: newData,
+                                        backgroundColor: 'rgb(70, 0, 250)',
+                                        borderColor: 'rgb(70, 0, 250)',
+                                        tension: 0.3,
+                                        pointRadius: 5,
+                                        pointHoverRadius: 7
+                                    }]
                                 },
-                                scales: {
-                                    y: {
-                                        min: 40,
-                                        max: 90,
-                                        position: 'right',
-                                        title: {
-                                            display: true,
-                                            text: 'Dezibel',
-                                            color: 'black',
-                                            font: {
-                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                                size: 20
-                                            }
-                                        },
-                                        ticks: {
-                                            color: 'black',
-                                            font: {
-                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                                size: 20
-                                            }
-                                        },
-                                        grid: {
+                                options: {
+                                    plugins: {
+                                        legend: {
                                             display: false
                                         }
                                     },
-                                    x: {
-                                        title: {
-                                            display: true,
-                                            text: 'Uhrzeit',
-                                            color: 'black',
-                                            font: {
-                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                                size: 20
+                                    scales: {
+                                        y: {
+                                            min: 40,
+                                            max: 90,
+                                            position: 'right',
+                                            title: {
+                                                display: true,
+                                                text: 'Dezibel',
+                                                color: 'black',
+                                                font: {
+                                                    family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                    size: 20
+                                                }
+                                            },
+                                            ticks: {
+                                                color: 'black',
+                                                font: {
+                                                    family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                    size: 20
+                                                }
+                                            },
+                                            grid: {
+                                                display: false
                                             }
                                         },
-                                        ticks: {
-                                            color: 'black',
-                                            font: {
-                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                                size: 20
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: 'Uhrzeit',
+                                                color: 'black',
+                                                font: {
+                                                    family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                    size: 20
+                                                }
+                                            },
+                                            ticks: {
+                                                color: 'black',
+                                                font: {
+                                                    family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                    size: 20
+                                                }
+                                            },
+                                            grid: {
+                                                display: false
                                             }
-                                        },
-                                        grid: {
-                                            display: false
                                         }
                                     }
-                                }
-                            },
-                            plugins: [statusTracker]
-                        });
-                    },
-                    error: function (error) {
-                        console.log(error);
+                                },
+                                plugins: [statusTracker]
+                            });
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            $(document).ready(function () {
+                // var myChart = null;
+
+                // function updateChart(selectedOption1) {    // 2 is the secondOption
+                //     $.ajax({
+                //         url: '/get_chart_data',
+                //         method: 'POST',
+                //         contentType: 'application/json',
+                //         data: JSON.stringify({ 'selected_option1': selectedOption1 }),
+                //         success: function (response) {
+                //             // Handle the response and refresh the chart
+                //             var newData = response[0];
+                //             var newLabel = response[1];
+                //             var min_y = response[2];    //die beiden für später mit dem Graphen
+                //             var max_y = response[3];
+
+                //             // Clear the existing chart
+                //             if (myChart !== null) {
+                //                 myChart.destroy();
+                //             }
+
+                //             const bgcolors = ['rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
+                //             const statusTracker = {
+                //                 id: 'statusTracker',
+                //                 beforeDatasetsDraw(chart, args, pluginOptions) {
+                //                     const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                //                     ctx.save();
+
+                //                     drawLines(50, bgcolors[0]);
+                //                     drawLines(55, bgcolors[1]);
+                //                     function drawLines(yValue, color) {
+                //                         ctx.beginPath();
+                //                         ctx.lineWidth = 5;
+                //                         ctx.strokeStyle = color;
+                //                         ctx.moveTo(left, y.getPixelForValue(yValue));
+                //                         ctx.lineTo(right, y.getPixelForValue(yValue));
+                //                         ctx.stroke();
+                //                         ctx.closePath();
+                //                         ctx.restore();
+                //                     }
+                //                 }
+                //             }
+
+                //             var ctx = document.getElementById('graph-fuer-tag').getContext('2d');
+                //             myChart = new Chart(ctx, {
+                //                 type: 'line',
+                //                 data: {
+                //                     labels: newLabel,
+                //                     datasets: [{
+                //                         label: 'Dezibel',
+                //                         data: newData,
+                //                         backgroundColor: 'rgb(70, 0, 250)',
+                //                         borderColor: 'rgb(70, 0, 250)',
+                //                         tension: 0.3,
+                //                         pointRadius: 5,
+                //                         pointHoverRadius: 7
+                //                     }]
+                //                 },
+                //                 options: {
+                //                     plugins: {
+                //                         legend: {
+                //                             display: false
+                //                         }
+                //                     },
+                //                     scales: {
+                //                         y: {
+                //                             min: 40,
+                //                             max: 90,
+                //                             position: 'right',
+                //                             title: {
+                //                                 display: true,
+                //                                 text: 'Dezibel',
+                //                                 color: 'black',
+                //                                 font: {
+                //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                //                                     size: 20
+                //                                 }
+                //                             },
+                //                             ticks: {
+                //                                 color: 'black',
+                //                                 font: {
+                //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                //                                     size: 20
+                //                                 }
+                //                             },
+                //                             grid: {
+                //                                 display: false
+                //                             }
+                //                         },
+                //                         x: {
+                //                             title: {
+                //                                 display: true,
+                //                                 text: 'Uhrzeit',
+                //                                 color: 'black',
+                //                                 font: {
+                //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                //                                     size: 20
+                //                                 }
+                //                             },
+                //                             ticks: {
+                //                                 color: 'black',
+                //                                 font: {
+                //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                //                                     size: 20
+                //                                 }
+                //                             },
+                //                             grid: {
+                //                                 display: false
+                //                             }
+                //                         }
+                //                     }
+                //                 },
+                //                 plugins: [statusTracker]
+                //             });
+                //         },
+                //         error: function (error) {
+                //             console.log(error);
+                //         }
+                //     });
+                // }
+
+                $('#secondDropdown').on('change', function () {
+                    var selectedOption2 = $(this).val();
+                    console.log("onChange wird getriggerd")
+                    if (selectedOption2) {
+                        updateChart(selectedOption2);
                     }
                 });
-            }
-
-            $('#secondDropdown').on('change', function () {
-                var selectedOption2 = $(this).val();
-                console.log("onChange wird getriggerd")
-                if (selectedOption2) {
-                    updateChart(selectedOption2);
-                }
             });
-        });
 
-        //DROP DOWN MENÜS
-        function updateSecondDropdown() {
-            const firstDropdown = document.getElementById('firstDropdown');
-            const secondDropdown = document.getElementById('secondDropdown');
-
-            // Optionen im zweiten Dropdown-Menü basierend auf Auswahl im ersten Dropdown aktualisieren
-            if (firstDropdown.value === 'floor1') {
-                secondDropdown.innerHTML = `
-            <option value="" disabled selected hidden></option>
-            <option value="area-a">A</option>
-            <option value="area-b">B</option>
-            <option value="area-c">C</option>
-        `;
-            } else if (firstDropdown.value === 'floor2') {
-                secondDropdown.innerHTML = `
-            <option value="" disabled selected hidden></option>
-            <option value="area-d">D</option>
-            <option value="area-e">E</option>
-            <option value="area-f">F</option>
-            <option value="area-g">G</option>
-            <option value="area-h">H</option>
-        `;
-            }
-
-            // Aktiviere oder deaktiviere das zweite Dropdown-Menü basierend auf der Auswahl im ersten Dropdown
-            secondDropdown.disabled = firstDropdown.value === '';
-        }
-
-        //STOCKWERK UND BEREICH SICHTBAR MACHEN
-        function checkSelectionDay() {
-            const firstDropdown = document.getElementById('firstDropdown');
-            const secondDropdown = document.getElementById('secondDropdown');
-            const day = document.getElementsByClassName('today-week-month-display');
-
-            if (firstDropdown.value !== '' && secondDropdown.value !== '') {
-                for (let i = 0; i < day.length; i++) {
-                    day[i].style.display = 'flex';
-                }
-            } else {
-                for (let i = 0; i < day.length; i++) {
-                    day[i].style.display = 'none';
-                }
-            }
-        }
-
-        // Code zur Vorbelegung der Dropdown-Menüs basierend auf den URL-Parametern
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const stockwerk = urlParams.get('stockwerk');
-            const bereich = urlParams.get('bereich');
-
-            if (stockwerk && bereich) {
+            //DROP DOWN MENÜS
+            function updateSecondDropdown() {
                 const firstDropdown = document.getElementById('firstDropdown');
                 const secondDropdown = document.getElementById('secondDropdown');
 
-                // Wähle die entsprechenden Optionen in den Dropdown-Menüs aus
-                firstDropdown.value = stockwerk;
-                updateSecondDropdown(); // Aktualisiere das zweite Dropdown-Menü basierend auf dem ausgewählten Stockwerk
-                secondDropdown.value = bereich;
-                secondDropdown.disabled = false; // Aktiviere das zweite Dropdown-Menü
+                // Optionen im zweiten Dropdown-Menü basierend auf Auswahl im ersten Dropdown aktualisieren
+                if (firstDropdown.value === 'floor1') {
+                    secondDropdown.innerHTML = `
+                <option value="" disabled selected hidden></option>
+                <option value="area-a">A</option>
+                <option value="area-b">B</option>
+                <option value="area-c">C</option>
+            `;
+                } else if (firstDropdown.value === 'floor2') {
+                    secondDropdown.innerHTML = `
+                <option value="" disabled selected hidden></option>
+                <option value="area-d">D</option>
+                <option value="area-e">E</option>
+                <option value="area-f">F</option>
+                <option value="area-g">G</option>
+                <option value="area-h">H</option>
+            `;
+                }
+
+                // Aktiviere oder deaktiviere das zweite Dropdown-Menü basierend auf der Auswahl im ersten Dropdown
+                secondDropdown.disabled = firstDropdown.value === '';
             }
 
-            checkSelectionDay();
-        });
+            //STOCKWERK UND BEREICH SICHTBAR MACHEN
+            function checkSelectionDay() {
+                const firstDropdown = document.getElementById('firstDropdown');
+                const secondDropdown = document.getElementById('secondDropdown');
+                const day = document.getElementsByClassName('today-week-month-display');
 
-        //FLAGGE
-        function showOtherFlag() {
-            const otherFlag = document.querySelector('.other-language');
-            otherFlag.style.display = 'inline';
-        }
-        function hideOtherFlag() {
-            const otherFlag = document.querySelector('.other-language');
-            otherFlag.style.display = 'none';
-        }
+                if (firstDropdown.value !== '' && secondDropdown.value !== '') {
+                    for (let i = 0; i < day.length; i++) {
+                        day[i].style.display = 'flex';
+                    }
+                } else {
+                    for (let i = 0; i < day.length; i++) {
+                        day[i].style.display = 'none';
+                    }
+                }
+            }
 
-        //Info
-        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
-        document.getElementById("infoButton").addEventListener("click", function () {
-            document.getElementById("infoModal").style.display = "block";
-        });
+            // Code zur Vorbelegung der Dropdown-Menüs basierend auf den URL-Parametern
+            window.addEventListener('DOMContentLoaded', (event) => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const stockwerk = urlParams.get('stockwerk');
+                const bereich = urlParams.get('bereich');
 
-        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
-        document.getElementsByClassName("close")[0].addEventListener("click", function () {
-            document.getElementById("infoModal").style.display = "none";
-        });
+                if (stockwerk && bereich) {
+                    const firstDropdown = document.getElementById('firstDropdown');
+                    const secondDropdown = document.getElementById('secondDropdown');
 
-        window.onclick = function (event) {
-            if (event.target == document.getElementById("infoModal")) {
+                    // Wähle die entsprechenden Optionen in den Dropdown-Menüs aus
+                    firstDropdown.value = stockwerk;
+                    updateSecondDropdown(); // Aktualisiere das zweite Dropdown-Menü basierend auf dem ausgewählten Stockwerk
+                    secondDropdown.value = bereich;
+                    secondDropdown.disabled = false; // Aktiviere das zweite Dropdown-Menü
+                }
+
+                checkSelectionDay();
+                updateChart(bereich);
+                
+                // setTimeout(() => {
+                //     updateChart(secondDropdown.value);//Grund für Probleme bei Overview->Heute
+                //     }, 100);    
+            });
+
+            // window.addEventListener('load', function () {
+            //     const urlParams = new URLSearchParams(window.location.search);
+            //     if(urlParams){
+            //         updateChart(urlParams.get('bereich'));
+            //     }
+            // });
+
+            //FLAGGE
+            function showOtherFlag() {
+                const otherFlag = document.querySelector('.other-language');
+                otherFlag.style.display = 'inline';
+            }
+            function hideOtherFlag() {
+                const otherFlag = document.querySelector('.other-language');
+                otherFlag.style.display = 'none';
+            }
+
+            //Info
+            // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+            document.getElementById("infoButton").addEventListener("click", function () {
+                document.getElementById("infoModal").style.display = "block";
+            });
+
+            // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+            document.getElementsByClassName("close")[0].addEventListener("click", function () {
                 document.getElementById("infoModal").style.display = "none";
+            });
+
+            window.onclick = function (event) {
+                if (event.target == document.getElementById("infoModal")) {
+                    document.getElementById("infoModal").style.display = "none";
+                }
+            };
+
+            //Hamburger Menü
+            function toggleMenu() {
+                const menu = document.querySelector('.menu');
+                menu.classList.toggle('open');
             }
-        };
 
-        //Hamburger Menü
-        function toggleMenu() {
-            const menu = document.querySelector('.menu');
-            menu.classList.toggle('open');
-        }
+            window.addEventListener('resize', function () {
+                const menu = document.querySelector('.menu');
+                if (window.innerWidth > 700) {
+                    menu.classList.remove('open');
+                }
+            });
 
-        window.addEventListener('resize', function () {
-            const menu = document.querySelector('.menu');
-            if (window.innerWidth > 700) {
-                menu.classList.remove('open');
-            }
-        });
+        </script>
 
-    </script>
+    </body>
 
-</body>
-
-</html>
+    </html>
