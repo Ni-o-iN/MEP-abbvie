@@ -3,6 +3,10 @@
 
 <head>
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -83,10 +87,149 @@
         </div>
     </div>
 
-    <!-- Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
-    <!---->
+    <script>
+        $(document).ready(function() {
+            var myChart = null;
+
+            const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
+            const statusTracker = {
+                id: 'statusTracker',
+                beforeDatasetsDraw(chart, args, pluginOptions) {
+                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                    ctx.save();
+
+                    drawBlocks(50, min_y, bgcolors[0]);
+                    drawBlocks(55, 50, bgcolors[1]);
+                    drawBlocks(max_y, 55, bgcolors[2]);
+                    function drawBlocks(yStart, yEnd, color) {
+                        ctx.fillStyle = color;
+                        ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+                    }
+                }
+            }
+
+            function updateChart(selectedOption1) {    // 2 is the secondOption
+                $.ajax({
+                    url: '/get_chart_data',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'selected_option1': selectedOption1 }),
+                    success: function (response) {
+                        // Handle the response and refresh the chart
+                        var newData = response[0];
+                        var newLabel = response[1];
+                        var min_y = response[2];    //die beiden für später mit dem Graphen
+                        var max_y = response[3];
+
+                        // Clear the existing chart
+                        if (myChart !== null) {
+                            myChart.destroy();
+                        }
+
+                        const bgcolors = ['rgba(0, 158, 0, 0.5)', 'rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
+                        const statusTracker = {
+                            id: 'statusTracker',
+                            beforeDatasetsDraw(chart, args, pluginOptions) {
+                                const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                                ctx.save();
+
+                                drawBlocks(50, Math.floor(min_y / 10) * 10, bgcolors[0]);
+                                drawBlocks(55, 50, bgcolors[1]);
+                                drawBlocks(Math.ceil(max_y / 10) * 10, 55, bgcolors[2]);
+                                function drawBlocks(yStart, yEnd, color) {
+                                    ctx.fillStyle = color;
+                                    ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
+                                }
+                            }
+                        }
+
+                        var ctx = document.getElementById('graph-for-today').getContext('2d');
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: newLabel,
+                                datasets: [{
+                                    label: 'Dezibel',
+                                    data: newData,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(255, 255, 255, 0.7)',
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        min: min_y-3,
+                                        position: 'right',
+                                        title: {
+                                            display: true,
+                                            text: 'Dezibel',
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Uhrzeit',
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'white',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: [statusTracker]
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            $('#secondDropdown').on('change', function () {
+                var selectedOption2 = $(this).val();
+                console.log("onChange wird getriggerd")
+                if (selectedOption2) {
+                    updateChart(selectedOption2);
+                }
+            });
+        });
+    </script>
 
 </body>
 

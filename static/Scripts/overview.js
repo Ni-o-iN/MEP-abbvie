@@ -1,6 +1,6 @@
 //BEREICHE ANZEIGEN BEI MAUSBERÜHRUNG
 var areas = document.querySelectorAll('.area');
-var tooltip = document.getElementByClass('tooltip');
+// = document.getElementByClass('tooltip');
 
 areas.forEach(function (area) {
     area.addEventListener('mousemove', function (event) {
@@ -18,14 +18,14 @@ areas.forEach(function (area) {
 
 //Info
 // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
-document.getElementById("infoButton").addEventListener("click", function () {
-    document.getElementById("infoModal").style.display = "block";
-});
+// document.getElementById("infoButton").addEventListener("click", function () {
+//     document.getElementById("infoModal").style.display = "block";
+// });
 
-// Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
-document.getElementsByClassName("close")[0].addEventListener("click", function () {
-    document.getElementById("infoModal").style.display = "none";
-});
+// // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+// document.getElementsByClassName("close")[0].addEventListener("click", function () {
+//     document.getElementById("infoModal").style.display = "none";
+// });
 
 window.onclick = function (event) {
     if (event.target == document.getElementById("infoModal")) {

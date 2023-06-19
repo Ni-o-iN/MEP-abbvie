@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -99,7 +103,7 @@
 
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var myChart = null;
 
             const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
@@ -119,12 +123,12 @@
                 }
             }
 
-            function updateChart(selectedOption2) {    // 2 is the secondOption
+            function updateChart(selectedOption1) {    // 2 is the secondOption
                 $.ajax({
                     url: '/get_chart_data',
                     method: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ 'selected_option2': selectedOption2 }),
+                    data: JSON.stringify({ 'selected_option1': selectedOption1 }),
                     success: function (response) {
                         // Handle the response and refresh the chart
                         var newData = response[0];
@@ -178,7 +182,7 @@
                                 },
                                 scales: {
                                     y: {
-                                        min: Math.floor(min_y / 10) * 10,
+                                        min: min_y-3,
                                         position: 'right',
                                         title: {
                                             display: true,
@@ -234,6 +238,7 @@
 
             $('#secondDropdown').on('change', function () {
                 var selectedOption2 = $(this).val();
+                console.log("onChange wird getriggerd")
                 if (selectedOption2) {
                     updateChart(selectedOption2);
                 }
@@ -244,8 +249,6 @@
 
 
     <!-- Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
     <!---->
 
 </body>

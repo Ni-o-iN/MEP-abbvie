@@ -219,7 +219,7 @@ h1 {
   bottom: 67%;
   left: 1.8%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -233,7 +233,7 @@ h1 {
   bottom: 5%;
   left: 1.8%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -247,7 +247,7 @@ h1 {
   bottom: 5%;
   left: 35%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -317,7 +317,7 @@ h1 {
   bottom: 67%;
   left: 1.8%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -331,7 +331,7 @@ h1 {
   bottom: 6%;
   left: 3%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -345,7 +345,7 @@ h1 {
   bottom: 6%;
   left: 26%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -359,7 +359,7 @@ h1 {
   bottom: 10%;
   left: 63%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
@@ -373,7 +373,7 @@ h1 {
   bottom: 13%;
   left: 76%;
   background-color: rgba(0, 158, 0, 0.5);
-  color: white;
+  color: black;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 25% 50%);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
