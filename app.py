@@ -69,7 +69,8 @@ def get_chart_data():
     print(request.referrer)
     if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
         selected_option = request.json['selected_option2']
-        selected_month = request.json['selected_option1']
+        selected_month = request.json['selected_option1'].split("-")[1]
+        selected_year = request.json['selected_option1'].split("-")[0]
     
     if(request.referrer == "http://127.0.0.1:5000/heute" or request.referrer == "http://127.0.0.1:5000/today"):
         selected_option = request.json['selected_option1']
@@ -97,11 +98,11 @@ def get_chart_data():
     cursor = connection.cursor()
 
     if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
-        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s;"
+        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
         if not selected_option and not selected_month:
             return (0,0)
         else:
-            cursor.execute(query, (selected_option,selected_month,))
+            cursor.execute(query, (selected_option,selected_month,selected_year))
     elif(request.referrer =="http://127.0.0.1:5000/heute" or request.referrer=="http://127.0.0.1:5000/today"):
         query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
         if not selected_option:
@@ -115,7 +116,6 @@ def get_chart_data():
     queryoutput = cursor.fetchall()
     chart_data = json.dumps(queryoutput, default=str)
     data = eval(chart_data)
-    print(chart_data)
     # Process the retrieved data as needed
     chart_data = []
     chart_labels = []

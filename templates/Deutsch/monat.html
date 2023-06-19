@@ -32,7 +32,8 @@
                 <p>
                     Monat<br>
                     <span class="time-box">
-                        <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
+                        <input type="week" id="month_selection"></input>
+                        <!-- <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
                         <datalist id="months">
                             <option value="1"></option>
                             <option value="2"></option>
@@ -46,7 +47,7 @@
                             <option value="10"></option>
                             <option value="11"></option>
                             <option value="12"></option>
-                        </datalist>
+                        </datalist> -->
                     </span>
                 </p>
                 <p>
@@ -280,6 +281,7 @@
         var selectedOption1 = $(this).val();
         var selectedOption2 = $('#secondDropdown').val();
         if (selectedOption1 && selectedOption2) {
+            console.log("If im month_selection")
             updateChart(selectedOption1, selectedOption2);
     }
     });
