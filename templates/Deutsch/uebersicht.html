@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="{{url_for('static', filename='Scripts/overview.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
+    <button id="infoButton">i</button>
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            Test
+        </div>
+    </div>
     <div class="container">
         <div class="navbar">
             <div class="hamburger" onclick="toggleMenu()">
@@ -74,22 +80,6 @@
                 </div>
             </div>
         </div>
-        <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        Sie befinden sich auf der "Übersichts" Seite.<br>
-                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
-                    <ul>
-                        <li>Sie sollten beide Stockwerke sehen und deren Bereiche</li>
-                        <li>Klicken Sie auf ein Bereich Ihrer Wahl um zur Heute Ansicht dieses Bereiches zu gelangen
-                        </li>
-                    </ul>
-                    </p>
-                </div>
-            </div>
         <div class="right">
             <div class="überschrift">
                 <h1>Live Übersicht der Lautstärke</h1>
@@ -114,73 +104,54 @@
                     </div>
                     <div class="overview-legend">
                         <div id="grün">&nbsp; < 50dB</div>
-                        <div id="gelb">&nbsp; 50 - 55dB</div>
-                        <div id="rot">&nbsp; > 55dB</div>
-                    </div>
-                    <div class="col">
-                        <div class="mittig-floor2">
-                            <span class="floor-name">Stockwerk 2</span>
+                                <div id="gelb">&nbsp; 50 - 55dB</div>
+                                <div id="rot">&nbsp; > 55dB</div>
                         </div>
-                        <div class="floor2-overview">
-                            <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
-                                class="responsiv-floor" alt="Stockwerkplan 2">
-                            <a id="area-d" data-name="area-d"
-                                href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a>
-                            <!--idk man das so mit machen kann-->
-                            <a id="area-e" data-name="area-e"
-                                href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
-                            <a id="area-f" data-name="area-f"
-                                href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
-                            <a id="area-g" data-name="area-g"
-                                href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
-                            <a id="area-h" data-name="area-h"
-                                href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
-                            <div id="couch"></div>
-                            <div id="steps2"></div>
-                            <div id="tableBetweenDandE"></div>
-                            <div id="tableAboveF"></div>
+                        <div class="col">
+                            <div class="mittig-floor2">
+                                <span class="floor-name">Stockwerk 2</span>
+                            </div>
+                            <div class="floor2-overview">
+                                <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
+                                    class="responsiv-floor" alt="Stockwerkplan 2">
+                                <a id="area-d" data-name="area-d"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a>
+                                <!--idk man das so mit machen kann-->
+                                <a id="area-e" data-name="area-e"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
+                                <a id="area-f" data-name="area-f"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
+                                <a id="area-g" data-name="area-g"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
+                                <a id="area-h" data-name="area-h"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
+                                <div id="couch"></div>
+                                <div id="steps2"></div>
+                                <div id="tableBetweenDandE"></div>
+                                <div id="tableAboveF"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        $(document).ready(function() {
-            // var myChart = null;
-
-            // const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
-            // const statusTracker = {
-            //     id: 'statusTracker',
-            //     beforeDatasetsDraw(chart, args, pluginOptions) {
-            //         const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-            //         ctx.save();
-
-            //         drawBlocks(50, min_y, bgcolors[0]);
-            //         drawBlocks(55, 50, bgcolors[1]);
-            //         drawBlocks(max_y, 55, bgcolors[2]);
-            //         function drawBlocks(yStart, yEnd, color) {
-            //             ctx.fillStyle = color;
-            //             ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
-            //         }
-            //     }
-            // }
-
-            setInterval("refresh_overview()", 10000); //call refresh_overview every 10 seconds
-        });
+        <script>
+            $(document).ready(function () {
+                setInterval("refresh_overview()", 10000); //call refresh_overview every 10 seconds
+            });
 
             function refresh_overview() {   //muss noch für spezifische Bereiche angepasst werden
-                function eval_decibel(decibel){ //Farben noch richtig machen
-                    if(decibel>55){             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
+                function eval_decibel(decibel) { //Farben noch richtig machen
+                    if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
                         return "rgba(220, 0, 0, 0.5)"
-                    }else if(decibel > 50){
+                    } else if (decibel > 50) {
                         return "rgba(220, 220, 0, 0.5)"
-                    }else{
+                    } else {
                         return "rgba(0, 158, 0, 0.5)"
                     }
                 }
-                $.post("/refresh_overview", function(data) {
+                $.post("/refresh_overview", function (data) {
                     document.getElementById("area-a").style.background = eval_decibel(data[0]);
                     document.getElementById("area-b").style.background = eval_decibel(data[1]);
                     document.getElementById("area-c").style.background = eval_decibel(data[2]);
@@ -190,19 +161,20 @@
                     document.getElementById("area-g").style.background = eval_decibel(data[6]);
                     document.getElementById("area-h").style.background = eval_decibel(data[7]);
 
-                });}
+                });
+            }
 
-                window.addEventListener('load', function(){
-                    function eval_decibel(decibel){ //Farben noch richtig machen
-                    if(decibel>55){             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
+            window.addEventListener('load', function () {
+                function eval_decibel(decibel) { //Farben noch richtig machen
+                    if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
                         return "rgba(220, 0, 0, 0.5)"
-                    }else if(decibel > 50){
+                    } else if (decibel > 50) {
                         return "rgba(220, 220, 0, 0.5)"
-                    }else{
+                    } else {
                         return "rgba(0, 158, 0, 0.5)"
                     }
                 }
-                $.post("/refresh_overview", function(data) {
+                $.post("/refresh_overview", function (data) {
                     document.getElementById("area-a").style.background = eval_decibel(data[0]);
                     document.getElementById("area-b").style.background = eval_decibel(data[1]);
                     document.getElementById("area-c").style.background = eval_decibel(data[2]);
@@ -211,32 +183,27 @@
                     document.getElementById("area-f").style.background = eval_decibel(data[5]);
                     document.getElementById("area-g").style.background = eval_decibel(data[6]);
                     document.getElementById("area-h").style.background = eval_decibel(data[7]);
-                });});
-                // $("#area-a").load("/refresh_overview", function(){
-                // });
+                });
+            });
 
-                // $("#area-b").load("/refresh_overview", function(){
-                // });
+            //Info
+            // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+            document.getElementById("infoButton").addEventListener("click", function () {
+                document.getElementById("infoModal").style.display = "block";
+            });
 
-                // $("#area-c").load("/refresh_overview", function(){
-                // });
+            // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+            document.getElementsByClassName("close")[0].addEventListener("click", function () {
+                document.getElementById("infoModal").style.display = "none";
+            });
 
-                // $("#area-d").load("/refresh_overview", function(){
-                // });
+            window.onclick = function (event) {
+                if (event.target == document.getElementById("infoModal")) {
+                    document.getElementById("infoModal").style.display = "none";
+                }
+            };
 
-                // $("#area-e").load("/refresh_overview", function(){
-                // });
-
-                // $("#area-f").load("/refresh_overview", function(){
-                // });
-
-                // $("#area-g").load("/refresh_overview", function(){
-                // });
-
-                // $("#area-h").load("/refresh_overview", function(){
-            //     });
-            // }
-    </script>
+        </script>
 
 </body>
 

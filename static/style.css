@@ -756,25 +756,17 @@ input[type=submit] {
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
-.area-choose-download {
-  width: 50%;
-  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-}
-
-.time-choose-download {
-  width: 50%;
-  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
-}
 
 
 /*INFO*/
 #infoButton {
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 4%;
+  height: 7%;
   position: absolute;
-  top: 1vh;
-  right: 0.1vw;
+  top: 1%;
+  right: 1%;
+  z-index: 1;
 }
 
 .modal {
@@ -786,24 +778,20 @@ input[type=submit] {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .modal-content {
   color: black;
-  background-color: rgba(224, 226, 210, 0.9);
   margin: auto;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
   padding: 2vw;
-  border: 1px solid black;
-  width: 50vw;
+  width: 96%;
   height: fit-content;
   font-size: calc(24px + (24 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
 .close {
-  color: #aaa;
+  color: red;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -811,14 +799,9 @@ input[type=submit] {
 
 .close:hover,
 .close:focus {
-  color: red;
   text-decoration: none;
   cursor: pointer;
 }
-
-/*Info für Heute*/
-
-
 
 
 

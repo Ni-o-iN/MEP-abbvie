@@ -7,11 +7,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="{{url_for('static', filename='Scripts/month.js')}}"></script>
 
 </head>
 
 <body>
+    <button id="infoButton">i</button>
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            Test
+        </div>
+    </div>
     <div class="container">
         <div class="navbar">
             <div class="hamburger" onclick="toggleMenu()">
@@ -75,26 +81,6 @@
             </div>
         </div>
         <div class="right">
-            <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        Sie befinden sich auf der "Monat" Seite.<br>
-                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
-                    <ul>
-                        <li>Schritt 1: Geben Sie in dem Eingabefeld unterhalb "Monat" einen gültigen Monat an,
-                            mit dem zugehörigem Jahr dahinter. <br> Bsp:"12 2023"</li>
-                        <li>Schritt 2: Wählen Sie ein Stockwerk aus</li>
-                        <li>Schritt 3: Wählen Sie einen entsprechenden Bereich aus
-                        </li>
-                    </ul>
-                    </p>
-                    Sie sollten nun eine Tabelle und einen Graphen sehen welcher den ganzen Monat darstellt.<br>
-                    An dem Graphen kann die Lautstärke des jeweiligen Tages abgelesen werden.
-                </div>
-            </div>
             <div class="floor-area">
                 <div class="choose">
                     Stockwerk:
@@ -269,72 +255,94 @@
                     updateChart($('#month_selection').val(), selectedOption2);
                 }
             });
-
-
-            /*
-            $('#secondDropdown').on('change', function() {
-                var selectedOption = $(this).val();
-
-                $.ajax({
-                    url: '/get_chart_data',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ 'selected_option': selectedOption }),
-                    success: function(response) {
-                        // Handle the response and refresh the chart
-                        var newData = response[0];
-                        var newLabel = response[1];
-
-                        // Clear the existing chart
-                        if (myChart !== null) {
-                            myChart.destroy();
-                        }
-
-                        var ctx = document.getElementById('graph-fuer-monat').getContext('2d');
-                        myChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: newLabel,
-                                datasets: [{
-                                    label: 'Dezibel',
-                                    data: newData,
-                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                    borderColor: 'rgba(253, 151, 64, 1)',
-                                    borderWidth: 1,
-                                    lineTension: 0.1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: {
-                                        display: false
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        position: 'right',
-                                        title: {
-                                            display:true,
-                                            text: 'Dezibel'
-                                        }
-                                    },
-                                    x: {
-                                        title: {
-                                            display: true,
-                                            text: 'Tag'
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            });*/
         });
+
+        //DROP DOWN MENÜS
+        function updateSecondDropdown() {
+            const firstDropdown = document.getElementById('firstDropdown');
+            const secondDropdown = document.getElementById('secondDropdown');
+
+            // Optionen im zweiten Dropdown-Menü basierend auf Auswahl im ersten Dropdown aktualisieren
+            if (firstDropdown.value === 'floor1') {
+                secondDropdown.innerHTML = `
+        <option value="" disabled selected hidden></option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      `;
+            } else if (firstDropdown.value === 'floor2') {
+                secondDropdown.innerHTML = `
+        <option value="" disabled selected hidden></option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="H">H</option>
+      `;
+            }
+            // Aktiviere das zweite Dropdown-Menü, falls eine Option ausgewählt wurde
+            secondDropdown.disabled = firstDropdown.value === '';
+        }
+
+        //STOCKWERK UND BEREICH SICHTBAR MACHEN
+        function checkSelectionMonth() {
+            const firstDropdown = document.getElementById('month_selection');
+            const secondDropdown = document.getElementById('secondDropdown');
+            const month = document.getElementsByClassName('today-week-month-display');
+
+
+            if (firstDropdown.value !== '' && secondDropdown.value !== '') {
+                for (let i = 0; i < month.length; i++) {
+                    console.log('Geht ins Console.log')
+                    month[i].style.display = 'flex';
+                }
+            } else {
+                for (let i = 0; i < month.length; i++) {
+                    month[i].style.display = 'none';
+                }
+            }
+        }
+
+        //FLAGGE
+        function showOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'inline';
+        }
+        function hideOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'none';
+        }
+
+        //Info
+        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+        document.getElementById("infoButton").addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "block";
+        });
+
+        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+        document.getElementsByClassName("close")[0].addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("infoModal")) {
+                document.getElementById("infoModal").style.display = "none";
+            }
+        };
+
+        //Hamburger Menü
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('open');
+        }
+
+        window.addEventListener('resize', function () {
+            const menu = document.querySelector('.menu');
+            if (window.innerWidth > 700) {
+                menu.classList.remove('open');
+            }
+        });
+
     </script>
 
 </body>

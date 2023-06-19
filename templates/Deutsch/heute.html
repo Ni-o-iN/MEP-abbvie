@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="{{url_for('static', filename='Scripts/day.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
+    <button id="infoButton">i</button>
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            Test
+        </div>
+    </div>
     <div class="container">
         <div class="navbar">
             <div class="hamburger" onclick="toggleMenu()">
@@ -54,28 +60,6 @@
             </div>
         </div>
         <div class="right">
-            <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        Sie befinden sich auf der "Heute" Seite.<br>
-                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
-                    <ul>
-                        <li>Schritt 1: Wählen Sie ein Stockwerk aus</li>
-                        <li>Schritt 2: Wählen Sie einen entsprechenden Bereich aus</li>
-                    </ul>
-                    </p>
-                    <p>
-                        Die Anzeige des jeweiligen Bereiches sollte sich nun geöffnet haben, dort sehen sie
-                        einen Graphen der die
-                        entsprechende Lautstärke zu der entsprechenden Zeit anzeigt.
-                    </p>
-                    Rechts sehen Sie die an den Bereich angepasste Soll höchstwert Lautstärke und darunter die
-                    derzeitige Lautstärke.
-                </div>
-            </div>
             <div class="floor-area">
                 <div class="choose">
                     Stockwerk:
@@ -232,12 +216,113 @@
                 }
             });
         });
+
+        //DROP DOWN MENÜS
+        function updateSecondDropdown() {
+            const firstDropdown = document.getElementById('firstDropdown');
+            const secondDropdown = document.getElementById('secondDropdown');
+
+            // Optionen im zweiten Dropdown-Menü basierend auf Auswahl im ersten Dropdown aktualisieren
+            if (firstDropdown.value === 'floor1') {
+                secondDropdown.innerHTML = `
+            <option value="" disabled selected hidden></option>
+            <option value="area-a">A</option>
+            <option value="area-b">B</option>
+            <option value="area-c">C</option>
+        `;
+            } else if (firstDropdown.value === 'floor2') {
+                secondDropdown.innerHTML = `
+            <option value="" disabled selected hidden></option>
+            <option value="area-d">D</option>
+            <option value="area-e">E</option>
+            <option value="area-f">F</option>
+            <option value="area-g">G</option>
+            <option value="area-h">H</option>
+        `;
+            }
+
+            // Aktiviere oder deaktiviere das zweite Dropdown-Menü basierend auf der Auswahl im ersten Dropdown
+            secondDropdown.disabled = firstDropdown.value === '';
+        }
+
+        //STOCKWERK UND BEREICH SICHTBAR MACHEN
+        function checkSelectionDay() {
+            const firstDropdown = document.getElementById('firstDropdown');
+            const secondDropdown = document.getElementById('secondDropdown');
+            const day = document.getElementsByClassName('today-week-month-display');
+
+            if (firstDropdown.value !== '' && secondDropdown.value !== '') {
+                for (let i = 0; i < day.length; i++) {
+                    day[i].style.display = 'flex';
+                }
+            } else {
+                for (let i = 0; i < day.length; i++) {
+                    day[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Code zur Vorbelegung der Dropdown-Menüs basierend auf den URL-Parametern
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const stockwerk = urlParams.get('stockwerk');
+            const bereich = urlParams.get('bereich');
+
+            if (stockwerk && bereich) {
+                const firstDropdown = document.getElementById('firstDropdown');
+                const secondDropdown = document.getElementById('secondDropdown');
+
+                // Wähle die entsprechenden Optionen in den Dropdown-Menüs aus
+                firstDropdown.value = stockwerk;
+                updateSecondDropdown(); // Aktualisiere das zweite Dropdown-Menü basierend auf dem ausgewählten Stockwerk
+                secondDropdown.value = bereich;
+                secondDropdown.disabled = false; // Aktiviere das zweite Dropdown-Menü
+            }
+
+            checkSelectionDay();
+        });
+
+        //FLAGGE
+        function showOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'inline';
+        }
+        function hideOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'none';
+        }
+
+        //Info
+        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+        document.getElementById("infoButton").addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "block";
+        });
+
+        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+        document.getElementsByClassName("close")[0].addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("infoModal")) {
+                document.getElementById("infoModal").style.display = "none";
+            }
+        };
+
+        //Hamburger Menü
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('open');
+        }
+
+        window.addEventListener('resize', function () {
+            const menu = document.querySelector('.menu');
+            if (window.innerWidth > 700) {
+                menu.classList.remove('open');
+            }
+        });
+
     </script>
-
-
-
-    <!-- Javascript -->
-    <!---->
 
 </body>
 

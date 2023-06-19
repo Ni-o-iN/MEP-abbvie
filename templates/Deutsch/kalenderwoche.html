@@ -7,6 +7,13 @@
 </head>
 
 <body>
+    <button id="infoButton">i</button>
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            Test
+        </div>
+    </div>
     <div class="container">
         <div class="navbar">
             <div class="hamburger" onclick="toggleMenu()">
@@ -38,40 +45,23 @@
                 </p>
                 <div class="language-container">
                     <div>
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="englische Flagge">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="englische Flagge">
                     </div>
                     <div class="all-languages">
                         <a href="{{url_for('woche')}}">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
                         </a>
                         <a href="{{url_for('week')}}" id="english_page">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                                alt="englische Flagge">
                         </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="right">
-            <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        Sie befinden sich auf der "Kalenderwoche" Seite.<br>
-                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
-                    <ul>
-                        <li>Schritt 1: Geben Sie in dem Eingabefeld unterhalb "Kalenderwoche" eine gültige
-                            Kalenderwoche an, mit dem zugehörigem Jahr dahinter. <br> Bsp:"15 2023"</li>
-                        <li>Schritt 2: Wählen Sie ein Stockwerk aus</li>
-                        <li>Schritt 3: Wählen Sie einen entsprechenden Bereich aus</li>
-                    </ul>
-                    </p>
-                    Die Anzeige dieser Kalenderwoche sollte nun durch die einzelnen Tage anhand Graphen angezeigt
-                    werden.<br>
-                    In der Legende können einzelne Tage durch anklicken ab- und ausgewählt werden.
-                </div>
-            </div>
             <div class="floor-area">
                 <div class="choose">
                     Stockwerk:
