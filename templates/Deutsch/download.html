@@ -85,9 +85,9 @@
                         <div class="floor1-overview">
                             <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}"
                                 class="responsiv-floor" alt="stockwerk1">
-                            <span id="area-a">A</span>
-                            <span id="area-b">B</span>
-                            <span id="area-c">C</span>
+                            <span id="area-a-download">A</span>
+                            <span id="area-b-download">B</span>
+                            <span id="area-c-download">C</span>
                         </div>
                     </div>
                     <div class="col">
@@ -97,34 +97,45 @@
                         <div class="floor2-overview">
                             <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
                                 class="responsiv-floor" alt="Stockwerkplan 2">
-                            <span id="area-d">D</span>
-                            <span id="area-e">E</span>
-                            <span id="area-f">F</span>
-                            <span id="area-g">G</span>
-                            <span id="area-h">H</span>
+                            <span id="area-d-download">D</span>
+                            <span id="area-e-download">E</span>
+                            <span id="area-f-download">F</span>
+                            <span id="area-g-download">G</span>
+                            <span id="area-h-download">H</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="settings-headline">
-                Wählen sie den entsprechenden Bereich aus
-                <div>
-                    <input type="radio" id="a-download" name="Zahlmethode" value="Mastercard">
-                    <label for="mc"><span class="custom-radio">&#9679;</span>A</label>
-                    <input type="radio" id="b-dowload" name="Zahlmethode" value="Visa">
-                    <label for="vi">B</label>
-                    <input type="radio" id="c-download" name="Zahlmethode" value="AmericanExpress">
-                    <label for="ae">C</label>
-                    <input type="radio" id="d-download" name="Zahlmethode" value="Mastercard">
-                    <label for="mc">D</label>
-                    <input type="radio" id="e-download" name="Zahlmethode" value="Visa">
-                    <label for="vi">E</label>
-                    <input type="radio" id="f-download" name="Zahlmethode" value="AmericanExpress">
-                    <label for="ae">F</label>
-                    <input type="radio" id="g-download" name="Zahlmethode" value="Mastercard">
-                    <label for="mc">G</label>
-                    <input type="radio" id="h-download" name="Zahlmethode" value="Mastercard">
-                    <label for="mc">H</label>
+                <div class="row">
+                    <div class="area-choose-download">
+                        Wählen sie den entsprechenden Bereich aus.
+                        <div>
+                            <div>
+                                <input type="radio" id="a-download" name="area" value="a-download">
+                                <label for="a-download">A</label>
+                                <input type="radio" id="b-download" name="area" value="b-download">
+                                <label for="b-download">B</label>
+                                <input type="radio" id="c-download" name="area" value="c-download">
+                                <label for="c-download">C</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="d-download" name="area" value="d-download">
+                                <label for="d-download">D</label>
+                                <input type="radio" id="e-download" name="area" value="e-download">
+                                <label for="e-download">E</label>
+                                <input type="radio" id="f-download" name="area" value="f-download">
+                                <label for="f-download">F</label>
+                                <input type="radio" id="g-download" name="area" value="g-download">
+                                <label for="g-download">G</label>
+                                <input type="radio" id="h-download" name="area" value="h-download">
+                                <label for="h-download">H</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="time-choose-download">
+                        Wählen sie den entsprechenden Zeitraum aus.
+                    </div>
                 </div>
             </div>
         </div>

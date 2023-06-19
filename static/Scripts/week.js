@@ -1,14 +1,13 @@
 //Graphen Bereiche
-const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
+const bgcolors = ['rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
 const statusTracker = {
     id: 'statusTracker',
     beforeDatasetsDraw(chart, args, pluginOptions) {
         const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
         ctx.save();
 
-        drawLines(30, bgcolors[0]);
-        drawLines(50, bgcolors[1]);
-        drawLines(55, bgcolors[2]);
+        drawLines(50, bgcolors[0]);
+        drawLines(55, bgcolors[1]);
         function drawLines(yValue, color) {
             ctx.beginPath();
             ctx.lineWidth = 5;

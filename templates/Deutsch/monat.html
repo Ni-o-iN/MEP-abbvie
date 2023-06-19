@@ -58,14 +58,17 @@
                 </p>
                 <div class="language-container">
                     <div>
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="englische Flagge">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="englische Flagge">
                     </div>
                     <div class="all-languages">
                         <a href="{{url_for('monat')}}">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
                         </a>
                         <a href="{{url_for('month')}}" id="english_page">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                                alt="englische Flagge">
                         </a>
                     </div>
                 </div>
@@ -108,10 +111,10 @@
             </div>
             <div class="today-week-month-display">
                 <h3>
-                    <span id ="average_of_month"></span>
+                    <span id="average_of_month"></span>
                 </h3>
-                <div class="today-week-month-graph">                      <!--wird irgendwie nicht angezeigt-->
-                
+                <div class="today-week-month-graph"> <!--wird irgendwie nicht angezeigt-->
+
                     <canvas id="graph-fuer-monat"></canvas>
                 </div>
             </div>
@@ -119,179 +122,153 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var myChart = null;
-            
-            const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
-            const statusTracker = {
-                id: 'statusTracker',
-                beforeDatasetsDraw(chart, args, pluginOptions) {
-                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-                    ctx.save();
-
-            drawBlocks(50, min_y, bgcolors[0]);
-            drawBlocks(55, 50, bgcolors[1]);
-            drawBlocks(max_y, 55, bgcolors[2]);
-            function drawBlocks(yStart, yEnd, color) {
-                ctx.fillStyle = color;
-                ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
-            }
-        }
-    }
 
             function updateChart(selectedOption1, selectedOption2) {    //1 is month, 2 is area
-        $.ajax({
-            url: '/get_chart_data',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ 'selected_option1': selectedOption1, 'selected_option2': selectedOption2 }),
-            success: function(response) {
-                // Handle the response and refresh the chart
-                var newData = response[0];
-                var newLabel = response[1];
-                var min_y = response[2];    //die beiden für später mit dem Graphen
-                var max_y = response[3];
-                let sum = 0;
-                for(let i=0; i< newData.length; i++){
-                    sum += newData[i];
-                }
-                var monthly_average = Math.round(sum/ newData.length);
-                if(monthly_average != NaN){
-                    document.getElementById('average_of_month').innerHTML = ('dB ⌀ : ' + monthly_average);
-                }
-
-                // Clear the existing chart
-                if (myChart !== null) {
-                    myChart.destroy();
-                }
-                
-                const bgcolors = ['rgba(0, 158, 0, 0.5)', 'rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
-                const statusTracker = {
-                id: 'statusTracker',
-                beforeDatasetsDraw(chart, args, pluginOptions) {
-                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-                    ctx.save();
-            
-                    if(newData.some(value => value <= 50)==true){
-                        drawBlocks(50, min_y-3, bgcolors[0]);
-                    }
-
-                    if(newData.some(value => value >= 50 && value <= 55)==true){
-                        drawBlocks(55, 50, bgcolors[1]);
-                    }
-
-                    if(newData.some(value => value >= 55)==true){
-                        if(newData.every((item) => item > 55)){
-                            drawBlocks(max_y+3, min_y-3, bgcolors[2]);
-                        } else {
-                            drawBlocks(max_y+3,55, bgcolors[2]);
+                $.ajax({
+                    url: '/get_chart_data',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'selected_option1': selectedOption1, 'selected_option2': selectedOption2 }),
+                    success: function (response) {
+                        // Handle the response and refresh the chart
+                        var newData = response[0];
+                        var newLabel = response[1];
+                        var min_y = response[2];    //die beiden für später mit dem Graphen
+                        var max_y = response[3];
+                        let sum = 0;
+                        for (let i = 0; i < newData.length; i++) {
+                            sum += newData[i];
                         }
-                    }
+                        var monthly_average = Math.round(sum / newData.length);
+                        if (monthly_average != NaN) {
+                            document.getElementById('average_of_month').innerHTML = ('dB ⌀ : ' + monthly_average);
+                        }
 
-            
-            
-            function drawBlocks(yStart, yEnd, color) {
-                ctx.fillStyle = color;
-                ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
-                //ctx.fillRect(left, bottom - (height * (yStart - min_y) / (max_y - min_y)), width, (height * (yStart - yEnd) / (max_y - min_y)));
-            }
-        }}
+                        // Clear the existing chart
+                        if (myChart !== null) {
+                            myChart.destroy();
+                        }
 
-                var ctx = document.getElementById('graph-fuer-monat').getContext('2d');
-                myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: newLabel,
-                        datasets: [{
-                            label: 'Dezibel',
-                            data: newData,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(255, 255, 255, 0.7)',
-                            //borderWidth: 1,
-                            //lineTension: 0.1
-                            tension: 0.3,
-                            pointRadius: 5,
-                            pointHoverRadius: 7
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                min: min_y-3,
-                                position: 'right',
-                                title: {
-                                    display:true,
-                                    text: 'Dezibel',
-                                    color: 'white',
-                                    font: {
-                                        family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                        size: 20
-                    }
-                                },
-                                ticks: {
-                                color: 'white', //war davor white
-                                font: {
-                                    family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                    size: 20
-                                    }
-                                },
-                                grid: {
-                                    display: false // Raster für y-Achse ausblenden
-                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Tag',
-                                    color: 'white',
-                                    font: {
-                                        family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                        size: 20
-                                    }
-                                },
-                                ticks: {
-                                    color: 'white',
-                                    font: {
-                                        family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                        size: 20
-                                    }
-                                },
-                                grid: {
-                                    display: false // Raster für y-Achse ausblenden
+                        const bgcolors = ['rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
+                        const statusTracker = {
+                            id: 'statusTracker',
+                            beforeDatasetsDraw(chart, args, pluginOptions) {
+                                const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                                ctx.save();
+
+                                drawLines(50, bgcolors[0]);
+                                drawLines(55, bgcolors[1]);
+                                function drawLines(yValue, color) {
+                                    ctx.beginPath();
+                                    ctx.lineWidth = 5;
+                                    ctx.strokeStyle = color;
+                                    ctx.moveTo(left, y.getPixelForValue(yValue));
+                                    ctx.lineTo(right, y.getPixelForValue(yValue));
+                                    ctx.stroke();
+                                    ctx.closePath();
+                                    ctx.restore();
                                 }
                             }
                         }
+
+                        var ctx = document.getElementById('graph-fuer-monat').getContext('2d');
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: newLabel,
+                                datasets: [{
+                                    label: 'Dezibel',
+                                    data: newData,
+                                    backgroundColor: 'rgb(70, 0, 250)',
+                                    borderColor: 'rgb(70, 0, 250)',
+                                    //borderWidth: 1,
+                                    //lineTension: 0.1
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        min: 40,
+                                        max: 90,
+                                        position: 'right',
+                                        title: {
+                                            display: true,
+                                            text: 'Dezibel',
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'black', //war davor white
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false // Raster für y-Achse ausblenden
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Tag',
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false // Raster für y-Achse ausblenden
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: [statusTracker]
+                        });
                     },
-                    plugins: [statusTracker]
+                    error: function (error) {
+                        console.log(error);
+                    }
                 });
-            },
-            error: function(error) {
-                console.log(error);
             }
-        });
-    }
 
-    $('#month_selection').on('change', function() {
-        var selectedOption1 = $(this).val();
-        var selectedOption2 = $('#secondDropdown').val();
-        if (selectedOption1 && selectedOption2) {
-            console.log("If im month_selection")
-            updateChart(selectedOption1, selectedOption2);
-    }
-    });
+            $('#month_selection').on('change', function () {
+                var selectedOption1 = $(this).val();
+                var selectedOption2 = $('#secondDropdown').val();
+                if (selectedOption1 && selectedOption2) {
+                    console.log("If im month_selection")
+                    updateChart(selectedOption1, selectedOption2);
+                }
+            });
 
-    $('#secondDropdown').on('change', function() {
-        var selectedOption2 = $(this).val();
-        if ($('#month_selection').val() && selectedOption2) {
-            updateChart($('#month_selection').val(), selectedOption2);
-    }
-    });
+            $('#secondDropdown').on('change', function () {
+                var selectedOption2 = $(this).val();
+                if ($('#month_selection').val() && selectedOption2) {
+                    updateChart($('#month_selection').val(), selectedOption2);
+                }
+            });
 
 
             /*

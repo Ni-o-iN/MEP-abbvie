@@ -80,7 +80,7 @@ h1 {
 }
 
 /* Media Query für Bildschirmbreite kleiner als 850px */
-@media (max-width: 1300px) {
+@media (max-width: 300px) {
   .navbar {
     display: flex;
     flex-direction: column;
@@ -643,9 +643,127 @@ input[type=submit] {
   padding: 2%;
 }
 
-.custom-radio {
-  transform: scale(1.5); /* Ändere den Wert, um die Größe des Symbols anzupassen */
-  margin-right: 5px; /* Optional: Füge einen Abstand zwischen Symbol und Text hinzu */
+#area-a-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 42%;
+  height: 30%;
+  bottom: 67%;
+  left: 1.8%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-b-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 31%;
+  height: 25%;
+  bottom: 5%;
+  left: 1.8%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-c-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 27%;
+  height: 32%;
+  bottom: 5%;
+  left: 35%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-d-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 42%;
+  height: 30%;
+  bottom: 67%;
+  left: 1.8%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-e-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 21%;
+  height: 25%;
+  bottom: 6%;
+  left: 3%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-f-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 22%;
+  height: 25%;
+  bottom: 6%;
+  left: 26%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-g-download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 11%;
+  height: 25%;
+  bottom: 10%;
+  left: 63%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+#area-h-download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 21.5%;
+  height: 50%;
+  bottom: 13%;
+  left: 76%;
+  background-color: rgba(100, 100, 100, 0.5);
+  color: black;
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 25% 50%);
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+.area-choose-download {
+  width: 50%;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
+}
+
+.time-choose-download {
+  width: 50%;
+  font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
 
@@ -715,7 +833,6 @@ input[type=submit] {
   justify-content: center;
   align-items: center;
 }
-
 
 #month_selection {
   width: 5vw;
