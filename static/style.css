@@ -25,7 +25,8 @@ h1 {
 }
 
 .container {
-  position: relative;
+  display: flex;
+  flex-direction: row;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: black;
   margin: 1%;
@@ -143,7 +144,7 @@ h1 {
 }
 
 .language-container img {
-  max-width: 3.5vw;
+  max-width: 2.5vw;
   display: block;
   /* Entfernt das Padding der Flaggen. */
 }
@@ -429,7 +430,6 @@ h1 {
   align-items: center;
   justify-content: center;
   width: 95%;
-  margin-top: 1%;
   margin-bottom: 1%;
   padding: 2%;
   background-color: rgb(136, 165, 255);
@@ -451,6 +451,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 95%;
+  height: 76vh;
   padding: 2%;
   background-color: rgb(136, 165, 255);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
@@ -459,10 +460,12 @@ h1 {
 }
 
 .today-week-month-graph {
-  width: 91%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  height: 100%;
   background-clip: padding-box;
-  margin-right: auto;
-  margin-left: auto;
   background-color: white;
 }
 
