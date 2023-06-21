@@ -21,7 +21,7 @@ select {
 
 h1 {
   white-space: nowrap;
-  font-size: calc(32px + (32 - 16) * ((100vw - 320px) / (1600 - 320)));
+  font-size: calc(45px + (45 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
 
 label {
@@ -46,6 +46,13 @@ input[type="submit"] {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: black;
   margin: 1%;
+}
+
+
+input[type="datetime-local"] {
+  width: 200px;
+  height: 30px; 
+  font-size: 16px; 
 }
 
 
@@ -95,23 +102,6 @@ input[type="submit"] {
   flex-direction: column;
 }
 
-/* Media Query für Bildschirmbreite kleiner als 850px */
-@media (max-width: 1300px) {
-  .navbar {
-    display: none;
-  }
-
-  .kleines-menu {
-    display: flex;
-    }
-
-  .menu-icon {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 90%;
-  }
-}
 
 /*wird benötigt, um die andere Flagge noch anzuzeigen wenn die Maus die jetzige verlässt*/
 .language-container {
@@ -156,7 +146,7 @@ input[type="submit"] {
   flex-direction: column;
   width: 100%;
   background-color: rgb(136, 165, 255);
-  font-size: calc(32px + (32 - 16) * ((100vw - 320px) / (1600 - 320)));
+  font-size: calc(40px + (40 - 16) * ((100vw - 320px) / (1600 - 320)));
   border-radius: 0.5vw;
   box-shadow: 0.2vw 0.5vw 0.37vw silver;
 }
@@ -239,7 +229,7 @@ input[type="submit"] {
   align-items: center;
   flex-direction: column;
   width: 10%;
-  font-size: 50%;
+  font-size: 40%;
   margin-top: 3%;
   white-space: nowrap;
 }
@@ -444,6 +434,13 @@ textarea {
   font-size: 24px;
 }
 
+
+
+/*MONAT*/
+#month_selection {
+  width: 5vw;
+  height: 3vh;
+}
   
 .space-bottom {
   margin-bottom: 30%;
@@ -746,7 +743,36 @@ input[type=submit] {
   align-items: center;
 }
 
-#month_selection {
-  width: 5vw;
-  height: 3vh;
+
+
+/* Media Query für Bildschirmbreite kleiner als 850px */
+@media (max-width: 1300px) {
+  .navbar {
+    display: none;
+  }
+
+  .kleines-menu {
+    display: flex;
+    }
+
+  .menu-icon {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90%;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .overview-legend {
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-size: 80%;
+  }
 }
