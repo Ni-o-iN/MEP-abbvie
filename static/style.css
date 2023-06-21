@@ -96,7 +96,7 @@ input[type="submit"] {
 }
 
 /* Media Query für Bildschirmbreite kleiner als 850px */
-@media (max-width: 1000px) {
+@media (max-width: 1300px) {
   .navbar {
     display: none;
   }
@@ -116,10 +116,9 @@ input[type="submit"] {
 /*wird benötigt, um die andere Flagge noch anzuzeigen wenn die Maus die jetzige verlässt*/
 .language-container {
   position: absolute;
-  bottom: 1vw;
+  bottom: 1%;
   display: grid;
   grid-template-columns: auto auto;
-  gap: .75vw;
 }
 
 .language-container>* {
@@ -127,7 +126,7 @@ input[type="submit"] {
 }
 
 .language-container img {
-  max-width: 2.5vw;
+  max-width: 4vw;
   display: block;
   /* Entfernt das Padding der Flaggen. */
 }
@@ -136,7 +135,6 @@ input[type="submit"] {
   background-color: white;
   border-radius: 8px;
   display: none;
-  gap: 0.5vw;
 }
 
 .language-container:hover .all-languages {
