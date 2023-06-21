@@ -20,11 +20,6 @@
     </div>
     <div class="container">
         <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
             <div class="menu">
                 <p>
                     <a href="{{url_for('index')}}">Übersicht</a>
@@ -77,6 +72,61 @@
                                 alt="englische Flagge">
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('index')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('heute')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('woche')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('monat')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                    <span class="time-box">
+                        <input type="month" id="month_selection"></input>
+                        <!-- <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
+                        <datalist id="months">
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                            <option value="6"></option>
+                            <option value="7"></option>
+                            <option value="8"></option>
+                            <option value="9"></option>
+                            <option value="10"></option>
+                            <option value="11"></option>
+                            <option value="12"></option>
+                        </datalist> -->
+                    </span>
+                </a>
+                <div class="space-bottom"></div>
+                <a href="{{url_for('download_german')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_german')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('index')}}">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="Deutschland Flagge">
+                    </a>
+                    <a href="{{url_for('overview')}}" id="english_page">
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                    </a>
                 </div>
             </div>
         </div>

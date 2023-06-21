@@ -14,11 +14,6 @@
 <body>
     <div class="container">
         <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
             <div class="menu">
                 <p>
                     <a href="{{url_for('index')}}">Übersicht</a>
@@ -55,25 +50,40 @@
                     </div>
                 </div>
             </div>
-            <div class="hamburger-menu">
-                <div class="menu-icons">
-                    <a href="{{url_for('heute')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.jpg')}}">
-                    </a>
-                    <a href="{{url_for('woche')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.jpg')}}">
-                    </a>
-                    <a href="{{url_for('monat')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/Monat.jpg')}}">
-                    </a>
-                    <div class="language-container" onmouseover="showOtherFlag()" onmouseout="hideOtherFlag()">
+        </div>
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('index')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('heute')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('woche')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('monat')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                </a>
+                <a href="{{url_for('download_german')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_german')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('index')}}">
                         <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
-                            alt="Deutschland Flagge" class="current-language">
-                        <a href="{{url_for('admin_english')}}">
-                            <img src="{{url_for('static', filename='englische-flagge.jpg')}}" alt="englische Flagge"
-                                class="other-language">
-                        </a>
-                    </div>
+                            alt="Deutschland Flagge">
+                    </a>
+                    <a href="{{url_for('overview')}}" id="english_page">
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                    </a>
                 </div>
             </div>
         </div>
@@ -117,16 +127,16 @@
                                     <option value="F">F</option>
                                     <option value="G">G</option>
                                 </select>
-                                <div class="volume-selection">
-                                    <div class="color-box-yellow"></div>
-                                    <input type="number" class="volume-selection-input" id="yellow-decibel"
+                            <div class="volume-selection">
+                                <div class="color-box-yellow"></div>
+                                <input type="number" class="volume-selection-input" id="yellow-decibel"
                                     name="yellow-decibel" min="0">
-                                    <label class="decibel-label" for="yellow-decibel">dB</label>
-                                    <div class="color-box-red"></div>
-                                    <input type="number" class="volume-selection-input" id="red-decibel" name="red-decibel"
-                                        min="0">
-                                    <label class="decibel-label" for="red-decibel">dB</label>
-                                </div>
+                                <label class="decibel-label" for="yellow-decibel">dB</label>
+                                <div class="color-box-red"></div>
+                                <input type="number" class="volume-selection-input" id="red-decibel" name="red-decibel"
+                                    min="0">
+                                <label class="decibel-label" for="red-decibel">dB</label>
+                            </div>
                             </p>
                             <input type="submit" id="volume-submit" type="submit" value="Speichern">
                         </div>
@@ -179,7 +189,7 @@
                 </div>
             </div>
         </div>
-       
+
 </body>
 
 </html>

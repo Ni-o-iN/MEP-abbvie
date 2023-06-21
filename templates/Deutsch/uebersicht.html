@@ -19,11 +19,6 @@
     </div>
     <div class="container">
         <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
             <div class="menu">
                 <p>Übersicht</p>
                 <p>
@@ -58,147 +53,163 @@
                     </div>
                 </div>
             </div>
-            <div class="hamburger-menu">
-                <div class="menu-icons">
-                    <a href="{{url_for('heute')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.jpg')}}">
-                    </a>
-                    <a href="{{url_for('woche')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.jpg')}}">
-                    </a>
-                    <a href="{{url_for('monat')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/Monat.jpg')}}">
-                    </a>
-                    <div class="language-container" onmouseover="showOtherFlag()" onmouseout="hideOtherFlag()">
+        </div>
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('index')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('heute')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('woche')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('monat')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                </a>
+                <a href="{{url_for('download_german')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_german')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('index')}}">
                         <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
-                            alt="Deutschland Flagge" class="current-language">
-                        <a href="{{url_for('overview')}}">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
-                                alt="englische Flagge" class="other-language">
-                        </a>
-                    </div>
+                            alt="Deutschland Flagge">
+                    </a>
+                    <a href="{{url_for('overview')}}" id="english_page">
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="right">
-            <div class="überschrift">
-                <h1>Live Übersicht der Lautstärke</h1>
-            </div>
-            <div class="overview">
-                <div class="row">
+    </div>
+    <div class="right">
+        <div class="überschrift">
+            <h1>Live Übersicht der Lautstärke</h1>
+        </div>
+        <div class="overview">
+            <div class="row">
+                <div class="col">
+                    <div class="mittig-floor1">
+                        <span class="floor-name">Stockwerk 1</span>
+                    </div>
+                    <div class="floor1-overview">
+                        <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor"
+                            alt="stockwerk1">
+                        <a id="area-a" data-name="area-a"
+                            href="{{url_for('heute', stockwerk='floor1', bereich='area-a')}}">A</a>
+                        <a id="area-b" data-name="area-b"
+                            href="{{url_for('heute', stockwerk='floor1', bereich='area-b')}}">B</a>
+                        <a id="area-c" data-name="area-c"
+                            href="{{url_for('heute', stockwerk='floor1', bereich='area-c')}}">C</a>
+                    </div>
+                </div>
+                <div class="overview-legend">
+                    <div id="grün">&nbsp; < 50dB</div>
+                            <div id="gelb">&nbsp; 50 - 55dB</div>
+                            <div id="rot">&nbsp; > 55dB</div>
+                    </div>
                     <div class="col">
-                        <div class="mittig-floor1">
-                            <span class="floor-name">Stockwerk 1</span>
+                        <div class="mittig-floor2">
+                            <span class="floor-name">Stockwerk 2</span>
                         </div>
-                        <div class="floor1-overview">
-                            <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}"
-                                class="responsiv-floor" alt="stockwerk1">
-                            <a id="area-a" data-name="area-a"
-                                href="{{url_for('heute', stockwerk='floor1', bereich='area-a')}}">A</a>
-                            <a id="area-b" data-name="area-b"
-                                href="{{url_for('heute', stockwerk='floor1', bereich='area-b')}}">B</a>
-                            <a id="area-c" data-name="area-c"
-                                href="{{url_for('heute', stockwerk='floor1', bereich='area-c')}}">C</a>
-                        </div>
-                    </div>
-                    <div class="overview-legend">
-                        <div id="grün">&nbsp; < 50dB</div>
-                                <div id="gelb">&nbsp; 50 - 55dB</div>
-                                <div id="rot">&nbsp; > 55dB</div>
-                        </div>
-                        <div class="col">
-                            <div class="mittig-floor2">
-                                <span class="floor-name">Stockwerk 2</span>
-                            </div>
-                            <div class="floor2-overview">
-                                <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
-                                    class="responsiv-floor" alt="Stockwerkplan 2">
-                                <a id="area-d" data-name="area-d"
-                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a>
-                                <!--idk man das so mit machen kann-->
-                                <a id="area-e" data-name="area-e"
-                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
-                                <a id="area-f" data-name="area-f"
-                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
-                                <a id="area-g" data-name="area-g"
-                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
-                                <a id="area-h" data-name="area-h"
-                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
-                            </div>
+                        <div class="floor2-overview">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
+                                class="responsiv-floor" alt="Stockwerkplan 2">
+                            <a id="area-d" data-name="area-d"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a>
+                            <!--idk man das so mit machen kann-->
+                            <a id="area-e" data-name="area-e"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
+                            <a id="area-f" data-name="area-f"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
+                            <a id="area-g" data-name="area-g"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
+                            <a id="area-h" data-name="area-h"
+                                href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            $(document).ready(function () {
-                setInterval("refresh_overview()", 10000); //call refresh_overview every 10 seconds
-            });
+    <script>
+        $(document).ready(function () {
+            setInterval("refresh_overview()", 10000); //call refresh_overview every 10 seconds
+        });
 
-            function refresh_overview() {   //muss noch für spezifische Bereiche angepasst werden
-                function eval_decibel(decibel) { //Farben noch richtig machen
-                    if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
-                        return "rgba(220, 0, 0, 0.5)"
-                    } else if (decibel > 50) {
-                        return "rgba(220, 220, 0, 0.5)"
-                    } else {
-                        return "rgba(0, 158, 0, 0.5)"
-                    }
+        function refresh_overview() {   //muss noch für spezifische Bereiche angepasst werden
+            function eval_decibel(decibel) { //Farben noch richtig machen
+                if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
+                    return "rgba(220, 0, 0, 0.5)"
+                } else if (decibel > 50) {
+                    return "rgba(220, 220, 0, 0.5)"
+                } else {
+                    return "rgba(0, 158, 0, 0.5)"
                 }
-                $.post("/refresh_overview", function (data) {
-                    document.getElementById("area-a").style.background = eval_decibel(data[0]);
-                    document.getElementById("area-b").style.background = eval_decibel(data[1]);
-                    document.getElementById("area-c").style.background = eval_decibel(data[2]);
-                    document.getElementById("area-d").style.background = eval_decibel(data[3]);
-                    document.getElementById("area-e").style.background = eval_decibel(data[4]);
-                    document.getElementById("area-f").style.background = eval_decibel(data[5]);
-                    document.getElementById("area-g").style.background = eval_decibel(data[6]);
-                    document.getElementById("area-h").style.background = eval_decibel(data[7]);
-
-                });
             }
+            $.post("/refresh_overview", function (data) {
+                document.getElementById("area-a").style.background = eval_decibel(data[0]);
+                document.getElementById("area-b").style.background = eval_decibel(data[1]);
+                document.getElementById("area-c").style.background = eval_decibel(data[2]);
+                document.getElementById("area-d").style.background = eval_decibel(data[3]);
+                document.getElementById("area-e").style.background = eval_decibel(data[4]);
+                document.getElementById("area-f").style.background = eval_decibel(data[5]);
+                document.getElementById("area-g").style.background = eval_decibel(data[6]);
+                document.getElementById("area-h").style.background = eval_decibel(data[7]);
 
-            window.addEventListener('load', function () {
-                function eval_decibel(decibel) { //Farben noch richtig machen
-                    if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
-                        return "rgba(220, 0, 0, 0.5)"
-                    } else if (decibel > 50) {
-                        return "rgba(220, 220, 0, 0.5)"
-                    } else {
-                        return "rgba(0, 158, 0, 0.5)"
-                    }
+            });
+        }
+
+        window.addEventListener('load', function () {
+            function eval_decibel(decibel) { //Farben noch richtig machen
+                if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
+                    return "rgba(220, 0, 0, 0.5)"
+                } else if (decibel > 50) {
+                    return "rgba(220, 220, 0, 0.5)"
+                } else {
+                    return "rgba(0, 158, 0, 0.5)"
                 }
-                $.post("/refresh_overview", function (data) {
-                    document.getElementById("area-a").style.background = eval_decibel(data[0]);
-                    document.getElementById("area-b").style.background = eval_decibel(data[1]);
-                    document.getElementById("area-c").style.background = eval_decibel(data[2]);
-                    document.getElementById("area-d").style.background = eval_decibel(data[3]);
-                    document.getElementById("area-e").style.background = eval_decibel(data[4]);
-                    document.getElementById("area-f").style.background = eval_decibel(data[5]);
-                    document.getElementById("area-g").style.background = eval_decibel(data[6]);
-                    document.getElementById("area-h").style.background = eval_decibel(data[7]);
-                });
+            }
+            $.post("/refresh_overview", function (data) {
+                document.getElementById("area-a").style.background = eval_decibel(data[0]);
+                document.getElementById("area-b").style.background = eval_decibel(data[1]);
+                document.getElementById("area-c").style.background = eval_decibel(data[2]);
+                document.getElementById("area-d").style.background = eval_decibel(data[3]);
+                document.getElementById("area-e").style.background = eval_decibel(data[4]);
+                document.getElementById("area-f").style.background = eval_decibel(data[5]);
+                document.getElementById("area-g").style.background = eval_decibel(data[6]);
+                document.getElementById("area-h").style.background = eval_decibel(data[7]);
             });
+        });
 
-            //Info
-            // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
-            document.getElementById("infoButton").addEventListener("click", function () {
-                document.getElementById("infoModal").style.display = "block";
-            });
+        //Info
+        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+        document.getElementById("infoButton").addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "block";
+        });
 
-            // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
-            document.getElementsByClassName("close")[0].addEventListener("click", function () {
+        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+        document.getElementsByClassName("close")[0].addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("infoModal")) {
                 document.getElementById("infoModal").style.display = "none";
-            });
+            }
+        };
 
-            window.onclick = function (event) {
-                if (event.target == document.getElementById("infoModal")) {
-                    document.getElementById("infoModal").style.display = "none";
-                }
-            };
-
-        </script>
+    </script>
 
 </body>
 
