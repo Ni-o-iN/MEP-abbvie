@@ -5,15 +5,14 @@ import string
 import random
 
 #pip install Flask-APScheduler
-from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 import smtplib
 from email.mime.text import MIMEText
-import datetime
 
 app = Flask(__name__)
 
 #Scheduler initialisieren
-scheduler = APScheduler()
+scheduler = BackgroundScheduler()
 
 # MySQL connection configuration
 mysql_config = {
