@@ -131,7 +131,7 @@ def schedulerWarnung():
     con_warnung.close()
 
 #Scheduler Job und Trigger zuweisen
-scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, trigger = 'interval', seconds = 10)
+scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, trigger = 'interval', seconds = 60)
 
 
 @app.route('/')
