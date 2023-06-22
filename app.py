@@ -4,7 +4,16 @@ import json
 import string
 import random
 
+#pip install Flask-APScheduler
+from flask_apscheduler import APScheduler
+import smtplib
+from email.mime.text import MIMEText
+import datetime
+
 app = Flask(__name__)
+
+#Scheduler initialisieren
+scheduler = APScheduler()
 
 # MySQL connection configuration
 mysql_config = {
@@ -14,6 +23,116 @@ mysql_config = {
     'database': 'calmvie',
     'raise_on_warnings': True
 }
+
+#Funktion zur Mail Versendung
+def send_email_warning(letter):
+    
+    recipient_email = "audio.architects@outlook.de"
+    
+    sender_email = "audio.architects@outlook.de" 
+    username = "audio.architects@outlook.de"
+    password = "dnlcj!MEP23"   
+    smtp_server = "smtp.office365.com"
+    smtp_port = 587
+    
+
+    #Nachricht erstellen
+    subject = f"Warnung: Bereich {letter} erreicht Wert 4"
+    body = f"Der Bereich {letter} hat den Wert 4 erreicht!"
+    
+    #E-Mail erstellen
+    message = MIMEText(body)
+    message["Subject"] = subject
+    message["From"] = sender_email
+    message["To"] = recipient_email
+    
+    #E-Mail versenden
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(username, password)
+            server.sendmail(sender_email, recipient_email, message.as_string())
+        print("E-Mail-Benachrichtigung gesendet!")
+    except Exception as e:
+        print("Fehler beim Senden der E-Mail-Benachrichtigung:", str(e))
+
+#globaler Counter für Warnstufe des Bereichs
+area_limits_global = {}
+daily_warning_counter = {}
+current_date = None
+
+#Berechnung Warnstufe der Bereiche
+def schedulerWarnung():
+    #Verbindung zu MySQL server aufbauen und Query ausführen
+    con_warnung = mysql.connector.connect(**mysql_config)
+    cur_warnung = con_warnung.cursor()
+    query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time >= NOW() - INTERVAL 60 SECOND;'
+    cur_warnung.execute(query_warnung)
+    result_warnung = cur_warnung.fetchall()
+    
+    #Average der Werte für jeden Bereich berechnen
+    sums = {}
+    counts = {}
+    
+    for value, letter in result_warnung:
+        if letter in sums:
+            sums[letter] += value
+            counts[letter] += 1
+        else:
+            sums[letter] = value
+            counts[letter] = 1
+
+    averages = {letter: sums[letter] / counts[letter] for letter in sums}
+    print(averages)
+    
+    
+    #Query für Lautstärkelimit aller Bereiche ausführen
+    query_area_limit = 'SELECT DISTINCT area, soundlimit_yellow FROM soundmeter;'
+    cur_warnung.execute(query_area_limit)
+    result_area_limit = cur_warnung.fetchall()
+
+
+    #Limit vergleichen mit berechnetem Average und dementsprechend globalen Counter hoch-/runterzählen
+    for letter, average in averages.items():
+        limit = next((limit for l, limit in result_area_limit if l == letter), None)
+        if limit is not None:
+            if average > limit:
+                if letter in area_limits_global:
+                    area_limits_global[letter] += 1
+                else:
+                    area_limits_global[letter] = 1
+
+                #falls in einem Bereich bereits 5 Warnungen gesendet wurden werden restlich ignoriert
+                if letter in daily_warning_counter and daily_warning_counter[letter] > 5:
+                    print(f'Warnungslimit für Bereich {letter} erreicht')
+                    if area_limits_global[letter] == 4:
+                        area_limits_global[letter] = 0
+                    continue
+               
+                if area_limits_global[letter] == 4:
+                    print(f"Warnung: Der Bereich für den Buchstaben {letter} hat den Wert 4 erreicht!")
+                    send_email_warning(letter)
+                    
+                    if letter in daily_warning_counter:
+                        daily_warning_counter[letter] += 1
+                    else:
+                        daily_warning_counter[letter] = 1
+                    
+                    area_limits_global[letter] = 0
+            else:
+                if letter in area_limits_global and area_limits_global[letter] > 0:
+                    area_limits_global[letter] -= 1
+                elif letter not in area_limits_global:
+                    area_limits_global[letter] = 0
+
+    print("Bereichslevel:", area_limits_global)
+
+    cur_warnung.close()
+    con_warnung.close()
+
+#Scheduler Job und Trigger zuweisen
+scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, trigger = 'interval', seconds = 10)
+
 
 @app.route('/')
 def index():
@@ -206,4 +325,5 @@ def refresh_overview():
 
 
 if __name__ == '__main__':
+    #scheduler.start()
     app.run(debug=True)
