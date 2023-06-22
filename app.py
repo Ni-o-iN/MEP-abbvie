@@ -325,4 +325,4 @@ def refresh_overview():
 
 if __name__ == '__main__':
     #scheduler.start()
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
