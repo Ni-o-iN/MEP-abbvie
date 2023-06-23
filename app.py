@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, url_for
+from flask import Flask, render_template, jsonify, request, url_for, send_file
 import mysql.connector
 import json
 import string
@@ -8,6 +8,7 @@ import random
 from apscheduler.schedulers.background import BackgroundScheduler
 import smtplib
 from email.mime.text import MIMEText
+from openpyxl import Workbook
 
 app = Flask(__name__)
 
@@ -320,9 +321,62 @@ def refresh_overview():
     #     'g':results[6],
     #     'h':results[7],
     # }
+    cursor.close()
+    connection.close()
     return jsonify(data)
+
+@app.route("/download_excel", methods=["POST"])
+def download_excel():
+
+    data = request.json  # Retrieve the JSON data from the request
+    ids = data.get("ids")
+    datetime1 = data.get("datetime1")
+    datetime2 = data.get("datetime2")
+    #==============
+    connection = mysql.connector.connect(**mysql_config)
+    cursor = connection.cursor()
+    
+    ####
+    areas = [element.split("-")[1].upper() for element in ids]
+    placeholders = ', '.join(['%s'] * len(areas))
+
+    ####
+    query = f"""
+        SELECT s.area, m.value, m.time
+            FROM measurement m
+            JOIN soundmeter s ON m.soundmeter_id = s.id 
+            WHERE s.area IN ({placeholders})
+            AND m.time BETWEEN %s AND %s
+    """
+    print(query)
+    values = areas + [datetime1, datetime2]  # Concatenate the values into a single list
+    #print(values)
+    cursor.execute(query, values)
+
+    # Fetch all the rows from the result set
+    rows = cursor.fetchall()
+    
+
+    # Create a new Excel workbook and get the active worksheet
+    workbook = Workbook()
+    worksheet = workbook.active
+
+    # Write the column headers
+    column_headers = [column[0] for column in cursor.description]
+    worksheet.append(column_headers)
+
+    # Write the data rows
+    for row in rows:
+        worksheet.append(row)
+
+    # Save the workbook
+    file_path = "./downloaded_data.xls"
+    workbook.save(file_path)
+    cursor.close()
+    connection.close()
+    return send_file(file_path, as_attachment=True)
 
 
 if __name__ == '__main__':
     #scheduler.start()
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
