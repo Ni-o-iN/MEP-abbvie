@@ -5,3 +5,4 @@ __pycache__/app.cpython-311.pyc
 Tests/__pycache__/test_flask_app.cpython-311.pyc
 Tests/__pycache__/test_language_selection.cpython-311.pyc
 Tests/__pycache__/test_selenium.cpython-311.pyc
+downloaded_data.xls

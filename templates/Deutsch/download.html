@@ -3,7 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -87,9 +90,9 @@
                         <div class="floor1-overview">
                             <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}"
                                 class="responsiv-floor" alt="stockwerk1">
-                            <span id="area-a-download">A</span>
-                            <span id="area-b-download">B</span>
-                            <span id="area-c-download">C</span>
+                            <span id="area-a-download" class="area-download">A</span>
+                            <span id="area-b-download" class="area-download">B</span>
+                            <span id="area-c-download" class="area-download">C</span>
                         </div>
                     </div>
                     <div class="col">
@@ -99,11 +102,11 @@
                         <div class="floor2-overview">
                             <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
                                 class="responsiv-floor" alt="Stockwerkplan 2">
-                            <span id="area-d-download">D</span>
-                            <span id="area-e-download">E</span>
-                            <span id="area-f-download">F</span>
-                            <span id="area-g-download">G</span>
-                            <span id="area-h-download">H</span>
+                            <span id="area-d-download" class="area-download">D</span>
+                            <span id="area-e-download" class="area-download">E</span>
+                            <span id="area-f-download" class="area-download">F</span>
+                            <span id="area-g-download" class="area-download">G</span>
+                            <span id="area-h-download" class="area-download">H</span>
                         </div>
                     </div>
                 </div>
@@ -112,18 +115,168 @@
                 Wählen sie den entsprechenden Zeitraum aus.
                 <p>
                     <label>
-                        <input type="datetime-local" name="geburtsdatum">
+                        <input type="datetime-local" id="datetime1">
                         &nbsp; - &nbsp;
                     </label>
 
                     <label>
-                        <input type="datetime-local" name="geburtsdatum">
+                        <input type="datetime-local" id="datetime2">
                     </label>
                 </p>
-                <input type="submit" value="berechnen" name="calculate">
+                <div id="error_message"></div>
+                <form action="{{ url_for('download_excel') }}" class="btn btn-primary" method="GET"
+                    target="download_iframe" id="download_form"
+                    onsubmit="event.preventDefault(); if(validateForm()){submitForm()}">
+                    <button type="submit" value="berechnen">Download Excel</button>
+                </form>
+                <iframe name="download_iframe" style="display: none;"></iframe>
             </div>
         </div>
     </div>
+
+    <script>
+        const areas = document.querySelectorAll('.area-download');
+
+        areas.forEach(area => {
+            area.addEventListener('click', function () {
+                const currentColor = window.getComputedStyle(area).getPropertyValue('background-color');
+                const targetColor = (currentColor === 'rgba(100, 100, 100, 0.5)') ? 'rgba(0, 0, 160, 0.5)' : 'rgba(100, 100, 100, 0.5)';
+                area.style.backgroundColor = targetColor;
+            });
+        });
+
+        function checkAreasColor() {  //Fehlermeldung für false einbauen
+            for (let i = 0; i < areas.length; i++) {
+                if (areas[i].style.backgroundColor === 'rgba(0, 0, 160, 0.5)') {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+       
+        function checkDateTime() {
+            var datetime1 = document.getElementById("datetime1").value;
+            var datetime2 = document.getElementById("datetime2").value;
+
+            if (!datetime1 || !datetime2) {
+                return {
+                    valid: false,
+                    message: "Please select both datetimes."
+                };
+            }
+
+            var date1 = new Date(datetime1);
+            var date2 = new Date(datetime2);
+            var now = new Date();
+
+            if (date1 > date2) {
+                return {
+                    valid: false,
+                    message: "The first datetime must be earlier than the second datetime."
+                };
+            }else if (now < date1){
+                return{
+                    valid:false,
+                    message: "The first datetime must be in the past."
+                };    
+            }else if (date2 > date1) {
+                return {
+                    valid: true
+                };
+            }else {
+                return {
+                    valid: true
+                };
+            }
+        }
+
+        function displayErrorMessage(message) {
+            var errorMessageElement = document.getElementById("error_message");
+            if (message) {
+                errorMessageElement.innerHTML = message;
+                errorMessageElement.style.display = "block";
+            } else {
+                errorMessageElement.style.display = "none";
+            }
+        }
+
+        function validateForm() {
+
+            var areasColorValid = checkAreasColor();
+            if (!areasColorValid) {
+                displayErrorMessage("Please select at least one area.");
+                return false;
+            }
+
+            var datetimeValidationResult = checkDateTime();
+
+            if (!datetimeValidationResult.valid) {
+                displayErrorMessage(datetimeValidationResult.message);
+                return false;
+            }
+
+            displayErrorMessage(); // Clear any existing error messages
+
+            return true;
+        }
+
+        function submitForm() {
+            var form = $("#download_form");
+            var url = form.attr("action");
+            var areasData = []; // Array to store selected areas
+            var areasElements = document.querySelectorAll(".area-download"); // Assuming each area has a class "area"
+
+            areasElements.forEach(function (areaElement) {
+                if (areaElement.style.backgroundColor === 'rgba(0, 0, 160, 0.5)') {
+                    areasData.push(areaElement.id); // Assuming each area has an ID attribute
+                }
+            });
+
+            var datetime1 = document.getElementById("datetime1").value;
+            var datetime2 = document.getElementById("datetime2").value;
+
+
+            var data = {
+                ids: areasData,
+                datetime1: datetime1,
+                datetime2: datetime2
+            };
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                xhrFields: {
+                    responseType: 'blob'  // Set the response type to 'blob' to handle binary data
+                },
+                success: function (response, status, xhr) {
+                    var filename = "";  // Initialize the filename variable
+
+                    // Extract the filename from the response headers
+                    var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                    if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
+                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = filenameRegex.exec(contentDisposition);
+                        if (matches != null && matches[1]) {
+                            filename = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    // Create a temporary link element to initiate the file download
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(response);
+                    link.download = filename || 'download.xlsx';  // Use the extracted filename or provide a default name
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+        }
+
+    </script>
 
 </body>
 

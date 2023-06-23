@@ -743,6 +743,12 @@ input[type=submit] {
   align-items: center;
 }
 
+#error_message{
+  display:none;
+  color: red;
+  background-color: rgb(136, 165, 255);
+}
+
 
 
 /* Media Query für Bildschirmbreite kleiner als 850px */
