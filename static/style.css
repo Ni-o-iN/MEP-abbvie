@@ -701,8 +701,6 @@ input[type=submit] {
   z-index: 1;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.3);
 }
@@ -710,23 +708,28 @@ input[type=submit] {
 .modal-content {
   color: black;
   margin: auto;
-  padding: 2vw;
-  width: 96%;
-  height: fit-content;
-  font-size: calc(24px + (24 - 16) * ((100vw - 320px) / (1600 - 320)));
+  width: 100%;
 }
 
 .close {
-  color: red;
+  position: absolute;
+  right: 0;
+  font-size: calc(45px + (45 - 16) * ((100vw - 320px) / (1600 - 320)));
+  color: black;
   float: right;
-  font-size: 28px;
   font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
+  color: red;
   text-decoration: none;
   cursor: pointer;
+}
+
+.img-info {
+  height: 100%;
+  width: 100%;
 }
 
 .info-measure-system-overview {
@@ -758,7 +761,7 @@ input[type=submit] {
   text-align: center;
   height: 50%;
   width: 500px;
-  top: 70%;
+  top: 17vh;
   left: 40%;
   padding: 0.5%;
 	background: #88b7d5;
@@ -863,7 +866,7 @@ input[type=submit] {
 	position: fixed;
   width: 15%;
   left: 80vw;
-  top: 37vh;
+  top: 32vh;
   padding: 0.5%;
 	background: #88b7d5;
 	border: 4px solid #c2e1f5;
@@ -892,15 +895,15 @@ input[type=submit] {
 	margin-left: -36px;
 }
 
-.info-datepicker {
+.info-weekpicker {
 	position: fixed;
   width: 15%;
-  top: 39vh;
+  top: 35vh;
   padding: 0.5%;
 	background: #88b7d5;
 	border: 4px solid #c2e1f5;
 }
-.info-datepicker:after, .info-datepicker:before {
+.info-weekpicker:after, .info-weekpicker:before {
 	bottom: 100%;
 	left: 50%;
 	border: solid transparent;
@@ -911,13 +914,46 @@ input[type=submit] {
 	pointer-events: none;
 }
 
-.info-datepicker:after {
+.info-weekpicker:after {
 	border-color: rgba(136, 183, 213, 0);
 	border-bottom-color: #88b7d5;
 	border-width: 30px;
 	margin-left: -30px;
 }
-.info-datepicker:before {
+.info-weekpicker:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #c2e1f5;
+	border-width: 36px;
+	margin-left: -36px;
+}
+
+/*INFO Monat*/
+.info-monthpicker {
+	position: fixed;
+  width: 15%;
+  top: 43vh;
+  padding: 0.5%;
+	background: #88b7d5;
+	border: 4px solid #c2e1f5;
+}
+.info-monthpicker:after, .info-monthpicker:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.info-monthpicker:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #88b7d5;
+	border-width: 30px;
+	margin-left: -30px;
+}
+.info-monthpicker:before {
 	border-color: rgba(194, 225, 245, 0);
 	border-bottom-color: #c2e1f5;
 	border-width: 36px;

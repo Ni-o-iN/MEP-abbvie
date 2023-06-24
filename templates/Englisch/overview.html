@@ -7,12 +7,14 @@
 
 <body>
     <div class="container">
-        <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
+        <button id="infoButton">i</button>
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+
             </div>
+        </div>
+        <div class="navbar">
             <div class="menu">
                 <p>Overview</p>
                 <p>
@@ -24,71 +26,177 @@
                 <p>
                     <a href="{{url_for('month')}}">Month</a>
                 </p>
+                <p>
+                    <a href="{{url_for('download_english')}}">Download</a>
+                </p>
+                <p>
+                    <a href="{{url_for('admin_english')}}">Admin</a>
+                </p>
                 <div class="language-container">
                     <div>
                         <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
                     </div>
                     <div class="all-languages">
                         <a href="{{url_for('index')}}" id="german_page">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
-                        </a>
-                        <a href="{{url_for('overview')}}">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="right">
-            <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        You are on the "Overview" page.<br>
-                        Here is a short introduction how to use this site.
-                    <ul>
-                        <li>Schritt 1: Geben Sie in dem Eingabefeld unterhalb "Kalenderwoche" eine gültige
-                            Kalenderwoche an, mit dem zugehörigem Jahr dahinter. <br> Bsp:"15 2023"</li>
-                        <li>Schritt 2: Wählen Sie ein Stockwerk aus</li>
-                        <li>Schritt 3: Wählen Sie einen entsprechenden Bereich au</li>
-                    </ul>
-                    </p>
-                    Die Anzeige dieser Kalenderwoche sollte nun durch die einzelnen Tage anhand Graphen angezeigt
-                    werden.<br>
-                    In der Legende können einzelne Tage durch anklicken ab- und ausgewählt werden.
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('overview')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('today')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('week')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('month')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                </a>
+                <a href="{{url_for('download_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('overview')}}" id="english_page">
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="Englische Flagge">
+                    </a>
                 </div>
             </div>
+        </div>
+        <div class="right">
+            <div class="überschrift">
+                <h1>Live volume overview</h1>
+            </div>
             <div class="overview">
-                <div class="floor1-overview">   <!--Da müssen die Verlinkungen noch angepasst werden -- siehe ueberischt.html-->
-                    Floor 1
-                    <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor" alt="stockwerk1">
-                    <a id="area-a" data-name="area-a" href="../English/today.html?stockwerk=floor1&bereich=area-a">A</a>
-                    <a id="area-b" data-name="area-b" href="../English/today.html?stockwerk=floor1&bereich=area-b">B</a>
-                    <a id="area-c" data-name="area-c" href="../English/today.html?stockwerk=floor1&bereich=area-c">C</a>
-                    <div id="steps1"></div>
-                </div>
-                <div class="floor2-overview">
-                    Floor 2
-                    <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}" class="responsiv-floor" alt="Stockwerkplan 2">
-                    <a id="area-d" data-name="area-d" href="../English/today.html?stockwerk=floor2&bereich=area-d">D</a>
-                    <a id="area-e" data-name="area-e" href="../English/today.html?stockwerk=floor2&bereich=area-e">E</a>
-                    <a id="area-f" data-name="area-f" href="../English/today.html?stockwerk=floor2&bereich=area-f">F</a>
-                    <a id="area-g" data-name="area-g" href="../English/today.html?stockwerk=floor2&bereich=area-g">G</a>
-                    <a id="area-h" data-name="area-h" href="../English/today.html?stockwerk=floor2&bereich=area-h">H</a>
-                    <div id="couch"></div>
-                    <div id="steps2"></div>
-                    <div id="tableBetweenDandE"></div>
-                    <div id="tableAboveF"></div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mittig-floor1">
+                            <span class="floor-name">Floor 1</span>
+                        </div>
+                        <div class="floor1-overview">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor"
+                                alt="stockwerk1">
+                            <a id="area-a" data-name="area-a"
+                                href="{{url_for('heute', stockwerk='floor1', bereich='area-a')}}">A</a>
+                            <a id="area-b" data-name="area-b"
+                                href="{{url_for('heute', stockwerk='floor1', bereich='area-b')}}">B</a>
+                            <a id="area-c" data-name="area-c"
+                                href="{{url_for('heute', stockwerk='floor1', bereich='area-c')}}">C</a>
+                        </div>
+                    </div>
+                    <div class="overview-legend">
+                        <div id="grün">&nbsp; < 50dB</div>
+                                <div id="gelb">&nbsp; 50 - 55dB</div>
+                                <div id="rot">&nbsp; > 55dB</div>
+                        </div>
+                        <div class="col">
+                            <div class="mittig-floor2">
+                                <span class="floor-name">Floor 2</span>
+                            </div>
+                            <div class="floor2-overview">
+                                <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
+                                    class="responsiv-floor" alt="Stockwerkplan 2">
+                                <a id="area-d" data-name="area-d"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-d')}}">D</a>
+                                <!--idk man das so mit machen kann-->
+                                <a id="area-e" data-name="area-e"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-e')}}">E</a>
+                                <a id="area-f" data-name="area-f"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-f')}}">F</a>
+                                <a id="area-g" data-name="area-g"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-g')}}">G</a>
+                                <a id="area-h" data-name="area-h"
+                                    href="{{url_for('heute', stockwerk='floor2', bereich='area-h')}}">H</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!--Javascript-->
-    <script src="{{url_for('static', filename='Scripts/uebersicht.js')}}"></script>
-    <!---->
+    <script>
+        $(document).ready(function () {
+            setInterval("refresh_overview()", 10000); //call refresh_overview every 10 seconds
+        });
+
+        function refresh_overview() {   //muss noch für spezifische Bereiche angepasst werden
+            function eval_decibel(decibel) { //Farben noch richtig machen
+                if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
+                    return "rgba(220, 0, 0, 0.5)"
+                } else if (decibel > 50) {
+                    return "rgba(220, 220, 0, 0.5)"
+                } else {
+                    return "rgba(0, 158, 0, 0.5)"
+                }
+            }
+            $.post("/refresh_overview", function (data) {
+                document.getElementById("area-a").style.background = eval_decibel(data[0]);
+                document.getElementById("area-b").style.background = eval_decibel(data[1]);
+                document.getElementById("area-c").style.background = eval_decibel(data[2]);
+                document.getElementById("area-d").style.background = eval_decibel(data[3]);
+                document.getElementById("area-e").style.background = eval_decibel(data[4]);
+                document.getElementById("area-f").style.background = eval_decibel(data[5]);
+                document.getElementById("area-g").style.background = eval_decibel(data[6]);
+                document.getElementById("area-h").style.background = eval_decibel(data[7]);
+
+            });
+        }
+
+        window.addEventListener('load', function () {
+            function eval_decibel(decibel) { //Farben noch richtig machen
+                if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
+                    return "rgba(220, 0, 0, 0.5)"
+                } else if (decibel > 50) {
+                    return "rgba(220, 220, 0, 0.5)"
+                } else {
+                    return "rgba(0, 158, 0, 0.5)"
+                }
+            }
+            $.post("/refresh_overview", function (data) {
+                document.getElementById("area-a").style.background = eval_decibel(data[0]);
+                document.getElementById("area-b").style.background = eval_decibel(data[1]);
+                document.getElementById("area-c").style.background = eval_decibel(data[2]);
+                document.getElementById("area-d").style.background = eval_decibel(data[3]);
+                document.getElementById("area-e").style.background = eval_decibel(data[4]);
+                document.getElementById("area-f").style.background = eval_decibel(data[5]);
+                document.getElementById("area-g").style.background = eval_decibel(data[6]);
+                document.getElementById("area-h").style.background = eval_decibel(data[7]);
+            });
+        });
+
+        //Info
+        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+        document.getElementById("infoButton").addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "block";
+        });
+
+        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+        document.getElementsByClassName("close")[0].addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("infoModal")) {
+                document.getElementById("infoModal").style.display = "none";
+            }
+        };
+
+    </script>
 
 </body>
 
