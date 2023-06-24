@@ -1,10 +1,10 @@
 from flask import Flask, render_template, jsonify, request, url_for, send_file
 import mysql.connector
 import json
+import mysql.connector.pooling
 import string
 import random
 import datetime
-
 #pip install Flask-APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 import smtplib
@@ -30,7 +30,7 @@ mysql_config = {
     'database': 'calmvie',
     'raise_on_warnings': True
 }
-
+pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="mypool", pool_size=5, **mysql_config)
 #Funktion zur Mail Versendung
 def send_email_warning(letter):
     
@@ -67,7 +67,7 @@ def send_email_warning(letter):
 #Berechnung Warnstufe der Bereiche
 def schedulerWarnung():
     #Verbindung zu MySQL server aufbauen und Query ausführen
-    con_warnung = mysql.connector.connect(**mysql_config)
+    con_warnung = pool.get_connection()
     cur_warnung = con_warnung.cursor()
     query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time >= NOW() - INTERVAL 60 SECOND;'
     cur_warnung.execute(query_warnung)
@@ -149,6 +149,16 @@ scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, trigger = 'interv
 
 @app.route('/')
 def index():
+    # values = get_latest_data()
+    # styles = []
+    # for decibel in values:
+    #     if (decibel > 55):
+    #          styles.append('style= "rgba(220, 0, 0, 0.5)";')
+    #     elif (decibel > 50):
+    #         styles.append('style= "rgba(220, 220, 0, 0.5)";')
+    #     else:
+    #         styles.append('style= "rgba(0, 158, 0, 0.5)";')
+        
     return render_template('Deutsch/uebersicht.html')
 
 @app.route('/overview')
@@ -200,6 +210,7 @@ def get_chart_data():
 
     print(request.referrer)
     if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+        print("Monat geht hier rein")
         selected_option = request.json['selected_option2']
         selected_month = request.json['selected_option1'].split("-")[1]
         selected_year = request.json['selected_option1'].split("-")[0]
@@ -226,10 +237,11 @@ def get_chart_data():
 
 
     # Establish a connection to MySQL
-    connection = mysql.connector.connect(**mysql_config)
+    connection = pool.get_connection()
     cursor = connection.cursor()
     query=0
     if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+        print("Monat geht auch hier rein")
         query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
         if not selected_option and not selected_month:
             return (0,0)
@@ -240,7 +252,6 @@ def get_chart_data():
         if not selected_option:
             return (0,0)
         else:     
-            print(selected_option)
             cursor.execute(query, (selected_option,))
 
     # Retrieve the data
@@ -254,26 +265,27 @@ def get_chart_data():
     for row in data:
         # Assuming the chart data is in a specific column of the retrieved data
         if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+
             chart_labels.append(row[0].split()[0].split("-")[2])
         elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
             chart_labels.append(row[0].split()[1].split(":")[0])
         chart_data.append(row[1])
         
+    print("monat geht auch hier rein")    
     # Close the MySQL connection
     cursor.close()
     connection.close()
-    print("VOR CALCULATE_AVERAGE: ", chart_data, " " , chart_labels)
-    unique_labels, averaged_data  = calculate_average(chart_data, chart_labels)
+    unique_labels, averaged_data  = calculate_average(chart_data, chart_labels) #TODO: care when there is no data, still need to fix, handle with None type stuff
     if (averaged_data == []):
         return jsonify(averaged_data,unique_labels,)
     return jsonify(averaged_data,unique_labels, min(averaged_data), max(averaged_data),)
 
 def calculate_average(values, labels):
     if len(values) != len(labels):
-        return None
+        return None, None
     
     if len(values) == 0 or len(labels) == 0:
-        return None
+        return None, None
     
     label_dict = {}
     
@@ -293,8 +305,8 @@ def calculate_average(values, labels):
         averages.append(sum(value_list) / len(value_list))
     
     return unique_labels, averages
-@app.route('/refresh_overview', methods=['POST', 'GET'])
-def refresh_overview():
+
+def get_latest_data():
     #  a = random.randint(30, 70)
     #  b = random.randint(30, 70)
     #  c = random.randint(30, 70)
@@ -304,24 +316,24 @@ def refresh_overview():
     #  g = random.randint(30, 70)
     #  h = random.randint(30, 70)
 
-    connection = mysql.connector.connect(**mysql_config)
+    connection = pool.get_connection()
     cursor = connection.cursor()    
             
     #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
     query = """
         SELECT s.area, m.value
-            FROM measurement m
+        FROM measurement m
         JOIN soundmeter s ON m.soundmeter_id = s.id
-        WHERE s.area IN (%s, %s, %s, %s, %s, %s, %s, %s)
-        AND m.time = (
-            SELECT MAX(time)
-            FROM measurement
-            WHERE soundmeter_id = m.soundmeter_id
-        )
+            WHERE s.area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
+            AND m.time IN (
+                SELECT MAX(time)
+                FROM measurement
+                WHERE soundmeter_id IN (SELECT id FROM soundmeter WHERE area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'))
+                GROUP BY soundmeter_id
+)
     """
-    values =("A","B","C","D","E","F","G","H")
 
-    cursor.execute(query, values)
+    cursor.execute(query)
     results = cursor.fetchall()
     data = [row[1] for row in results]
     # data ={
@@ -336,7 +348,52 @@ def refresh_overview():
     # }
     cursor.close()
     connection.close()
-    return jsonify(data)
+    return data
+
+@app.route('/refresh_overview', methods=['POST', 'GET'])
+def refresh_overview():
+    # #  a = random.randint(30, 70)
+    # #  b = random.randint(30, 70)
+    # #  c = random.randint(30, 70)
+    # #  d = random.randint(30, 70)
+    # #  e = random.randint(30, 70)
+    # #  f = random.randint(30, 70)
+    # #  g = random.randint(30, 70)
+    # #  h = random.randint(30, 70)
+
+    # connection = mysql.connector.connect(**mysql_config)
+    # cursor = connection.cursor()    
+            
+    # #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
+    # query = """
+    #     SELECT s.area, m.value
+    #         FROM measurement m
+    #     JOIN soundmeter s ON m.soundmeter_id = s.id
+    #     WHERE s.area IN (%s, %s, %s, %s, %s, %s, %s, %s)
+    #     AND m.time = (
+    #         SELECT MAX(time)
+    #         FROM measurement
+    #         WHERE soundmeter_id = m.soundmeter_id
+    #     )
+    # """
+    # values =("A","B","C","D","E","F","G","H")
+
+    # cursor.execute(query, values)
+    # results = cursor.fetchall()
+    # data = [row[1] for row in results]
+    # # data ={
+    # #     'a':results[0],
+    # #     'b':results[1],
+    # #     'c':results[2],
+    # #     'd':results[3],
+    # #     'e':results[4],
+    # #     'f':results[5],
+    # #     'g':results[6],
+    # #     'h':results[7],
+    # # }
+    # cursor.close()
+    # connection.close()
+    return jsonify(get_latest_data())
 
 @app.route("/download_excel", methods=["POST"])
 def download_excel():
@@ -346,7 +403,7 @@ def download_excel():
     datetime1 = data.get("datetime1")
     datetime2 = data.get("datetime2")
     #==============
-    connection = mysql.connector.connect(**mysql_config)
+    connection = pool.get_connection()
     cursor = connection.cursor()
     
     ####

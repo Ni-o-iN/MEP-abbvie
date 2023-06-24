@@ -33,7 +33,7 @@
                 <p>
                     Monat<br>
                     <span class="time-box">
-                        <input type="month" id="month_selection"></input>
+                        <input type="month" id="month_selection" onchange="checkSelectionMonth()"></input>
                         <!-- <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
                         <datalist id="months">
                             <option value="1"></option>
@@ -85,7 +85,7 @@
                 <a href="{{url_for('monat')}}">
                     <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
                     <span class="time-box">
-                        <input type="month" id="month_selection"></input>
+                        <input type="month" id="month_selection" onchange="checkSelectionMonth()"></input>
                         <!-- <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
                         <datalist id="months">
                             <option value="1"></option>
@@ -282,19 +282,40 @@
                 });
             }
 
+            // $('#month_selection').on('change', function () {
+            //     var selectedOption1 = $(this).val();
+            //     var selectedOption2 = $('#secondDropdown').val();
+            //     console.log(selectedOption1);
+            //     console.log(selectedOption2);
+            //     if (selectedOption1 && selectedOption2) {
+            //         console.log("if in month selection");   
+            //         updateChart(selectedOption1, selectedOption2);
+            //     }
+            // });
+
+            // $('#secondDropdown').on('change', function () {
+            //     var selectedOption2 = $(this).val();
+            //     if ($('#month_selection').val() && selectedOption2) {
+            //         updateChart($('#month_selection').val(), selectedOption2);
+            //     }
+            // });
             $('#month_selection').on('change', function () {
                 var selectedOption1 = $(this).val();
                 var selectedOption2 = $('#secondDropdown').val();
                 if (selectedOption1 && selectedOption2) {
-                    console.log("If im month_selection")
+                    // document.getElementsByClassName("today-week-month-display").style.display = 'block';
+                    console.log("If in month_selection");
                     updateChart(selectedOption1, selectedOption2);
                 }
             });
 
             $('#secondDropdown').on('change', function () {
                 var selectedOption2 = $(this).val();
-                if ($('#month_selection').val() && selectedOption2) {
-                    updateChart($('#month_selection').val(), selectedOption2);
+                var selectedOption1 = $('#month_selection').val();
+                if (selectedOption1 && selectedOption2) {
+                    // document.getElementsByClassName("today-week-month-display").style.display = 'block';
+                    console.log("If in secondDropdown");
+                    updateChart(selectedOption1, selectedOption2);
                 }
             });
         });

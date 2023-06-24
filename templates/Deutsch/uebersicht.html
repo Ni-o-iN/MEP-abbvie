@@ -135,43 +135,19 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-            setInterval("refresh_overview()", 10000); //call refresh_overview every 10 seconds
-        });
-
-        function refresh_overview() {   //muss noch für spezifische Bereiche angepasst werden
-            function eval_decibel(decibel) { //Farben noch richtig machen
-                if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
-                    return "rgba(220, 0, 0, 0.5)"
-                } else if (decibel > 50) {
-                    return "rgba(220, 220, 0, 0.5)"
-                } else {
-                    return "rgba(0, 158, 0, 0.5)"
-                }
+        function eval_decibel(decibel) {
+            // Farben noch richtig machen
+            if (decibel > 55) {
+                return "rgba(220, 0, 0, 0.5)";
+            } else if (decibel > 50) {
+                return "rgba(220, 220, 0, 0.5)";
+            } else {
+                return "rgba(0, 158, 0, 0.5)";
             }
-            $.post("/refresh_overview", function (data) {
-                document.getElementById("area-a").style.background = eval_decibel(data[0]);
-                document.getElementById("area-b").style.background = eval_decibel(data[1]);
-                document.getElementById("area-c").style.background = eval_decibel(data[2]);
-                document.getElementById("area-d").style.background = eval_decibel(data[3]);
-                document.getElementById("area-e").style.background = eval_decibel(data[4]);
-                document.getElementById("area-f").style.background = eval_decibel(data[5]);
-                document.getElementById("area-g").style.background = eval_decibel(data[6]);
-                document.getElementById("area-h").style.background = eval_decibel(data[7]);
-
-            });
         }
-
-        window.addEventListener('load', function () {
-            function eval_decibel(decibel) { //Farben noch richtig machen
-                if (decibel > 55) {             // beim ersten Mal laden direkt mit richtigen Werten und nicht alles grün
-                    return "rgba(220, 0, 0, 0.5)"
-                } else if (decibel > 50) {
-                    return "rgba(220, 220, 0, 0.5)"
-                } else {
-                    return "rgba(0, 158, 0, 0.5)"
-                }
-            }
+    
+        function refresh_overview() {
+            console.log(Date());
             $.post("/refresh_overview", function (data) {
                 document.getElementById("area-a").style.background = eval_decibel(data[0]);
                 document.getElementById("area-b").style.background = eval_decibel(data[1]);
@@ -182,26 +158,41 @@
                 document.getElementById("area-g").style.background = eval_decibel(data[6]);
                 document.getElementById("area-h").style.background = eval_decibel(data[7]);
             });
-        });
+            console.log(Date() + " nach Post");
+        }
+    
+        // $(document).ready(function () {
+        //     // refresh_overview(); // Call refresh_overview on page load
+        //     setInterval(refresh_overview, 10000);// Call refresh_overview every 10 seconds
+        // });
 
-        //Info
+        refresh_overview();
+
+        setInterval(refresh_overview, 10000);
+        
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     //refresh_overview();
+        //     setInterval(refresh_overview, 10000);
+        // });
+    
+        // Info
         // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
         document.getElementById("infoButton").addEventListener("click", function () {
             document.getElementById("infoModal").style.display = "block";
         });
-
+    
         // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
         document.getElementsByClassName("close")[0].addEventListener("click", function () {
             document.getElementById("infoModal").style.display = "none";
         });
-
+    
         window.onclick = function (event) {
             if (event.target == document.getElementById("infoModal")) {
                 document.getElementById("infoModal").style.display = "none";
             }
         };
-
     </script>
+    
 
 </body>
 

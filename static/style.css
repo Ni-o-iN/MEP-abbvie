@@ -190,7 +190,9 @@ input[type="datetime-local"] {
   height: 30%;
   bottom: 67%;
   left: 1.8%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -204,7 +206,9 @@ input[type="datetime-local"] {
   height: 25%;
   bottom: 5%;
   left: 1.8%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -218,7 +222,9 @@ input[type="datetime-local"] {
   height: 32%;
   bottom: 5%;
   left: 35%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -278,7 +284,9 @@ input[type="datetime-local"] {
   height: 30%;
   bottom: 67%;
   left: 1.8%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -292,7 +300,9 @@ input[type="datetime-local"] {
   height: 25%;
   bottom: 6%;
   left: 3%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -306,7 +316,9 @@ input[type="datetime-local"] {
   height: 25%;
   bottom: 6%;
   left: 26%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -320,7 +332,9 @@ input[type="datetime-local"] {
   height: 25%;
   bottom: 10%;
   left: 63%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
 }
@@ -334,7 +348,9 @@ input[type="datetime-local"] {
   height: 50%;
   bottom: 13%;
   left: 76%;
-  background-color: rgba(0, 158, 0, 0.5);
+  /* background-color: rgba(0, 158, 0, 0.5); */
+  background-color: rgb(119, 119, 119, 0.5);
+  transition: background-color 0.6s ease-in-out;
   color: black;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 25% 50%);
   font-size: calc(26px + (26 - 16) * ((100vw - 320px) / (1600 - 320)));
