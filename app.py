@@ -3,6 +3,7 @@ import mysql.connector
 import json
 import string
 import random
+import datetime
 
 #pip install Flask-APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -14,6 +15,12 @@ app = Flask(__name__)
 
 #Scheduler initialisieren
 scheduler = BackgroundScheduler()
+
+#globaler Counter für Warnstufe des Bereichs, globale aktuelle Zeit
+area_limits_global = {}
+daily_warning_counter = {}
+current_date = datetime.datetime.now().hour
+
 
 # MySQL connection configuration
 mysql_config = {
@@ -56,10 +63,6 @@ def send_email_warning(letter):
     except Exception as e:
         print("Fehler beim Senden der E-Mail-Benachrichtigung:", str(e))
 
-#globaler Counter für Warnstufe des Bereichs
-area_limits_global = {}
-daily_warning_counter = {}
-current_date = None
 
 #Berechnung Warnstufe der Bereiche
 def schedulerWarnung():
@@ -91,6 +94,7 @@ def schedulerWarnung():
     cur_warnung.execute(query_area_limit)
     result_area_limit = cur_warnung.fetchall()
 
+    reset_warning_counter()
 
     #Limit vergleichen mit berechnetem Average und dementsprechend globalen Counter hoch-/runterzählen
     for letter, average in averages.items():
@@ -103,7 +107,7 @@ def schedulerWarnung():
                     area_limits_global[letter] = 1
 
                 #falls in einem Bereich bereits 5 Warnungen gesendet wurden werden restlich ignoriert
-                if letter in daily_warning_counter and daily_warning_counter[letter] > 5:
+                if letter in daily_warning_counter and daily_warning_counter[letter] > 2:
                     print(f'Warnungslimit für Bereich {letter} erreicht')
                     if area_limits_global[letter] == 4:
                         area_limits_global[letter] = 0
@@ -129,6 +133,15 @@ def schedulerWarnung():
 
     cur_warnung.close()
     con_warnung.close()
+
+def reset_warning_counter():
+    global current_date
+    global daily_warning_counter
+
+    if datetime.datetime.now().hour > current_date:
+        daily_warning_counter = {}
+        current_date= datetime.datetime.now().hour
+
 
 #Scheduler Job und Trigger zuweisen
 scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, trigger = 'interval', seconds = 60)
