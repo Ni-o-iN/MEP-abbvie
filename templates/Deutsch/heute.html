@@ -14,7 +14,7 @@
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            Test
+            <img class="img-info" src="../../static/bilder/Info/Info-heute.jpg">
         </div>
     </div>
     <div class="container">
@@ -230,125 +230,6 @@
             });
         }
         $(document).ready(function () {
-            // var myChart = null;
-
-            // function updateChart(selectedOption1) {    // 2 is the secondOption
-            //     $.ajax({
-            //         url: '/get_chart_data',
-            //         method: 'POST',
-            //         contentType: 'application/json',
-            //         data: JSON.stringify({ 'selected_option1': selectedOption1 }),
-            //         success: function (response) {
-            //             // Handle the response and refresh the chart
-            //             var newData = response[0];
-            //             var newLabel = response[1];
-            //             var min_y = response[2];    //die beiden für später mit dem Graphen
-            //             var max_y = response[3];
-
-            //             // Clear the existing chart
-            //             if (myChart !== null) {
-            //                 myChart.destroy();
-            //             }
-
-            //             const bgcolors = ['rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
-            //             const statusTracker = {
-            //                 id: 'statusTracker',
-            //                 beforeDatasetsDraw(chart, args, pluginOptions) {
-            //                     const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-            //                     ctx.save();
-
-            //                     drawLines(50, bgcolors[0]);
-            //                     drawLines(55, bgcolors[1]);
-            //                     function drawLines(yValue, color) {
-            //                         ctx.beginPath();
-            //                         ctx.lineWidth = 5;
-            //                         ctx.strokeStyle = color;
-            //                         ctx.moveTo(left, y.getPixelForValue(yValue));
-            //                         ctx.lineTo(right, y.getPixelForValue(yValue));
-            //                         ctx.stroke();
-            //                         ctx.closePath();
-            //                         ctx.restore();
-            //                     }
-            //                 }
-            //             }
-
-            //             var ctx = document.getElementById('graph-fuer-tag').getContext('2d');
-            //             myChart = new Chart(ctx, {
-            //                 type: 'line',
-            //                 data: {
-            //                     labels: newLabel,
-            //                     datasets: [{
-            //                         label: 'Dezibel',
-            //                         data: newData,
-            //                         backgroundColor: 'rgb(70, 0, 250)',
-            //                         borderColor: 'rgb(70, 0, 250)',
-            //                         tension: 0.3,
-            //                         pointRadius: 5,
-            //                         pointHoverRadius: 7
-            //                     }]
-            //                 },
-            //                 options: {
-            //                     plugins: {
-            //                         legend: {
-            //                             display: false
-            //                         }
-            //                     },
-            //                     scales: {
-            //                         y: {
-            //                             min: 40,
-            //                             max: 90,
-            //                             position: 'right',
-            //                             title: {
-            //                                 display: true,
-            //                                 text: 'Dezibel',
-            //                                 color: 'black',
-            //                                 font: {
-            //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-            //                                     size: 20
-            //                                 }
-            //                             },
-            //                             ticks: {
-            //                                 color: 'black',
-            //                                 font: {
-            //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-            //                                     size: 20
-            //                                 }
-            //                             },
-            //                             grid: {
-            //                                 display: false
-            //                             }
-            //                         },
-            //                         x: {
-            //                             title: {
-            //                                 display: true,
-            //                                 text: 'Uhrzeit',
-            //                                 color: 'black',
-            //                                 font: {
-            //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-            //                                     size: 20
-            //                                 }
-            //                             },
-            //                             ticks: {
-            //                                 color: 'black',
-            //                                 font: {
-            //                                     family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-            //                                     size: 20
-            //                                 }
-            //                             },
-            //                             grid: {
-            //                                 display: false
-            //                             }
-            //                         }
-            //                     }
-            //                 },
-            //                 plugins: [statusTracker]
-            //             });
-            //         },
-            //         error: function (error) {
-            //             console.log(error);
-            //         }
-            //     });
-            // }
 
             $('#secondDropdown').on('change', function () {
                 var selectedOption2 = $(this).val();
