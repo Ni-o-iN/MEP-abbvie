@@ -30,7 +30,12 @@ mysql_config = {
     'database': 'calmvie',
     'raise_on_warnings': True
 }
-pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="mypool", pool_size=5, **mysql_config)
+pool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name="mypool", 
+    pool_size=10, 
+    pool_reset_session=True,# Adjust the maximum number of idle connections# Adjust the maximum connection lifetime in seconds
+    **mysql_config)
+
 #Funktion zur Mail Versendung
 def send_email_warning(letter):
     
@@ -69,70 +74,76 @@ def schedulerWarnung():
     #Verbindung zu MySQL server aufbauen und Query ausführen
     con_warnung = pool.get_connection()
     cur_warnung = con_warnung.cursor()
-    query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time >= NOW() - INTERVAL 60 SECOND;'
-    cur_warnung.execute(query_warnung)
-    result_warnung = cur_warnung.fetchall()
     
-    #Average der Werte für jeden Bereich berechnen
-    sums = {}
-    counts = {}
-    
-    for value, letter in result_warnung:
-        if letter in sums:
-            sums[letter] += value
-            counts[letter] += 1
-        else:
-            sums[letter] = value
-            counts[letter] = 1
-
-    averages = {letter: sums[letter] / counts[letter] for letter in sums}
-    print(averages)
-    
-    
-    #Query für Lautstärkelimit aller Bereiche ausführen
-    query_area_limit = 'SELECT DISTINCT area, soundlimit_yellow FROM soundmeter;'
-    cur_warnung.execute(query_area_limit)
-    result_area_limit = cur_warnung.fetchall()
-
-    reset_warning_counter()
-
-    #Limit vergleichen mit berechnetem Average und dementsprechend globalen Counter hoch-/runterzählen
-    for letter, average in averages.items():
-        limit = next((limit for l, limit in result_area_limit if l == letter), None)
-        if limit is not None:
-            if average > limit:
-                if letter in area_limits_global:
-                    area_limits_global[letter] += 1
-                else:
-                    area_limits_global[letter] = 1
-
-                #falls in einem Bereich bereits 5 Warnungen gesendet wurden werden restlich ignoriert
-                if letter in daily_warning_counter and daily_warning_counter[letter] > 2:
-                    print(f'Warnungslimit für Bereich {letter} erreicht')
-                    if area_limits_global[letter] == 4:
-                        area_limits_global[letter] = 0
-                    continue
-               
-                if area_limits_global[letter] == 4:
-                    print(f"Warnung: Der Bereich für den Buchstaben {letter} hat den Wert 4 erreicht!")
-                    send_email_warning(letter)
-                    
-                    if letter in daily_warning_counter:
-                        daily_warning_counter[letter] += 1
-                    else:
-                        daily_warning_counter[letter] = 1
-                    
-                    area_limits_global[letter] = 0
+    try:
+        query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time >= NOW() - INTERVAL 60 SECOND;'
+        cur_warnung.execute(query_warnung)
+        result_warnung = cur_warnung.fetchall()
+        
+        #Average der Werte für jeden Bereich berechnen
+        sums = {}
+        counts = {}
+        
+        for value, letter in result_warnung:
+            if letter in sums:
+                sums[letter] += value
+                counts[letter] += 1
             else:
-                if letter in area_limits_global and area_limits_global[letter] > 0:
-                    area_limits_global[letter] -= 1
-                elif letter not in area_limits_global:
-                    area_limits_global[letter] = 0
+                sums[letter] = value
+                counts[letter] = 1
+    
+        averages = {letter: sums[letter] / counts[letter] for letter in sums}
+        print(averages)
+        
+        
+        #Query für Lautstärkelimit aller Bereiche ausführen
+        query_area_limit = 'SELECT DISTINCT area, soundlimit_yellow FROM soundmeter;'
+        cur_warnung.execute(query_area_limit)
+        result_area_limit = cur_warnung.fetchall()
+    
+        reset_warning_counter()
+    
+        #Limit vergleichen mit berechnetem Average und dementsprechend globalen Counter hoch-/runterzählen
+        for letter, average in averages.items():
+            limit = next((limit for l, limit in result_area_limit if l == letter), None)
+            if limit is not None:
+                if average > limit:
+                    if letter in area_limits_global:
+                        area_limits_global[letter] += 1
+                    else:
+                        area_limits_global[letter] = 1
+    
+                    #falls in einem Bereich bereits 5 Warnungen gesendet wurden werden restlich ignoriert
+                    if letter in daily_warning_counter and daily_warning_counter[letter] > 2:
+                        print(f'Warnungslimit für Bereich {letter} erreicht')
+                        if area_limits_global[letter] == 4:
+                            area_limits_global[letter] = 0
+                        continue
+                   
+                    if area_limits_global[letter] == 4:
+                        print(f"Warnung: Der Bereich für den Buchstaben {letter} hat den Wert 4 erreicht!")
+                        send_email_warning(letter)
+                        
+                        if letter in daily_warning_counter:
+                            daily_warning_counter[letter] += 1
+                        else:
+                            daily_warning_counter[letter] = 1
+                        
+                        area_limits_global[letter] = 0
+                else:
+                    if letter in area_limits_global and area_limits_global[letter] > 0:
+                        area_limits_global[letter] -= 1
+                    elif letter not in area_limits_global:
+                        area_limits_global[letter] = 0
+    
+        print("Bereichslevel:", area_limits_global)
+    except Exception as e:
+        print("This is the error: ", e)
+    finally:
+        cur_warnung.close()
+        con_warnung.close()
 
-    print("Bereichslevel:", area_limits_global)
-
-    cur_warnung.close()
-    con_warnung.close()
+    
 
 def reset_warning_counter():
     global current_date
@@ -239,42 +250,49 @@ def get_chart_data():
     # Establish a connection to MySQL
     connection = pool.get_connection()
     cursor = connection.cursor()
-    query=0
-    if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
-        print("Monat geht auch hier rein")
-        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
-        if not selected_option and not selected_month:
-            return (0,0)
-        else:
-            cursor.execute(query, (selected_option,selected_month,selected_year))
-    elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
-        query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
-        if not selected_option:
-            return (0,0)
-        else:     
-            cursor.execute(query, (selected_option,))
-
-    # Retrieve the data
-    queryoutput = cursor.fetchall()
-    chart_data = json.dumps(queryoutput, default=str)
-    data = eval(chart_data)
-    # Process the retrieved data as needed
-    chart_data = []
-    chart_labels = []
     
-    for row in data:
-        # Assuming the chart data is in a specific column of the retrieved data
+    try:
+        query=0
         if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
-
-            chart_labels.append(row[0].split()[0].split("-")[2])
+            print("Monat geht auch hier rein")
+            query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
+            if not selected_option and not selected_month:
+                return (0,0)
+            else:
+                cursor.execute(query, (selected_option,selected_month,selected_year))
         elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
-            chart_labels.append(row[0].split()[1].split(":")[0])
-        chart_data.append(row[1])
+            query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
+            if not selected_option:
+                return (0,0)
+            else:     
+                cursor.execute(query, (selected_option,))
+    
+        # Retrieve the data
+        queryoutput = cursor.fetchall()
+        chart_data = json.dumps(queryoutput, default=str)
+        data = eval(chart_data)
+        # Process the retrieved data as needed
+        chart_data = []
+        chart_labels = []
         
-    print("monat geht auch hier rein")    
+        for row in data:
+            # Assuming the chart data is in a specific column of the retrieved data
+            if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+    
+                chart_labels.append(row[0].split()[0].split("-")[2])
+            elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
+                chart_labels.append(row[0].split()[1].split(":")[0])
+            chart_data.append(row[1])
+            
+        print("monat geht auch hier rein")
+    except Exception as e:
+        print("This is the error: ", e)
+    finally:
+        cursor.close()
+        connection.close()
+        
     # Close the MySQL connection
-    cursor.close()
-    connection.close()
+    
     unique_labels, averaged_data  = calculate_average(chart_data, chart_labels) #TODO: care when there is no data, still need to fix, handle with None type stuff
     if (averaged_data == []):
         return jsonify(averaged_data,unique_labels,)
@@ -318,38 +336,45 @@ def get_latest_data():
 
     connection = pool.get_connection()
     cursor = connection.cursor()    
-            
-    #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
-    #anpassen, dass durchschnitt von dem bereich kommt und nicht nur das letzte
-    query = """
-        SELECT s.area AS Area, AVG(m.value) AS value
-        FROM measurement m
-        JOIN soundmeter s ON m.soundmeter_id = s.id
-            WHERE s.area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
-            AND m.time IN (
-                SELECT MAX(time)
-                FROM measurement
-                WHERE soundmeter_id IN (SELECT id FROM soundmeter WHERE area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'))
-                GROUP BY soundmeter_id
-)
-GROUP BY s.area
-    """
-
-    cursor.execute(query)
-    results = cursor.fetchall()
-    data = [row[1] for row in results]
-    # data ={
-    #     'a':results[0],
-    #     'b':results[1],
-    #     'c':results[2],
-    #     'd':results[3],
-    #     'e':results[4],
-    #     'f':results[5],
-    #     'g':results[6],
-    #     'h':results[7],
-    # }
-    cursor.close()
-    connection.close()
+    
+    
+    try:
+        #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
+        #anpassen, dass durchschnitt von dem bereich kommt und nicht nur das letzte
+        query = """
+            SELECT s.area AS Area, AVG(m.value) AS value
+            FROM measurement m
+            JOIN soundmeter s ON m.soundmeter_id = s.id
+                WHERE s.area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
+                AND m.time IN (
+                    SELECT MAX(time)
+                    FROM measurement
+                    WHERE soundmeter_id IN (SELECT id FROM soundmeter WHERE area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'))
+                    GROUP BY soundmeter_id
+    )
+    GROUP BY s.area
+        """
+    
+        cursor.execute(query)
+        results = cursor.fetchall()
+        data = [row[1] for row in results]
+        # data ={
+        #     'a':results[0],
+        #     'b':results[1],
+        #     'c':results[2],
+        #     'd':results[3],
+        #     'e':results[4],
+        #     'f':results[5],
+        #     'g':results[6],
+        #     'h':results[7],
+        # }
+    except Exception as e:
+        print("This is the error: ", e)
+    finally:
+        cursor.close()
+        connection.close()
+    
+    
     return data
 
 @app.route('/refresh_overview', methods=['POST', 'GET'])
@@ -408,44 +433,51 @@ def download_excel():
     connection = pool.get_connection()
     cursor = connection.cursor()
     
-    ####
-    areas = [element.split("-")[1].upper() for element in ids]
-    placeholders = ', '.join(['%s'] * len(areas))
 
-    ####
-    query = f"""
-        SELECT s.area, m.value, m.time
-            FROM measurement m
-            JOIN soundmeter s ON m.soundmeter_id = s.id 
-            WHERE s.area IN ({placeholders})
-            AND m.time BETWEEN %s AND %s
-    """
-    print(query)
-    values = areas + [datetime1, datetime2]  # Concatenate the values into a single list
-    #print(values)
-    cursor.execute(query, values)
-
-    # Fetch all the rows from the result set
-    rows = cursor.fetchall()
+    try:
+        ####
+        areas = [element.split("-")[1].upper() for element in ids]
+        placeholders = ', '.join(['%s'] * len(areas))
     
-
-    # Create a new Excel workbook and get the active worksheet
-    workbook = Workbook()
-    worksheet = workbook.active
-
-    # Write the column headers
-    column_headers = [column[0] for column in cursor.description]
-    worksheet.append(column_headers)
-
-    # Write the data rows
-    for row in rows:
-        worksheet.append(row)
-
-    # Save the workbook
-    file_path = "./downloaded_data.xls"
-    workbook.save(file_path)
-    cursor.close()
-    connection.close()
+        ####
+        query = f"""
+            SELECT s.area, m.value, m.time
+                FROM measurement m
+                JOIN soundmeter s ON m.soundmeter_id = s.id 
+                WHERE s.area IN ({placeholders})
+                AND m.time BETWEEN %s AND %s
+        """
+        print(query)
+        values = areas + [datetime1, datetime2]  # Concatenate the values into a single list
+        #print(values)
+        cursor.execute(query, values)
+    
+        # Fetch all the rows from the result set
+        rows = cursor.fetchall()
+        
+    
+        # Create a new Excel workbook and get the active worksheet
+        workbook = Workbook()
+        worksheet = workbook.active
+    
+        # Write the column headers
+        column_headers = [column[0] for column in cursor.description]
+        worksheet.append(column_headers)
+    
+        # Write the data rows
+        for row in rows:
+            worksheet.append(row)
+    
+        # Save the workbook
+        file_path = "./downloaded_data.xls"
+        workbook.save(file_path)
+    except Exception as e:
+        print("This is the error: ", e)
+    finally:
+        cursor.close()
+        connection.close()
+    
+    
     return send_file(file_path, as_attachment=True)
 
 

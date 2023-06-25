@@ -300,10 +300,11 @@
                 updateSecondDropdown(); // Aktualisiere das zweite Dropdown-Menü basierend auf dem ausgewählten Stockwerk
                 secondDropdown.value = bereich;
                 secondDropdown.disabled = false; // Aktiviere das zweite Dropdown-Menü
+                checkSelectionDay();
+                updateChart(bereich);
             }
 
-            checkSelectionDay();
-            updateChart(bereich);
+            
 
             // setTimeout(() => {
             //     updateChart(secondDropdown.value);//Grund für Probleme bei Overview->Heute
