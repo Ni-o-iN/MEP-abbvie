@@ -23,6 +23,10 @@ h1 {
   font-size: 5rem;
 }
 
+h3 {
+  font-size: 3rem;
+}
+
 label {
   font-size: 2rem;
 }
@@ -453,75 +457,6 @@ input[type="datetime-local"] {
 
 
 
-/*EINSTELLUNGEN*/
-.settings-headline {
-  position: relative;
-  width: 100%;
-  background-color: rgb(136, 165, 255);
-  font-size: 3rem;
-  box-shadow: 0.2vw 0.5vw 0.37vw silver;
-  border-radius: 0.5vw;
-  text-align: center;
-}
-
-.settings-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: fit-content;
-  background-color: rgba(224, 226, 210, 0.6);
-  box-shadow: 0.2vw 0.5vw 0.37vw silver;
-  border-radius: 0.5vw;
-  margin-top: 1%;
-  margin-bottom: 2%;
-}
-
-.color-box-yellow {
-  width: 1.5vw;
-  height: 3vh;
-  background-color: rgb(255, 255, 0);
-  border-radius: 15%;
-  margin-right: 1%;
-}
-
-.color-box-red {
-  width: 1.5vw;
-  height: 3vh;
-  background-color: rgb(255, 0, 0);
-  border-radius: 15%;
-  margin-right: 1%;
-  margin-left: 2vw;
-}
-
-.volume-selection {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.volume-selection-input {
-  width: 4vw;
-  height: 2.5vh;
-}
-
-.decibel-label {
-  font-size: 2rem;
-  margin-right: 2vw;
-}
-
-#area-select {
-  font-size: 2rem;
-}
-
-#soundmeter {
-  font-size: 2rem;
-}
-
-
-
 /*DOWNLOAD*/
 .overview-download {
   width: 100%;
@@ -649,6 +584,73 @@ input[type="datetime-local"] {
   color: black;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 25% 50%);
   font-size: 4rem;
+}
+
+
+
+/*EINSTELLUNGEN*/
+.settings-headline {
+  text-align: center;
+  font-size: 3rem;
+  background-color: rgb(136, 165, 255);
+  box-shadow: 0.2vw 0.5vw 0.37vw silver;
+  border-radius: 0.5vw;
+}
+
+.settings-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  background-color: rgba(224, 226, 210, 0.6);
+  box-shadow: 0.2vw 0.5vw 0.37vw silver;
+  border-radius: 0.5vw;
+  margin-top: 1%;
+  margin-bottom: 2%;
+}
+
+.color-box-yellow {
+  width: 1.5vw;
+  height: 3vh;
+  background-color: rgb(255, 255, 0);
+  border-radius: 15%;
+  margin-right: 1%;
+}
+
+.color-box-red {
+  width: 1.5vw;
+  height: 3vh;
+  background-color: rgb(255, 0, 0);
+  border-radius: 15%;
+  margin-right: 1%;
+  margin-left: 2vw;
+}
+
+.volume-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.volume-selection-input {
+  width: 4vw;
+  height: 2.5vh;
+}
+
+.decibel-label {
+  font-size: 2rem;
+  margin-right: 2vw;
+}
+
+#area-select {
+  font-size: 2rem;
+}
+
+#soundmeter {
+  font-size: 2rem;
 }
 
 
