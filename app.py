@@ -189,14 +189,6 @@ def monat():
 def month():
     return render_template('Englisch/month.html')
 
-@app.route('/administration')
-def admin_german():
-    return render_template('Deutsch/admin.html')
-
-@app.route('/admin')
-def admin_english():
-    return render_template('Englisch/settings.html')
-
 @app.route('/downlaod')
 def download_german():
     return render_template('Deutsch/download.html')
@@ -204,6 +196,14 @@ def download_german():
 @app.route('/download_english')
 def download_english():
     return render_template('Englisch/download.html')
+
+@app.route('/administration')
+def admin_german():
+    return render_template('Deutsch/admin.html')
+
+@app.route('/admin')
+def admin_english():
+    return render_template('Englisch/settings.html')
 
 @app.route('/get_chart_data', methods=['POST'])
 def get_chart_data():

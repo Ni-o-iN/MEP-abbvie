@@ -84,7 +84,8 @@
                 </a>
                 <a href="{{url_for('monat')}}">
                     <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
-                    <span class="time-box">
+                </a>
+                <span class="time-box">
                         <input type="month" id="month_selection" onchange="checkSelectionMonth()"></input>
                         <!-- <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
                         <datalist id="months">
@@ -102,7 +103,6 @@
                             <option value="12"></option>
                         </datalist> -->
                     </span>
-                </a>
                 <div class="space-bottom"></div>
                 <a href="{{url_for('download_german')}}">
                     <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">

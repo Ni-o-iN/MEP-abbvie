@@ -80,120 +80,99 @@
             </div>
         </div>
         <div class="right">
-            <div class="settings">
-                <div class="settings-headline-block">
-                    <div class="settings-headline">
-                        Wann soll gemessen werden?
-                    </div>
-                    <form>
-                        <div class="settings-block">
-                            <p>
-                                <label for="start-time">Start der Messungen</label>
-                                <input type="time" id="start-time" name="start-time">
-                                <label for="end-time">Ende der Messungen</label>
-                                <input type="time" id="end-time" name="end-time">
-                            <p>
-                                <label for="start-pause">Beginn der Mittagspause</label>
-                                <input type="time" id="start-pause" name="start-pause">
-                                <label for="end-pause">Ende der Mittagspause</label>
-                                <input type="time" id="end-pause" name="end-pause">
-                            </p>
-                            <input type="submit" id="time-submit" type="submit" value="Speichern">
-                        </div>
-                    </form>
+            <div class="settings-headline">
+                Wann soll gemessen werden?
+            </div>
+            <div class="settings-block">
+                <p>
+                    <label for="start-time">Start der Messungen</label>
+                    <input type="time" id="start-time" name="start-time">
+                    <label for="end-time">Ende der Messungen</label>
+                    <input type="time" id="end-time" name="end-time">
+                <p>
+                    <label for="start-pause">Beginn der Mittagspause</label>
+                    <input type="time" id="start-pause" name="start-pause">
+                    <label for="end-pause">Ende der Mittagspause</label>
+                    <input type="time" id="end-pause" name="end-pause">
+                </p>
+                <input type="submit" id="time-submit" type="submit" value="Speichern">
+            </div>
+            <div class="settings-headline">
+                Lautstärkeschwellwerte für Bereich anpassen
+            </div>
+            <div class="settings-block">
+                <p class="row">
+                    <label for="area-select">Bereich</label>
+                    <select id="area-select" name="area-select">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                    </select>
+                <div class="volume-selection">
+                    <div class="color-box-yellow"></div>
+                    <input type="number" class="volume-selection-input" id="yellow-decibel" name="yellow-decibel"
+                        min="0">
+                    <label class="decibel-label" for="yellow-decibel">dB</label>
+                    <div class="color-box-red"></div>
+                    <input type="number" class="volume-selection-input" id="red-decibel" name="red-decibel" min="0">
+                    <label class="decibel-label" for="red-decibel">dB</label>
                 </div>
-                <div class="settings-headline-block">
-                    <div class="settings-headline">
-                        Lautstärkeschwellwerte für Bereich anpassen
-                    </div>
-                    <form>
-                        <div class="settings-block">
-                            <p class="row">
-                                <label for="area-select">Bereich</label>
-                                <select id="area-select" name="area-select">
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                    <option value="F">F</option>
-                                    <option value="G">G</option>
-                                </select>
-                            <div class="volume-selection">
-                                <div class="color-box-yellow"></div>
-                                <input type="number" class="volume-selection-input" id="yellow-decibel"
-                                    name="yellow-decibel" min="0">
-                                <label class="decibel-label" for="yellow-decibel">dB</label>
-                                <div class="color-box-red"></div>
-                                <input type="number" class="volume-selection-input" id="red-decibel" name="red-decibel"
-                                    min="0">
-                                <label class="decibel-label" for="red-decibel">dB</label>
-                            </div>
-                            </p>
-                            <input type="submit" id="volume-submit" type="submit" value="Speichern">
-                        </div>
-                    </form>
-                </div>
-                <div class="settings-headline-block">
-                    <div class="settings-headline">
-                        Wann sollen keine Benachrichtigungen bei einer Lautstärkeüberschreitung gesendet werden?
-                    </div>
-                    <div class="settings-block">
-                        <p>
-                            <label for="start-no-notification">abc</label>
-                            <input type="time" id="start-no-notification" name="start-no-notification">
-                            <label for="end-no-notification">def</label>
-                            <input type="time" id="end-no-notification" name="end-no-notification">
-                        </p>
-                        <input type="submit" id="no-notification-submit" type="submit" value="Speichern">
-                    </div>
-                </div>
-                <div class="settings-headline-block">
-                    <div class="settings-headline">
-                        Welches Messgerät wollen Sie entfernen?
-                    </div>
-                    <form>
-                        <div class="settings-block">
-                            <p class="row">
-                                <label for="soundmeter-id">Messgerät</label>
-                                <select id="soundmeter" name="soundmeter-id">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="...">...</option>
-                                </select>
-                            </p>
-                            <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
-                        </div>
-                    </form>
-                </div>
-                <div class="setting-headline-block">
-                    <div class="settings-headline">
-                        Was für ein Messgerät wollen Sie hinzufügen?
-                    </div>
-                    <form>
-                        <div class="settings-block">
-                            <p class="row">
-                                <label for="soundmeter-id">Messgerät</label>
-                                <select id="soundmeter" name="soundmeter-id">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="...">...</option>
-                                </select>
-                            </p>
-                            <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
-                        </div>
-                    </form>
-                </div>
+                </p>
+                <input type="submit" id="volume-submit" type="submit" value="Speichern">
+            </div>
+            <div class="settings-headline">
+                Wann sollen keine Benachrichtigungen bei einer Lautstärkeüberschreitung gesendet werden?
+            </div>
+            <div class="settings-block">
+                <p>
+                    <label for="start-no-notification">abc</label>
+                    <input type="time" id="start-no-notification" name="start-no-notification">
+                    <label for="end-no-notification">def</label>
+                    <input type="time" id="end-no-notification" name="end-no-notification">
+                </p>
+                <input type="submit" id="no-notification-submit" type="submit" value="Speichern">
+            </div>
+            <div class="settings-headline">
+                Welches Messgerät wollen Sie entfernen?
+            </div>
+            <div class="settings-block">
+                <p class="row">
+                    <label for="soundmeter-id">Messgerät</label>
+                    <select id="soundmeter" name="soundmeter-id">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="...">...</option>
+                    </select>
+                </p>
+                <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
+            </div>
+            <div class="settings-headline">
+                Was für ein Messgerät wollen Sie hinzufügen?
+            </div>
+            <div class="settings-block">
+                <p class="row">
+                    <label for="soundmeter-id">Messgerät</label>
+                    <select id="soundmeter" name="soundmeter-id">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="...">...</option>
+                    </select>
+                </p>
+                <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
             </div>
         </div>
 
