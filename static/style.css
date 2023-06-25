@@ -639,12 +639,30 @@ input[type="datetime-local"] {
 
 #start-no-notification {
   margin-right: 5%;
-  width: 7vw;
+  width: 10vw;
+  font-size: 1rem;
 }
 
 #end-no-notification {
   margin-left: 5%;
-  width: 7vw;
+  width: 10vw;
+  font-size: 1rem;
+}
+
+#start-time {
+  font-size: 1rem;
+}
+
+#end-time {
+  font-size: 1rem;
+}
+
+#start-pause {
+  font-size: 1rem;
+}
+
+#end-pause {
+  font-size: 1rem;
 }
 
 
