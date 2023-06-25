@@ -112,15 +112,8 @@
                         <option value="F">F</option>
                         <option value="G">G</option>
                     </select>
-                <div class="volume-selection">
-                    <div class="color-box-yellow"></div>
-                    <input type="number" class="volume-selection-input" id="yellow-decibel" name="yellow-decibel"
-                        min="0">
-                    <label class="decibel-label" for="yellow-decibel">dB</label>
-                    <div class="color-box-red"></div>
-                    <input type="number" class="volume-selection-input" id="red-decibel" name="red-decibel" min="0">
-                    <label class="decibel-label" for="red-decibel">dB</label>
-                </div>
+                    <input id="volume-selection-input" type="number" min="0">
+                    <label id="decibel-label">dB</label>
                 </p>
                 <input type="submit" id="volume-submit" type="submit" value="Speichern">
             </div>
@@ -128,11 +121,14 @@
                 Wann sollen keine Benachrichtigungen bei einer Lautstärkeüberschreitung gesendet werden?
             </div>
             <div class="settings-block">
-                <p>
-                    <label for="start-no-notification">abc</label>
+                <p class="row">
+                    <label for="start-no-notification"></label>
                     <input type="time" id="start-no-notification" name="start-no-notification">
-                    <label for="end-no-notification">def</label>
+                    <span id="line"> - </span>
+                    <label for="end-no-notification"></label>
                     <input type="time" id="end-no-notification" name="end-no-notification">
+                    <input id="reason" type="text">
+                    <label>Grund</label>
                 </p>
                 <input type="submit" id="no-notification-submit" type="submit" value="Speichern">
             </div>
@@ -150,29 +146,39 @@
                         <option value="5">5</option>
                         <option value="6">6</option>
                         <option value="7">7</option>
-                        <option value="...">...</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
                     </select>
                 </p>
                 <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
             </div>
             <div class="settings-headline">
-                Was für ein Messgerät wollen Sie hinzufügen?
+                Messgerät hinzufügen:
             </div>
             <div class="settings-block">
                 <p class="row">
                     <label for="soundmeter-id">Messgerät</label>
                     <select id="soundmeter" name="soundmeter-id">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="...">...</option>
+                        <option value="26">26</option>
                     </select>
                 </p>
-                <input type="submit" id="soundmeter-delete-submit" type="submit" value="Entfernen">
+                <input type="submit" id="soundmeter-delete-submit" type="submit" value="Hinzufügen">
             </div>
         </div>
 
