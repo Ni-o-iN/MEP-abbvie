@@ -320,8 +320,9 @@ def get_latest_data():
     cursor = connection.cursor()    
             
     #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
+    #anpassen, dass durchschnitt von dem bereich kommt und nicht nur das letzte
     query = """
-        SELECT s.area, m.value
+        SELECT s.area AS Area, AVG(m.value) AS value
         FROM measurement m
         JOIN soundmeter s ON m.soundmeter_id = s.id
             WHERE s.area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
@@ -331,6 +332,7 @@ def get_latest_data():
                 WHERE soundmeter_id IN (SELECT id FROM soundmeter WHERE area IN ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'))
                 GROUP BY soundmeter_id
 )
+GROUP BY s.area
     """
 
     cursor.execute(query)
