@@ -100,7 +100,7 @@ def schedulerWarnung():
         
         
         #Query für Lautstärkelimit aller Bereiche ausführen
-        query_area_limit = 'SELECT DISTINCT area, soundlimit_yellow FROM soundmeter;'
+        query_area_limit = 'SELECT DISTINCT area, soundlimit FROM soundmeter;'
         cur_warnung.execute(query_area_limit)
         result_area_limit = cur_warnung.fetchall()
     
