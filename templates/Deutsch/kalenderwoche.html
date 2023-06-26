@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -26,9 +29,7 @@
                 </p>
                 <p>
                     Kalender&shywoche
-                    <span class="time-box">
-                        <input type="week" id="month_selection">
-                    </span>
+                    <input type="week" id="week_selection">
                 </p>
                 <p>
                     <a href="{{url_for('monat')}}">Monat</a>
@@ -105,7 +106,7 @@
                 </div>
             </div>
             <div class="today-week-month-display">
-                KW: 15, &nbsp; Zeitraum: 10.04.23 - 14.04.23
+                <div id="info_for_week">KW: 15, &nbsp; Zeitraum: 10.04.23 - 14.04.23</div>
                 <div class="legend-box">
                     <button id="mo" onclick="toggleData(0, 'button1', 'mo')" class="item">
                         <span id="button1Text">Montag</span>
@@ -131,9 +132,465 @@
     </div>
 
     <!-- Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="{{url_for('static', filename='Scripts/week.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='Scripts/week.js')}}"></script> -->
     <!---->
+
+    <script>
+        var myChart = null;
+        $(document).ready(function () {
+            function updateChart(selectedOption1, selectedOption2) {
+                $.ajax({
+                    url: '/get_week_chart_data',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'selected_option1': selectedOption1, 'selected_option2': selectedOption2 }),
+                    success: function (response) {
+                        // Handle the response and refresh the chart
+                        var data_dict = response[0];
+                        var date_monday = response[1];
+                        var date_friday = response[2];
+
+                        var monday_split =date_monday.split("-");
+                        date_monday = monday_split[2] + "." + monday_split[1] + "." + monday_split[0];
+                        var friday_split =date_friday.split("-");
+                        date_friday = friday_split[2] + "." + friday_split[1] + "." + friday_split[0];
+
+                        var week = response[3];
+
+                        console.log(data_dict);
+                        console.log(date_monday);
+                        console.log(date_friday);
+                        console.log(week);
+
+
+                        // Clear the existing chart
+                        if (myChart !== null) {
+                            myChart.destroy();
+                        }
+                        console.log("before innerHTML")
+                        var displayElement = document.querySelector('#info_for_week');
+                        displayElement.innerHTML = ("KW: " + week + ",  Zeitraum: " + date_monday + " - " + date_friday);
+                        //document.getElementsByClassName('today-week-month-display').innerHTML[0] = ("KW: " + week + ",  Zeitraum: " + date_monday + " - " + date_friday);
+                        console.log("after innerHTML")
+                        const bgcolors = ['rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
+                        const statusTracker = {
+                            id: 'statusTracker',
+                            beforeDatasetsDraw(chart, args, pluginOptions) {
+                                const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                                ctx.save();
+
+                                drawLines(50, bgcolors[0]);
+                                drawLines(55, bgcolors[1]);
+                                function drawLines(yValue, color) {
+                                    ctx.beginPath();
+                                    ctx.lineWidth = 5;
+                                    ctx.strokeStyle = color;
+                                    ctx.moveTo(left, y.getPixelForValue(yValue));
+                                    ctx.lineTo(right, y.getPixelForValue(yValue));
+                                    ctx.stroke();
+                                    ctx.closePath();
+                                    ctx.restore();
+                                }
+                            }
+                        }
+
+
+                        const woche = document.getElementById('graph-fuer-woche');
+                        Chart.defaults.font.size = 18;
+                        myChart = new Chart(woche, {
+                            type: 'line',
+                            data: {
+                                labels: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                                datasets: [{
+                                    label: 'Montag',
+                                    borderColor: 'rgb(70, 0, 250)',
+                                    backgroundColor: 'rgb(70, 0, 250)',
+                                    data: Object.values(data_dict["Monday"]),
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                },
+                                {
+                                    label: 'Dienstag',
+                                    borderColor: 'rgb(135, 206, 250)',
+                                    backgroundColor: 'rgb(135, 206, 250)',
+                                    data: Object.values(data_dict["Tuesday"]),
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                },
+                                {
+                                    label: 'Mittwoch',
+                                    borderColor: 'rgb(64, 224, 208)',
+                                    backgroundColor: 'rgb(64, 224, 208)',
+                                    data: Object.values(data_dict["Wednesday"]),
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                },
+                                {
+                                    label: 'Donnerstag',
+                                    borderColor: 'rgb(150, 131, 236)',
+                                    backgroundColor: 'rgb(150, 131, 236)',
+                                    data: Object.values(data_dict["Thursday"]),
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                },
+                                {
+                                    label: 'Freitag',
+                                    borderColor: 'rgb(204, 204, 255)',
+                                    backgroundColor: 'rgb(204, 204, 255)',
+                                    data: Object.values(data_dict["Friday"]),
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                }]
+                            },
+                            options: {
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        min: 40,
+                                        max: 90,
+                                        position: 'right',
+                                        title: {
+                                            display: true,
+                                            color: 'black',
+                                            text: 'Dezibel',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false // Raster für y-Achse ausblenden
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            color: 'black',
+                                            text: 'Uhrzeit',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false // Raster für y-Achse ausblenden
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: [statusTracker, /*Chart.pluginService*/]
+                        });
+
+                        // Chart.plugins.register({
+                        //     afterDraw: function (chart) {
+                        //         var ctx = chart.ctx;
+                        //         var data = chart.config.data;
+
+                        //         if (data.datasets.length === 0 || data.labels.length === 0) {
+                        //             ctx.font = "20px Arial";
+                        //             ctx.fillStyle = "black";
+                        //             ctx.textAlign = "center";
+                        //             ctx.fillText("NO DATA", chart.width / 2, chart.height / 2);
+                        //         }
+                        //     }
+                        // });
+
+                        const legendColors = ['rgb(70, 0, 250)', 'rgb(135, 206, 250)', 'rgb(64, 224, 208)', 'rgb(150, 131, 236)', 'rgb(204, 204, 255)']
+                        const shortDays = ['Mo', 'Di', 'Mi', 'Do', 'Fr']
+                        const longDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
+
+                        //Legt Hintergrundfarbe der Legende dynamisch an
+                        document.getElementById('mo').style.backgroundColor = myChart.data.datasets[0].backgroundColor;
+                        document.getElementById('di').style.backgroundColor = myChart.data.datasets[1].backgroundColor;
+                        document.getElementById('mi').style.backgroundColor = myChart.data.datasets[2].backgroundColor;
+                        document.getElementById('do').style.backgroundColor = myChart.data.datasets[3].backgroundColor;
+                        document.getElementById('fr').style.backgroundColor = myChart.data.datasets[4].backgroundColor;
+
+                        // function toggleData(value, buttonId, day, short) {
+                        //     const visibiltyData = myChart.isDatasetVisible(value);
+                        //     var textElement = document.getElementById(buttonId + "Text");
+                        //     if (visibiltyData === true) {
+                        //         myChart.hide(value);
+                        //         textElement.classList.add("strikethrough");
+                        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+                        //     }
+                        //     else {
+                        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+                        //     }
+                        //     if (visibiltyData === false) {
+                        //         myChart.show(value);
+                        //         textElement.classList.remove("strikethrough");
+                        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+                        //     }
+                        // }
+
+
+                        // var mondayButton = document.getElementById("button1Text");
+                        // var tuesdayButton = document.getElementById("button2Text");
+                        // var wednesdayButton = document.getElementById("button3Text");
+                        // var thursdayButton = document.getElementById("button4Text");
+                        // var fridayButton = document.getElementById("button5Text");
+
+                        // function updateButtonContent() {
+                        //     var windowWidth = window.innerWidth;
+
+                        //     if (windowWidth < 1300) {
+                        //         mondayButton.textContent = "Mo";
+                        //         tuesdayButton.textContent = "Di";
+                        //         wednesdayButton.textContent = "Mi";
+                        //         thursdayButton.textContent = "Do";
+                        //         fridayButton.textContent = "Fr";
+                        //     } else {
+                        //         mondayButton.textContent = "Montag";
+                        //         tuesdayButton.textContent = "Dienstag";
+                        //         wednesdayButton.textContent = "Mittwoch";
+                        //         thursdayButton.textContent = "Donnerstag";
+                        //         fridayButton.textContent = "Freitag";
+                        //     }
+                        // }
+
+                        // window.addEventListener("resize", updateButtonContent);
+                        // updateButtonContent();
+
+
+
+
+                        // //Entfernen oder hinzufügen einer Linie bei Englsich
+                        // function toggleDataE(value, buttonId, day) {
+                        //     const visibiltyData = myChartE.isDatasetVisible(value);
+                        //     var textElement = document.getElementById(buttonId + "Text");
+                        //     if (visibiltyData === true) {
+                        //         myChartE.hide(value);
+                        //         textElement.classList.add("strikethrough");
+                        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+                        //     }
+                        //     else {
+                        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+                        //     }
+                        //     if (visibiltyData === false) {
+                        //         myChartE.show(value);
+                        //         textElement.classList.remove("strikethrough");
+                        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+                        //     }
+                        // }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+            //hier kommen die .on('change') hin
+            $('#week_selection').on('change', function () {
+                var selectedOption1 = $(this).val();
+                var selectedOption2 = $('#secondDropdown').val();
+                if (selectedOption1 && selectedOption2) {
+                    // document.getElementsByClassName("today-week-month-display").style.display = 'block';
+                    console.log("If in week_selection");
+                    updateChart(selectedOption1, selectedOption2);
+                }
+            });
+
+            $('#secondDropdown').on('change', function () {
+                var selectedOption2 = $(this).val();
+                var selectedOption1 = $('#week_selection').val();
+                if (selectedOption1 && selectedOption2) {
+                    // document.getElementsByClassName("today-week-month-display").style.display = 'block';
+                    console.log("If in secondDropdown");
+                    updateChart(selectedOption1, selectedOption2);
+                }
+            });
+        });
+
+        const legendColors = ['rgb(70, 0, 250)', 'rgb(135, 206, 250)', 'rgb(64, 224, 208)', 'rgb(150, 131, 236)', 'rgb(204, 204, 255)']
+        const shortDays = ['Mo', 'Di', 'Mi', 'Do', 'Fr']
+        const longDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
+
+        //Legt Hintergrundfarbe der Legende dynamisch an
+        document.getElementById('mo').style.backgroundColor = myChart.data.datasets[0].backgroundColor;
+        document.getElementById('di').style.backgroundColor = myChart.data.datasets[1].backgroundColor;
+        document.getElementById('mi').style.backgroundColor = myChart.data.datasets[2].backgroundColor;
+        document.getElementById('do').style.backgroundColor = myChart.data.datasets[3].backgroundColor;
+        document.getElementById('fr').style.backgroundColor = myChart.data.datasets[4].backgroundColor;
+
+        function toggleData(value, buttonId, day, short) {
+            const visibiltyData = myChart.isDatasetVisible(value);
+            var textElement = document.getElementById(buttonId + "Text");
+            if (visibiltyData === true) {
+                myChart.hide(value);
+                textElement.classList.add("strikethrough");
+                document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+            }
+            else {
+                document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+            }
+            if (visibiltyData === false) {
+                myChart.show(value);
+                textElement.classList.remove("strikethrough");
+                document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+            }
+        }
+
+
+        var mondayButton = document.getElementById("button1Text");
+        var tuesdayButton = document.getElementById("button2Text");
+        var wednesdayButton = document.getElementById("button3Text");
+        var thursdayButton = document.getElementById("button4Text");
+        var fridayButton = document.getElementById("button5Text");
+
+        function updateButtonContent() {
+            var windowWidth = window.innerWidth;
+
+            if (windowWidth < 1300) {
+                mondayButton.textContent = "Mo";
+                tuesdayButton.textContent = "Di";
+                wednesdayButton.textContent = "Mi";
+                thursdayButton.textContent = "Do";
+                fridayButton.textContent = "Fr";
+            } else {
+                mondayButton.textContent = "Montag";
+                tuesdayButton.textContent = "Dienstag";
+                wednesdayButton.textContent = "Mittwoch";
+                thursdayButton.textContent = "Donnerstag";
+                fridayButton.textContent = "Freitag";
+            }
+        }
+
+        window.addEventListener("resize", updateButtonContent);
+        updateButtonContent();
+
+
+
+
+        // //Entfernen oder hinzufügen einer Linie bei Englsich
+        // function toggleDataE(value, buttonId, day) {
+        //     const visibiltyData = myChartE.isDatasetVisible(value);
+        //     var textElement = document.getElementById(buttonId + "Text");
+        //     if (visibiltyData === true) {
+        //         myChartE.hide(value);
+        //         textElement.classList.add("strikethrough");
+        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+        //     }
+        //     else {
+        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+        //     }
+        //     if (visibiltyData === false) {
+        //         myChartE.show(value);
+        //         textElement.classList.remove("strikethrough");
+        //         document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+        //     }
+        // }
+
+
+        //DROP DOWN MENÜS
+        function updateSecondDropdown() {
+            const firstDropdown = document.getElementById('firstDropdown');
+            const secondDropdown = document.getElementById('secondDropdown');
+
+            // Optionen im zweiten Dropdown-Menü basierend auf Auswahl im ersten Dropdown aktualisieren
+            if (firstDropdown.value === 'floor1') {
+                secondDropdown.innerHTML = `
+        <option value="" disabled selected hidden></option>
+        <option value="area-a">A</option>
+        <option value="area-b">B</option>
+        <option value="area-c">C</option>
+      `;
+            } else if (firstDropdown.value === 'floor2') {
+                secondDropdown.innerHTML = `
+        <option value="" disabled selected hidden></option>
+        <option value="area-d">D</option>
+        <option value="area-e">E</option>
+        <option value="area-f">F</option>
+        <option value="area-g">G</option>
+        <option value="area-h">H</option>
+      `;
+            }
+            // Aktiviere das zweite Dropdown-Menü, falls eine Option ausgewählt wurde
+            secondDropdown.disabled = firstDropdown.value === '';
+        }
+
+        //STOCKWERK UND BEREICH SICHTBAR MACHEN
+        function checkSelectionWeek() {
+            const firstDropdown = document.getElementById('firstDropdown');
+            const secondDropdown = document.getElementById('secondDropdown');
+            const week = document.getElementsByClassName('today-week-month-display');
+
+            if (firstDropdown.value !== '' && secondDropdown.value !== '') {
+                for (let i = 0; i < week.length; i++) {
+                    week[i].style.display = 'flex';
+                }
+            } else {
+                for (let i = 0; i < week.length; i++) {
+                    week[i].style.display = 'none';
+                }
+            }
+        }
+
+        //FLAGGE
+        function showOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'inline';
+        }
+        function hideOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'none';
+        }
+
+        //Info
+        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+        document.getElementById("infoButton").addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "block";
+        });
+
+        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+        document.getElementsByClassName("close")[0].addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("infoModal")) {
+                document.getElementById("infoModal").style.display = "none";
+            }
+        };
+
+        //Hamburger Menü
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('open');
+        }
+
+        window.addEventListener('resize', function () {
+            const menu = document.querySelector('.menu');
+            if (window.innerWidth > 700) {
+                menu.classList.remove('open');
+            }
+        });
+
+
+        // hier kommt der restliche Week.js Teil hin
+    </script>
 
 </body>
 

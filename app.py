@@ -5,11 +5,14 @@ import mysql.connector.pooling
 import string
 import random
 import datetime
+from datetime import timedelta
 #pip install Flask-APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 import smtplib
 from email.mime.text import MIMEText
 from openpyxl import Workbook
+from dateutil.parser import parse
+from collections import defaultdict
 
 app = Flask(__name__)
 
@@ -216,6 +219,187 @@ def admin_german():
 def admin_english():
     return render_template('Englisch/settings.html')
 
+@app.route('/get_week_chart_data', methods=['POST'])
+def get_week_chart_data():
+    selected_option = request.json['selected_option1'] #week
+    selected_option2 = request.json['selected_option2']  #area
+
+    match selected_option2:
+        case "area-a":
+            selected_option2 ="A"
+        case "area-b":
+            selected_option2 ="B"
+        case "area-c":
+            selected_option2 ="C"
+        case "area-d":
+            selected_option2 ="D"
+        case "area-e":
+            selected_option2 ="E"
+        case "area-f":
+            selected_option2 ="F"
+        case "area-g":
+            selected_option2 ="G"
+        case "area-h":
+            selected_option2 ="H"
+    date_monday,date_tuesday, date_wednesday, date_thursday, date_friday, week = format_week_dates(selected_option)
+
+    connection = pool.get_connection()
+    cursor = connection.cursor()
+
+    try:
+
+        query ="SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND time BETWEEN %s AND %s;"
+        #query ="SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND time IN(%s,%s,%s,%s,%s);"
+        if(not selected_option2 or not date_monday or not date_friday):
+            return(0,0,0)
+        else:
+            cursor = connection.cursor(dictionary=True)
+
+            cursor.execute(query,(selected_option2, date_monday, date_friday, ))
+            # Create dictionaries to store values and times for each day
+            days = {
+                "Monday": {"times": [], "values": []},
+                "Tuesday": {"times": [], "values": []},
+                "Wednesday": {"times": [], "values": []},
+                "Thursday": {"times": [], "values": []},
+                "Friday": {"times": [], "values": []},
+                "Saturday": {"times": [], "values": []},
+                "Sunday": {"times": [], "values": []}
+            }
+
+            # Process the query results
+            for row in cursor.fetchall():
+                datetime_value = row['time']
+                date = datetime_value.date()
+                day_name = date.strftime("%A")
+
+                # Append the time and value to the corresponding day's arrays
+                days[day_name]["times"].append(datetime_value.time())
+                days[day_name]["values"].append(row['value'])
+
+            # # Print the times and values for each day
+            # for day, data in days.items():
+            #     print(day)
+            #     times = data["times"]   # die als chart_data nutzen?
+            #     values = data["values"] # die als chart_data nutzen?
+            #     for i in range(len(times)):
+            #         print(times[i], values[i])
+            #     print()
+
+        monday_data={
+            "labels": days["Monday"]["times"],
+            "values": days["Monday"]["values"]
+        }
+
+        tuesday_data={
+            "labels": days["Tuesday"]["times"],
+            "values": days["Tuesday"]["values"]
+        }
+
+        wednesday_data={
+            "labels": days["Wednesday"]["times"],
+            "values": days["Wednesday"]["values"]
+        }
+
+        thursday_data={
+            "labels": days["Thursday"]["times"],
+            "values": days["Thursday"]["values"]
+        }
+
+        friday_data={
+            "labels": days["Friday"]["times"],
+            "values": days["Friday"]["values"]
+        }
+
+        formatted_days = {}
+
+        # Iterate over each day
+        for day, data in days.items():
+            times = data["times"]
+            values = data["values"]
+            
+            # Convert times to the desired format
+            formatted_times = [datetime.datetime.strptime(str(time), "%H:%M:%S").strftime("%H:00") for time in times]
+
+            # Create a new dictionary entry with formatted times and values
+            formatted_days[day] = {"times": formatted_times, "values": values}
+
+            #print(formatted_days)
+
+            # averaged_values = defaultdict(list)
+
+            # # Iterate over each day
+            # for day, data in formatted_days.items():
+            #     times = data["times"]
+            #     values = data["values"]
+                
+            #     # Iterate over each label and value
+            #     for time, value in zip(times, values):
+            #         averaged_values[time].append(value)
+
+            # # Calculate the average for each time
+            # averages = {time: sum(values) / len(values) for time, values in averaged_values.items()}
+
+            # # Create a new dictionary with time-labels, averages, and their corresponding days
+            # averaged_data = {"days": list(formatted_days.keys()), "times": list(averages.keys()), "averages": list(averages.values())}
+
+            # print(averaged_data)
+
+            averaged_data = {}
+
+            # Iterate over each day
+            for day, data in formatted_days.items():
+                times = data["times"]
+                values = data["values"]
+                
+                # Initialize variables to calculate average
+                average_sum = 0
+                count = 0
+                hourly_averages = {}  # Dictionary to store hourly averages for the specific day
+                
+                # Iterate over each label and value
+                for time, value in zip(times, values):
+                    # Check if the label is in the format "hh:xx"
+                    if time[-5:-3].isdigit() and time[-2:] == "00":
+                        hour = time[-5:-3]
+                        average_sum += value
+                        count += 1
+                        hourly_averages[hour] = round(average_sum / count)
+
+                # Add 0 values for hours with no data between 8:00 and 17:00
+                for hour in range(8, 18):
+                    hour_str = str(hour).zfill(2)
+                    if hour_str not in hourly_averages:
+                        hourly_averages[hour_str] = 0    
+                
+                # Store the hourly averages for the specific day
+                averaged_data[day] = hourly_averages
+
+            #print(averaged_data)
+            desired_labels = [str(hour).zfill(2) for hour in range(8, 18)]
+
+            # Filter out labels not within the desired range for each day
+            filtered_data = {}
+            for day, labels in averaged_data.items():
+                filtered_labels = {label: value for label, value in labels.items() if label in desired_labels}
+                filtered_data[day] = filtered_labels
+
+    
+
+
+        
+
+    except Exception as e:
+        print("This is the error: ", e)
+
+    finally:
+        connection.close()
+        cursor.close()
+
+    chart_data = json.dumps(filtered_data, default=str)
+    chart_data = eval(chart_data)
+    return jsonify(chart_data, date_monday, date_friday, week)
+
 @app.route('/get_chart_data', methods=['POST'])
 def get_chart_data():
 
@@ -246,7 +430,7 @@ def get_chart_data():
             case "area-h":
                     selected_option ="H"
 
-
+    
     # Establish a connection to MySQL
     connection = pool.get_connection()
     cursor = connection.cursor()
@@ -254,19 +438,18 @@ def get_chart_data():
     try:
         query=0
         if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
-            print("Monat geht auch hier rein")
             query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
-            if not selected_option and not selected_month:
+            if(not selected_option or not selected_month):
                 return (0,0)
             else:
                 cursor.execute(query, (selected_option,selected_month,selected_year))
         elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
             query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
-            if not selected_option:
+            if(not selected_option):
                 return (0,0)
             else:     
                 cursor.execute(query, (selected_option,))
-    
+        
         # Retrieve the data
         queryoutput = cursor.fetchall()
         chart_data = json.dumps(queryoutput, default=str)
@@ -278,21 +461,20 @@ def get_chart_data():
         for row in data:
             # Assuming the chart data is in a specific column of the retrieved data
             if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
-    
                 chart_labels.append(row[0].split()[0].split("-")[2])
             elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
                 chart_labels.append(row[0].split()[1].split(":")[0])
+                print(chart_labels)
+                
             chart_data.append(row[1])
-            
-        print("monat geht auch hier rein")
+
     except Exception as e:
         print("This is the error: ", e)
     finally:
+        # Close the MySQL connection
         cursor.close()
         connection.close()
-        
-    # Close the MySQL connection
-    
+
     unique_labels, averaged_data  = calculate_average(chart_data, chart_labels) #TODO: care when there is no data, still need to fix, handle with None type stuff
     if (averaged_data == []):
         return jsonify(averaged_data,unique_labels,)
@@ -480,6 +662,25 @@ def download_excel():
     
     return send_file(file_path, as_attachment=True)
 
+def format_week_dates(week_value):
+    # Splitting the week value into year and week parts
+    year, week = map(int, week_value.split('-W'))
+
+    # Calculating the first day (Monday) and fifth day (Friday)
+    first_day = datetime.datetime.strptime(f"{year}-W{week}-1", "%Y-W%W-%w")
+    second_day = first_day + timedelta(days=1)
+    third_day = first_day + timedelta(days=2)
+    fourth_day = first_day + timedelta(days=3)
+    fifth_day = first_day + timedelta(days=4)
+    
+    # Formatting the dates as YYYY-MM-DD
+    first_day_formatted = first_day.strftime("%Y-%m-%d")
+    second_day_formatted = second_day.strftime("%Y-%m-%d")
+    third_day_formatted = third_day.strftime("%Y-%m-%d")
+    fourth_day_formatted = fourth_day.strftime("%Y-%m-%d")
+    fifth_day_formatted = fifth_day.strftime("%Y-%m-%d")
+    
+    return first_day_formatted, second_day_formatted, third_day_formatted, fourth_day_formatted, fifth_day_formatted, week
 
 if __name__ == '__main__':
     #scheduler.start()
