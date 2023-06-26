@@ -160,7 +160,17 @@
                                 ctx.closePath();
                                 ctx.restore();
                             }
-                        }
+                        },
+                        afterDatasetsDraw: ((chart, args, plugins) => {
+                            const { ctx, data, chartArea: {top, bottom, left, right, width, height}} = chart;
+                            ctx.save;
+
+                            if(myChart.data.datasets[0].data.length === 0) {
+                                ctx.font = 'bold 30px sans-serif';
+                                ctx.textalign = 'center';
+                                ctx.fillText('Keine Daten verfügbar', width / 4, top + height / 2)
+                            }  
+                        })
                     }
 
                     var ctx = document.getElementById('graph-fuer-tag').getContext('2d');
@@ -232,7 +242,7 @@
                                 }
                             }
                         },
-                        plugins: [statusTracker]
+                        plugins: [statusTracker],
                     });
                 },
                 error: function (error) {
