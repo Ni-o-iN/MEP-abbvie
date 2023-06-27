@@ -15,15 +15,27 @@
         <div id="infoModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-kalenderwoche.jpg')}}">
+                <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-calendar-week.jpg')}}">
+                <!--<div class="info-floor">
+                    2. Choose a floor.
+                </div>
+                <div class="info-area">
+                    3. An area can be selected only after you have selected a floor.
+                </div>
+                <div class="info-weekpicker">
+                    1. Select here the calendar week over which you would like to have a view.
+                </div>
+                <div class="info-kwday">
+                    You can remove the respective line chart from the graph by clicking on the days and add it again by clicking on it again.
+                </div>
+                <div class="info-measure-system">
+                    Every second a measuring device measures a value.<br>
+                After one hour the average value of all values from one area is calculated.<br> 
+                Measured from X:30h to X:29:59h.<br>
+                </div>-->
             </div>
         </div>
         <div class="navbar">
-            <!-- <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div> -->
             <div class="menu">
                 <p>
                     <a href="{{url_for('overview')}}">Overview</a>
@@ -93,26 +105,6 @@
             </div>
         </div>
         <div class="right">
-            <!-- <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        You are on the "Calendar week" page.<br>
-                        Here is a short introduction how to use this site.
-                    <ul>
-                        <li>Step 1: Enter a valid calendar week in the input field under "Calendar week",
-                            followed by the corresponding year. <br> Ex:"15 2023"</li>
-                        <li>Step 2: Select a floor</li>
-                        <li>Step 3: Select an appropriate area</li>
-                    </ul>
-                    </p>
-                    The display of this calendar week is now to be represented by the individual days by means
-                    of graphs.<br>
-                    In the legend, individual days can be deselected and selected by clicking on them.
-                </div>
-            </div> -->
             <div class="floor-area">
                 <div class="choose">
                     Floor:
@@ -649,20 +641,6 @@
                 document.getElementById("infoModal").style.display = "none";
             }
         };
-
-        //Hamburger Menü
-        function toggleMenu() {
-            const menu = document.querySelector('.menu');
-            menu.classList.toggle('open');
-        }
-
-        window.addEventListener('resize', function () {
-            const menu = document.querySelector('.menu');
-            if (window.innerWidth > 700) {
-                menu.classList.remove('open');
-            }
-        });
-
 
         // hier kommt der restliche Week.js Teil hin
     </script>

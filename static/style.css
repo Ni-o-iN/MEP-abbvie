@@ -700,15 +700,14 @@ input[type="datetime-local"] {
 .close {
   position: absolute;
   right: 0;
-  font-size: calc(45px + (45 - 16) * ((100vw - 320px) / (1600 - 320)));
-  color: rgba(0, 0, 0, 0.00005);
+  font-size: calc(36px + (36 - 16) * ((100vw - 320px) / (1600 - 320)));
+  color: rgba(0, 0, 0, 0.0005);
   float: right;
   font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: red;
   text-decoration: none;
   cursor: pointer;
 }
@@ -783,7 +782,7 @@ input[type="datetime-local"] {
 .info-floor {
 	position: fixed;
   width: 20%;
-  left: 23vw;
+  left: 26vw;
   top: 3.5vh;
   padding: 0.5%;
 	background: #88b7d5;
@@ -791,7 +790,7 @@ input[type="datetime-local"] {
 }
 .info-floor:after, .info-floor:before {
 	left: 100%;
-	top: 40%;
+	top: 50%;
 	border: solid transparent;
 	content: "";
 	height: 0;
@@ -816,7 +815,7 @@ input[type="datetime-local"] {
 .info-area {
 	position: relative;
   width: 24%;
-  left: 74vw;
+  left: 70vw;
   top: 3.5vh;
   padding: 0.5%;
 	background: #88b7d5;
@@ -824,7 +823,7 @@ input[type="datetime-local"] {
 }
 .info-area:after, .info-area:before {
 	right: 100%;
-	top: 25%;
+	top: 40%;
 	border: solid transparent;
 	content: "";
 	height: 0;
@@ -855,7 +854,7 @@ input[type="datetime-local"] {
 	position: fixed;
   width: 15%;
   left: 80vw;
-  top: 36vh;
+  top: 40vh;
   padding: 0.5%;
 	background: #88b7d5;
 	border: 4px solid #c2e1f5;
