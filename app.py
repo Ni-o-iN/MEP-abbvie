@@ -241,7 +241,7 @@ def get_week_chart_data():
             selected_option2 ="G"
         case "area-h":
             selected_option2 ="H"
-    date_monday,date_tuesday, date_wednesday, date_thursday, date_friday, week = format_week_dates(selected_option)
+    date_monday,date_tuesday, date_wednesday, date_thursday, date_friday,date_saturday, week = format_week_dates(selected_option)
 
     connection = pool.get_connection()
     cursor = connection.cursor()
@@ -255,7 +255,7 @@ def get_week_chart_data():
         else:
             cursor = connection.cursor(dictionary=True)
 
-            cursor.execute(query,(selected_option2, date_monday, date_friday, ))
+            cursor.execute(query,(selected_option2, date_monday, date_saturday, )) #Monday 0:0:0 to Saturday 0:0:0 to get all weekdays
             # Create dictionaries to store values and times for each day
             days = {
                 "Monday": {"times": [], "values": []},
@@ -398,6 +398,7 @@ def get_week_chart_data():
 
     chart_data = json.dumps(filtered_data, default=str)
     chart_data = eval(chart_data)
+    print(chart_data)
     return jsonify(chart_data, date_monday, date_friday, week)
 
 @app.route('/get_chart_data', methods=['POST'])
@@ -672,6 +673,7 @@ def format_week_dates(week_value):
     third_day = first_day + timedelta(days=2)
     fourth_day = first_day + timedelta(days=3)
     fifth_day = first_day + timedelta(days=4)
+    sixth_day = first_day + timedelta(days=5)
     
     # Formatting the dates as YYYY-MM-DD
     first_day_formatted = first_day.strftime("%Y-%m-%d")
@@ -679,8 +681,9 @@ def format_week_dates(week_value):
     third_day_formatted = third_day.strftime("%Y-%m-%d")
     fourth_day_formatted = fourth_day.strftime("%Y-%m-%d")
     fifth_day_formatted = fifth_day.strftime("%Y-%m-%d")
+    sixth_day_formatted = sixth_day.strftime("%Y-%m-%d")
     
-    return first_day_formatted, second_day_formatted, third_day_formatted, fourth_day_formatted, fifth_day_formatted, week
+    return first_day_formatted, second_day_formatted, third_day_formatted, fourth_day_formatted, fifth_day_formatted,sixth_day_formatted, week
 
 if __name__ == '__main__':
     #scheduler.start()
