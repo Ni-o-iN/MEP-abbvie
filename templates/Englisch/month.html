@@ -11,12 +11,19 @@
 
 <body>
     <div class="container">
-        <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
+        <button id="infoButton">i</button>
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-monat.jpg')}}">
             </div>
+        </div>
+        <div class="navbar">
+            <!-- <div class="hamburger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div> -->
             <div class="menu">
                 <p>
                     <a href="{{url_for('overview')}}">Overview</a>
@@ -28,10 +35,16 @@
                     <a href="{{url_for('week')}}">Calendar Week</a>
                 </p>
                 <p>
+                    <a href="{{url_for('download_english')}}">Admin</a>
+                </p>
+                <p>
+                    <a href="{{url_for('admin_english')}}">Admin</a>
+                </p>
+                <p>
                     Month
                     <span class="time-box">
                         <input type="number" id="month_selection" min="1" max="12" placeholder="Month as number" list="months"></input>
-                        <datalist id="months">
+                        <!-- <datalist id="months">
                             <option value="1"></option>
                             <option value="2"></option>
                             <option value="3"></option>
@@ -44,7 +57,7 @@
                             <option value="10"></option>
                             <option value="11"></option>
                             <option value="12"></option>
-                          </datalist>
+                          </datalist> -->
                     </span>
                 </p>
                 <div class="language-container">
@@ -63,25 +76,6 @@
             </div>
         </div>
         <div class="right">
-            <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        You are one the "Month" page.<br>
-                        Here is a short introduction how to use this site.
-                    <ul>
-                        <li>Step 1: Enter a valid calendar week in the input field under "Calendar week",
-                            followed by the corresponding year. <br> Ex:"12 2023"</li>
-                        <li>Step 2: Select a floor</li>
-                        <li>Step 3: Select an appropriate area</li>
-                    </ul>
-                    </p>
-                    You should now see a table and a graph representing the whole month.<br>
-                    The volume of the respective day can be read from the graph.
-                </div>
-            </div>
             <div class="floor-area">
                 <div class="choose">
                     Floor:
