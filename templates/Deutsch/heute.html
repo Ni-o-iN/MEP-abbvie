@@ -10,12 +10,13 @@
 </head>
 
 <body>
-    <button id="infoButton">i</button>
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-heute.jpg')}}">
-            <!--<div class="info-floor">
+    <div class="container">
+        <button id="infoButton">i</button>
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-heute.jpg')}}">
+                <!--<div class="info-floor">
                 Als erstes wählen Sie ein Stockwerk.
             </div>
             <div class="info-area">
@@ -26,9 +27,8 @@
                 Nach einer Stunde wird der Mittelwert von allen Werten
                 eines Bereichs berechnet.<br> Gemessen wird von X:30 Uhr bis X:29:59 Uhr.<br>
             </div>-->
+            </div>
         </div>
-    </div>
-    <div class="container">
         <div class="navbar">
             <div class="menu">
                 <p>
@@ -315,7 +315,7 @@
                 updateChart(bereich);
             }
 
-            
+
 
             // setTimeout(() => {
             //     updateChart(secondDropdown.value);//Grund für Probleme bei Overview->Heute
