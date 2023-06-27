@@ -203,7 +203,7 @@ def monat():
 def month():
     return render_template('Englisch/month.html')
 
-@app.route('/downlaod')
+@app.route('/download')
 def download_german():
     return render_template('Deutsch/download.html')
 
