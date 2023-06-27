@@ -3,89 +3,281 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
     <div class="container">
         <div class="navbar">
-            <div class="hamburger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
             <div class="menu">
                 <p>
-                    <a href="{{url_for('index')}}">Übersicht</a>
+                    <a href="{{url_for('overview')}}">Overview</a>
                 </p>
                 <p>
-                    <a href="{{url_for('heute')}}">Heute</a>
+                    <a href="{{url_for('today')}}">Today</a>
                 </p>
                 <p>
-                    <a href="{{url_for('woche')}}">Kalender&shywoche</a>
+                    <a href="{{url_for('week')}}">Calender week</a>
                 </p>
                 <p>
-                    <a href="{{url_for('monat')}}">Monat</a>
-                </p>
-                <p>
-                    <a href="{{url_for('admin_german')}}">Admin</a>
+                    <a href="{{url_for('month')}}">Month</a>
                 </p>
                 <p>
                     Download
                 </p>
+                <p>
+                    <a href="{{url_for('admin_english')}}">Admin</a>
+                </p>
                 <div class="language-container">
                     <div>
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                            alt="Englische Flagge">
                     </div>
                     <div class="all-languages">
-                        <a href="{{url_for('index')}}">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
-                        </a>
-                        <a href="{{url_for('overview')}}" id="english_page">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                        <a href="{{url_for('download_german')}}" id="german_page">
+                            <img src="{{url_for('static', filename='bilder/Deutschland-flagge.jpg')}}"
+                                alt="Englische Flagge">
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="hamburger-menu">
-                <div class="menu-icons">
-                    <a href="{{url_for('heute')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.jpg')}}">
+        </div>
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('overview')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('today')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('week')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('month')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                </a>
+                <a href="{{url_for('download_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="Englische Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('download_english')}}" id="english_page">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
                     </a>
-                    <a href="{{url_for('woche')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.jpg')}}">
-                    </a>
-                    <a href="{{url_for('monat')}}">
-                        <img class="menu-icon" src="{{url_for('static', filename='bilder/Monat.jpg')}}">
-                    </a>
-                    <div class="language-container" onmouseover="showOtherFlag()" onmouseout="hideOtherFlag()">
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge" class="current-language">
-                        <a href="{{url_for('overview')}}">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge" class="other-language">
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
         <div class="right">
-            <button id="infoButton">i</button>
-            <div id="infoModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Info:</h2>
-                    <p>
-                        Sie befinden sich auf der "Übersichts" Seite.<br>
-                        Hier eine kurze Einführung wie Sie diese Seite bedienen können.
-                    <ul>
-                        <li>Sie sollten beide Stockwerke sehen und deren Bereiche</li>
-                        <li>Klicken Sie auf ein Bereich Ihrer Wahl um zur Heute Ansicht dieses Bereiches zu gelangen
-                        </li>
-                    </ul>
-                    </p>
+            <div class="settings-headline">
+                Download of measurements as Excel-file
+            </div>
+            <div class="overview-download">
+                <div class="row">
+                    <div class="col">
+                        <div class="mittig-floor1">
+                            <span class="floor-name">Floor 1</span>
+                        </div>
+                        <div class="floor1-overview">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}"
+                                class="responsiv-floor" alt="stockwerk1">
+                            <span id="area-a-download" class="area-download">A</span>
+                            <span id="area-b-download" class="area-download">B</span>
+                            <span id="area-c-download" class="area-download">C</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mittig-floor2">
+                            <span class="floor-name">Floor1</span>
+                        </div>
+                        <div class="floor2-overview">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk2selber.jpg')}}"
+                                class="responsiv-floor" alt="Stockwerkplan 2">
+                            <span id="area-d-download" class="area-download">D</span>
+                            <span id="area-e-download" class="area-download">E</span>
+                            <span id="area-f-download" class="area-download">F</span>
+                            <span id="area-g-download" class="area-download">G</span>
+                            <span id="area-h-download" class="area-download">H</span>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="settings-headline">
+                Choose a desired period of time.
+                <p>
+                    <label>
+                        <input type="datetime-local" id="datetime1">
+                        &nbsp; - &nbsp;
+                    </label>
+
+                    <label>
+                        <input type="datetime-local" id="datetime2">
+                    </label>
+                </p>
+                <div id="error_message"></div>
+                <form action="{{ url_for('download_excel') }}" class="btn btn-primary" method="GET"
+                    target="download_iframe" id="download_form"
+                    onsubmit="event.preventDefault(); if(validateForm()){submitForm()}">
+                    <button class="download-button" type="submit" value="berechnen"><i class="fa fa-download"></i> Download Excel</button>
+                </form>
+                <iframe name="download_iframe" style="display: none;"></iframe>
             </div>
         </div>
     </div>
+
+    <script>
+        const areas = document.querySelectorAll('.area-download');
+
+        areas.forEach(area => {
+            area.addEventListener('click', function () {
+                const currentColor = window.getComputedStyle(area).getPropertyValue('background-color');
+                const targetColor = (currentColor === 'rgba(100, 100, 100, 0.5)') ? 'rgba(0, 0, 160, 0.5)' : 'rgba(100, 100, 100, 0.5)';
+                area.style.backgroundColor = targetColor;
+            });
+        });
+
+        function checkAreasColor() {  //Fehlermeldung für false einbauen
+            for (let i = 0; i < areas.length; i++) {
+                if (areas[i].style.backgroundColor === 'rgba(0, 0, 160, 0.5)') {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+       
+        function checkDateTime() {
+            var datetime1 = document.getElementById("datetime1").value;
+            var datetime2 = document.getElementById("datetime2").value;
+
+            if (!datetime1 || !datetime2) {
+                return {
+                    valid: false,
+                    message: "Please fill out both input fields"
+                };
+            }
+
+            var date1 = new Date(datetime1);
+            var date2 = new Date(datetime2);
+            var now = new Date();
+
+            if (date1 > date2) {
+                return {
+                    valid: false,
+                    message: "The first date must be before the second"
+                };
+            }else if (now < date1){
+                return{
+                    valid:false,
+                    message: "The first date must be in the past"
+                };    
+            }else if (date2 > date1) {
+                return {
+                    valid: true
+                };
+            }else {
+                return {
+                    valid: true
+                };
+            }
+        }
+
+        function displayErrorMessage(message) {
+            var errorMessageElement = document.getElementById("error_message");
+            if (message) {
+                errorMessageElement.innerHTML = message;
+                errorMessageElement.style.display = "block";
+            } else {
+                errorMessageElement.style.display = "none";
+            }
+        }
+
+        function validateForm() {
+
+            var areasColorValid = checkAreasColor();
+            if (!areasColorValid) {
+                displayErrorMessage("Please select atleast one area");
+                return false;
+            }
+
+            var datetimeValidationResult = checkDateTime();
+
+            if (!datetimeValidationResult.valid) {
+                displayErrorMessage(datetimeValidationResult.message);
+                return false;
+            }
+
+            displayErrorMessage(); // Clear any existing error messages
+
+            return true;
+        }
+
+        function submitForm() {
+            var form = $("#download_form");
+            var url = form.attr("action");
+            var areasData = []; // Array to store selected areas
+            var areasElements = document.querySelectorAll(".area-download"); // Assuming each area has a class "area"
+
+            areasElements.forEach(function (areaElement) {
+                if (areaElement.style.backgroundColor === 'rgba(0, 0, 160, 0.5)') {
+                    areasData.push(areaElement.id); // Assuming each area has an ID attribute
+                }
+            });
+
+            var datetime1 = document.getElementById("datetime1").value;
+            var datetime2 = document.getElementById("datetime2").value;
+
+
+            var data = {
+                ids: areasData,
+                datetime1: datetime1,
+                datetime2: datetime2
+            };
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                xhrFields: {
+                    responseType: 'blob'  // Set the response type to 'blob' to handle binary data
+                },
+                success: function (response, status, xhr) {
+                    var filename = "";  // Initialize the filename variable
+
+                    // Extract the filename from the response headers
+                    var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                    if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
+                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = filenameRegex.exec(contentDisposition);
+                        if (matches != null && matches[1]) {
+                            filename = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    // Create a temporary link element to initiate the file download
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(response);
+                    link.download = filename || 'download.xlsx';  // Use the extracted filename or provide a default name
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+        }
+
+    </script>
 
 </body>
 
