@@ -33,17 +33,11 @@
                 </p>
                 <p>
                     <a href="{{url_for('week')}}">Calendar Week</a>
-                </p>
-                <p>
-                    <a href="{{url_for('download_english')}}">Admin</a>
-                </p>
-                <p>
-                    <a href="{{url_for('admin_english')}}">Admin</a>
-                </p>
+                </p>    
                 <p>
                     Month
                     <span class="time-box">
-                        <input type="number" id="month_selection" min="1" max="12" placeholder="Month as number" list="months"></input>
+                        <input type="month" id="month_selection" onchange="checkSelectionMonth()"></input>
                         <!-- <datalist id="months">
                             <option value="1"></option>
                             <option value="2"></option>
@@ -60,18 +54,74 @@
                           </datalist> -->
                     </span>
                 </p>
+                <p>
+                    <a href="{{url_for('download_english')}}">Download</a>
+                </p>
+                <p>
+                    <a href="{{url_for('admin_english')}}">Admin</a>
+                </p>
                 <div class="language-container">
                     <div>
                         <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
                     </div>
                     <div class="all-languages">
                         <a href="{{url_for('monat')}}" id="german_page">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
-                        </a>
-                        <a href="{{url_for('month')}}">
-                            <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="englische Flagge">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('overview')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('today')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('week')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('month')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                </a>
+                <span class="time-box">
+                    <input type="month" id="month_selection" onchange="checkSelectionMonth()"></input>
+                    <!-- <input id="month_selection" min="1" max="12" placeholder="als Zahl" list="months" onkeydown="if (event.keyCode !== 8) {event.preventDefault();}"></input>
+                        <datalist id="months">
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                            <option value="6"></option>
+                            <option value="7"></option>
+                            <option value="8"></option>
+                            <option value="9"></option>
+                            <option value="10"></option>
+                            <option value="11"></option>
+                            <option value="12"></option>
+                        </datalist> -->
+                </span>
+                <div class="space-bottom"></div>
+                <a href="{{url_for('download_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="Englische Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('monat')}}" id="german_page">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="Deutschland Flagge">
+                    </a>
                 </div>
             </div>
         </div>
@@ -92,7 +142,7 @@
             </div>
             <div class="today-week-month-display">
                 <h3>
-                    <span id ="average_of_month"></span>
+                    <span id="average_of_month"></span>
                 </h3>
                 <div class="today-week-month-graph">
                     <canvas id="graph-for-month"></canvas>
@@ -104,161 +154,262 @@
     <!-- Javascript -->
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var myChart = null;
 
-            const bgcolors = ['rgba(0, 158, 0, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 0, 0, 0.6)'];
-            const statusTracker = {
-                id: 'statusTracker',
-                beforeDatasetsDraw(chart, args, pluginOptions) {
-                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-                    ctx.save();
-
-            drawBlocks(50, min_y, bgcolors[0]);
-            drawBlocks(55, 50, bgcolors[1]);
-            drawBlocks(max_y, 55, bgcolors[2]);
-            function drawBlocks(yStart, yEnd, color) {
-                ctx.fillStyle = color;
-                ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
-            }
-        }}
-
             function updateChart(selectedOption1, selectedOption2) {    //1 is month, 2 is area
-        $.ajax({
-            url: '/get_chart_data',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ 'selected_option1': selectedOption1, 'selected_option2': selectedOption2 }),
-            success: function(response) {
-                // Handle the response and refresh the chart
-                var newData = response[0];
-                var newLabel = response[1];
-                var min_y = response[2];    //die beiden für später mit dem Graphen
-                var max_y = response[3];
-                let sum = 0;
-                for(let i=0; i< newData.length; i++){
-                    sum += newData[i];
-                }
-                var monthly_average = Math.round(sum/ newData.length);
-                if(monthly_average != NaN){
-                    document.getElementById('average_of_month').innerHTML = ('dB ⌀ : ' + monthly_average);
-                }
+                $.ajax({
+                    url: '/get_chart_data',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'selected_option1': selectedOption1, 'selected_option2': selectedOption2 }),
+                    success: function (response) {
+                        // Handle the response and refresh the chart
+                        var newData = response[0];
+                        var newLabel = response[1];
+                        var min_y = response[2];    //die beiden für später mit dem Graphen
+                        var max_y = response[3];
+                        let sum = 0;
+                        for (let i = 0; i < newData.length; i++) {
+                            sum += newData[i];
+                        }
+                        var monthly_average = Math.round(sum / newData.length);
+                        if (monthly_average != NaN) {
+                            document.getElementById('average_of_month').innerHTML = ('dB ⌀ : ' + monthly_average);
+                        }
 
-                // Clear the existing chart
-                if (myChart !== null) {
-                    myChart.destroy();
-                }
+                        // Clear the existing chart
+                        if (myChart !== null) {
+                            myChart.destroy();
+                        }
 
-                const bgcolors = ['rgba(0, 158, 0, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(255, 0, 0, 0.5)'];
-                const statusTracker = {
-                id: 'statusTracker',
-                beforeDatasetsDraw(chart, args, pluginOptions) {
-                    const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
-                    ctx.save();
+                        const bgcolors = ['rgba(255, 206, 00, 0.5)', 'rgba(255, 0, 0, 0.5)'];
+                        const statusTracker = {
+                            id: 'statusTracker',
+                            beforeDatasetsDraw(chart, args, pluginOptions) {
+                                const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+                                ctx.save();
 
-            drawBlocks(50, Math.floor(min_y/10)*10, bgcolors[0]);
-            drawBlocks(55, 50, bgcolors[1]);
-            drawBlocks(Math.ceil(max_y/10)*10, 55, bgcolors[2]);
-            function drawBlocks(yStart, yEnd, color) {
-                ctx.fillStyle = color;
-                ctx.fillRect(left, y.getPixelForValue(yStart/*!!!*/), width, y.getPixelForValue(yEnd/*!!!*/) - y.getPixelForValue(yStart));  //Hier wird der Höchste und Niedrigste Punkt gewählt bei dynamisch brauche ich die Daten
-            }
-        }}
-
-                var ctx = document.getElementById('graph-for-month').getContext('2d');
-                myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: newLabel,
-                        datasets: [{
-                            label: 'Decibel',
-                            data: newData,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(255, 255, 255, 0.7)',
-                            
-                            tension: 0.3,
-                            pointRadius: 5,
-                            pointHoverRadius: 7
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                min: Math.floor(min_y/10)*10,
-                                position: 'right',
-                                title: {
-                                    display:true,
-                                    text: 'decibel',
-                                    color: 'white',
-                                    font: {
-                                        family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                        size: 20
-                    }
-                                },
-                                ticks: {
-                                color: 'white', //war davor white
-                                font: {
-                                    family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                    size: 20
-                                    }
-                                },
-                                grid: {
-                                    display: false // Raster für y-Achse ausblenden
-                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Day',
-                                    color: 'white',
-                                    font: {
-                                        family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                        size: 20
-                                    }
-                                },
-                                ticks: {
-                                    color: 'white',
-                                    font: {
-                                        family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-                                        size: 20
-                                    }
-                                },
-                                grid: {
-                                    display: false // Raster für y-Achse ausblenden
+                                drawLines(50, bgcolors[0]);
+                                drawLines(55, bgcolors[1]);
+                                function drawLines(yValue, color) {
+                                    ctx.beginPath();
+                                    ctx.lineWidth = 5;
+                                    ctx.strokeStyle = color;
+                                    ctx.moveTo(left, y.getPixelForValue(yValue));
+                                    ctx.lineTo(right, y.getPixelForValue(yValue));
+                                    ctx.stroke();
+                                    ctx.closePath();
+                                    ctx.restore();
                                 }
                             }
                         }
+
+                        var ctx = document.getElementById('graph-for-month').getContext('2d');
+                        myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: newLabel,
+                                datasets: [{
+                                    label: 'Decibel',
+                                    data: newData,
+                                    backgroundColor: 'rgb(70, 0, 250)',
+                                    borderColor: 'rgb(70, 0, 250)',
+                                    //borderWidth: 1,
+                                    //lineTension: 0.1
+                                    tension: 0.3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        min: 40,
+                                        max: 90,
+                                        position: 'right',
+                                        title: {
+                                            display: true,
+                                            text: 'Decibel',
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'black', //war davor white
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false // Raster für y-Achse ausblenden
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Day',
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        ticks: {
+                                            color: 'black',
+                                            font: {
+                                                family: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                                                size: 20
+                                            }
+                                        },
+                                        grid: {
+                                            display: false // Raster für y-Achse ausblenden
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: [statusTracker]
+                        });
                     },
-                    plugins: [statusTracker]
+                    error: function (error) {
+                        console.log(error);
+                    }
                 });
-            },
-            error: function(error) {
-                console.log(error);
+            }
+
+            // $('#month_selection').on('change', function () {
+            //     var selectedOption1 = $(this).val();
+            //     var selectedOption2 = $('#secondDropdown').val();
+            //     console.log(selectedOption1);
+            //     console.log(selectedOption2);
+            //     if (selectedOption1 && selectedOption2) {
+            //         console.log("if in month selection");   
+            //         updateChart(selectedOption1, selectedOption2);
+            //     }
+            // });
+
+            // $('#secondDropdown').on('change', function () {
+            //     var selectedOption2 = $(this).val();
+            //     if ($('#month_selection').val() && selectedOption2) {
+            //         updateChart($('#month_selection').val(), selectedOption2);
+            //     }
+            // });
+            $('#month_selection').on('change', function () {
+                var selectedOption1 = $(this).val();
+                var selectedOption2 = $('#secondDropdown').val();
+                if (selectedOption1 && selectedOption2) {
+                    // document.getElementsByClassName("today-week-month-display").style.display = 'block';
+                    console.log("If in month_selection");
+                    updateChart(selectedOption1, selectedOption2);
+                }
+            });
+
+            $('#secondDropdown').on('change', function () {
+                var selectedOption2 = $(this).val();
+                var selectedOption1 = $('#month_selection').val();
+                if (selectedOption1 && selectedOption2) {
+                    // document.getElementsByClassName("today-week-month-display").style.display = 'block';
+                    console.log("If in secondDropdown");
+                    updateChart(selectedOption1, selectedOption2);
+                }
+            });
+        });
+
+        //DROP DOWN MENÜS
+        function updateSecondDropdown() {
+            const firstDropdown = document.getElementById('firstDropdown');
+            const secondDropdown = document.getElementById('secondDropdown');
+
+            // Optionen im zweiten Dropdown-Menü basierend auf Auswahl im ersten Dropdown aktualisieren
+            if (firstDropdown.value === 'floor1') {
+                secondDropdown.innerHTML = `
+        <option value="" disabled selected hidden></option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      `;
+            } else if (firstDropdown.value === 'floor2') {
+                secondDropdown.innerHTML = `
+        <option value="" disabled selected hidden></option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="H">H</option>
+      `;
+            }
+            // Aktiviere das zweite Dropdown-Menü, falls eine Option ausgewählt wurde
+            secondDropdown.disabled = firstDropdown.value === '';
+        }
+
+        //STOCKWERK UND BEREICH SICHTBAR MACHEN
+        function checkSelectionMonth() {
+            const firstDropdown = document.getElementById('month_selection');
+            const secondDropdown = document.getElementById('secondDropdown');
+            const month = document.getElementsByClassName('today-week-month-display');
+
+
+            if (firstDropdown.value !== '' && secondDropdown.value !== '') {
+                for (let i = 0; i < month.length; i++) {
+                    console.log('Geht ins Console.log')
+                    month[i].style.display = 'flex';
+                }
+            } else {
+                for (let i = 0; i < month.length; i++) {
+                    month[i].style.display = 'none';
+                }
+            }
+        }
+
+        //FLAGGE
+        function showOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'inline';
+        }
+        function hideOtherFlag() {
+            const otherFlag = document.querySelector('.other-language');
+            otherFlag.style.display = 'none';
+        }
+
+        //Info
+        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+        document.getElementById("infoButton").addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "block";
+        });
+
+        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+        document.getElementsByClassName("close")[0].addEventListener("click", function () {
+            document.getElementById("infoModal").style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("infoModal")) {
+                document.getElementById("infoModal").style.display = "none";
+            }
+        };
+
+        //Hamburger Menü
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('open');
+        }
+
+        window.addEventListener('resize', function () {
+            const menu = document.querySelector('.menu');
+            if (window.innerWidth > 700) {
+                menu.classList.remove('open');
             }
         });
-    }
 
-    $('#month_selection').on('change', function() {
-        var selectedOption1 = $(this).val();
-        var selectedOption2 = $('#secondDropdown').val();
-        if (selectedOption1 && selectedOption2) {
-            updateChart(selectedOption1, selectedOption2);
-    }
-    });
-
-    $('#secondDropdown').on('change', function() {
-        var selectedOption2 = $(this).val();
-        if ($('#month_selection').val() && selectedOption2) {
-            updateChart($('#month_selection').val(), selectedOption2);
-    }
-    });
-});
     </script>
 
 

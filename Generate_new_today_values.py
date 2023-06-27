@@ -2,6 +2,7 @@ import datetime
 import random
 import string
 import mysql.connector
+import time
 
 # Connect to the MySQL database
 cnx = mysql.connector.connect(
@@ -29,15 +30,16 @@ for i in range(20000):
     random_value = random.randint(30, 70)
 
     # Generate a random letter from A to H
-    random_number = random.randint(1, 9)
-
+    #random_number = random.randint(1, 9)
+    random_number = 1
     # Execute the INSERT query
     query = "INSERT INTO measurement VALUES (%s, %s, %s);"
-    data = (random_time,  random_number,random_value)
+    data = (random_time, random_number,random_value)
     cursor.execute(query, data)
 
     # Commit the changes and close the database connection
     cnx.commit()
     print(l)
+    time.sleep(1    )
 cursor.close()
 cnx.close()
