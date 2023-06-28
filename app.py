@@ -82,7 +82,7 @@ def schedulerWarnung():
     cur_warnung = con_warnung.cursor()
     
     try:
-        query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time BETWEEN NOW() - INTERVAL 60 SECOND AND NOW();'
+        query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.soundmeter_id <= 19 AND m.time BETWEEN NOW() - INTERVAL 60 SECOND AND NOW();'
         cur_warnung.execute(query_warnung)
         result_warnung = cur_warnung.fetchall()
         
@@ -103,8 +103,8 @@ def schedulerWarnung():
         
         
         #Query für Lautstärkelimit aller Bereiche ausführen
-        query_area_limit = 'SELECT DISTINCT area, soundlimit FROM soundmeter;'
-        cur_warnung.execute(query_area_limit)
+        query_area_limit = 'SELECT DISTINCT area, soundlimit FROM soundmeter WHERE area NOT IN (%s, %s);'
+        cur_warnung.execute(query_area_limit, ('1NA', '2NA', ))
         result_area_limit = cur_warnung.fetchall()
     
         reset_warning_counter()
