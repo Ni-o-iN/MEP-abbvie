@@ -639,13 +639,13 @@ input[type="datetime-local"] {
 
 #start-no-notification {
   margin-right: 5%;
-  width: 10vw;
+  width: 17vw;
   font-size: 1rem;
 }
 
 #end-no-notification {
   margin-left: 5%;
-  width: 10vw;
+  width: 17vw;
   font-size: 1rem;
 }
 
@@ -701,7 +701,7 @@ input[type="datetime-local"] {
   position: absolute;
   right: 0;
   font-size: calc(36px + (36 - 16) * ((100vw - 320px) / (1600 - 320)));
-  color: rgba(0, 0, 0, 0.0005);
+  color: red;
   float: right;
   font-weight: bold;
 }
