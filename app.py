@@ -477,6 +477,9 @@ def get_chart_data():
         connection.close()
 
     unique_labels, averaged_data  = calculate_average(chart_data, chart_labels) #TODO: care when there is no data, still need to fix, handle with None type stuff
+    for i in range(len(unique_labels)):
+        # Add ":00" to each entry
+        unique_labels[i] += ":00"
     if (averaged_data == []):
         return jsonify(averaged_data,unique_labels,)
     return jsonify(averaged_data,unique_labels, min(averaged_data), max(averaged_data),)
