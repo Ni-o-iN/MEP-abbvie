@@ -166,7 +166,7 @@ def reset_warning_counter():
 
 
 #Scheduler Job und Trigger zuweisen
-scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, max_instances= 3, trigger = 'interval', seconds = 10)
+scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, max_instances= 3, trigger = 'interval', seconds = 60)
 
 
 @app.route('/')
@@ -691,5 +691,5 @@ def format_week_dates(week_value):
     return first_day_formatted, second_day_formatted, third_day_formatted, fourth_day_formatted, fifth_day_formatted,sixth_day_formatted, week
 
 if __name__ == '__main__':
-    scheduler.start()
+    #scheduler.start()
     app.run(debug=True, use_reloader=False)
