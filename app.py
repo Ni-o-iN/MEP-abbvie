@@ -35,6 +35,7 @@ mysql_config = {
     'database': 'calmvie',
     'raise_on_warnings': True
 }
+# Pool of MySQL Connections, to handle multiple requests
 pool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="mypool", 
     pool_size=10, 
@@ -171,63 +172,65 @@ scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, max_instances= 3,
 
 @app.route('/')
 def index():
-    # values = get_latest_data()
-    # styles = []
-    # for decibel in values:
-    #     if (decibel > 55):
-    #          styles.append('style= "rgba(220, 0, 0, 0.5)";')
-    #     elif (decibel > 50):
-    #         styles.append('style= "rgba(220, 220, 0, 0.5)";')
-    #     else:
-    #         styles.append('style= "rgba(0, 158, 0, 0.5)";')
-        
     return render_template('Deutsch/uebersicht.html')
+
 
 @app.route('/overview')
 def overview():
     return render_template('Englisch/overview.html')
 
+
 @app.route('/heute')
 def heute():
     return render_template('Deutsch/heute.html')
+
 
 @app.route('/today')
 def today():
     return render_template('Englisch/today.html')
 
+
 @app.route('/woche')
 def woche():
     return render_template('Deutsch/kalenderwoche.html')
+
 
 @app.route('/week')
 def week():
     return render_template('Englisch/week.html')
 
+
 @app.route('/monat')
 def monat():
     return render_template('Deutsch/monat.html')
+
 
 @app.route('/month')
 def month():
     return render_template('Englisch/month.html')
 
+
 @app.route('/download')
 def download_german():
     return render_template('Deutsch/download.html')
+
 
 @app.route('/download_english')
 def download_english():
     return render_template('Englisch/download.html')
 
+
 @app.route('/administration')
 def admin_german():
     return render_template('Deutsch/admin.html')
+
 
 @app.route('/admin')
 def admin_english():
     return render_template('Englisch/settings.html')
 
-@app.route('/get_week_chart_data', methods=['POST'])
+
+@app.route('/get_week_chart_data', methods=['POST']) # Responds with the content of the weekly chart
 def get_week_chart_data():
     selected_option = request.json['selected_option1'] #week
     selected_option2 = request.json['selected_option2']  #area
@@ -257,13 +260,13 @@ def get_week_chart_data():
     try:
 
         query ="SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND time BETWEEN %s AND %s;"
-        #query ="SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND time IN(%s,%s,%s,%s,%s);"
         if(not selected_option2 or not date_monday or not date_friday):
             return(0,0,0)
         else:
             cursor = connection.cursor(dictionary=True)
 
             cursor.execute(query,(selected_option2, date_monday, date_saturday, )) #Monday 0:0:0 to Saturday 0:0:0 to get all weekdays
+
             # Create dictionaries to store values and times for each day
             days = {
                 "Monday": {"times": [], "values": []},
@@ -285,39 +288,30 @@ def get_week_chart_data():
                 days[day_name]["times"].append(datetime_value.time())
                 days[day_name]["values"].append(row['value'])
 
-            # # Print the times and values for each day
-            # for day, data in days.items():
-            #     print(day)
-            #     times = data["times"]   # die als chart_data nutzen?
-            #     values = data["values"] # die als chart_data nutzen?
-            #     for i in range(len(times)):
-            #         print(times[i], values[i])
-            #     print()
+        # monday_data={
+        #     "labels": days["Monday"]["times"],
+        #     "values": days["Monday"]["values"]
+        # }
 
-        monday_data={
-            "labels": days["Monday"]["times"],
-            "values": days["Monday"]["values"]
-        }
+        # tuesday_data={
+        #     "labels": days["Tuesday"]["times"],
+        #     "values": days["Tuesday"]["values"]
+        # }
 
-        tuesday_data={
-            "labels": days["Tuesday"]["times"],
-            "values": days["Tuesday"]["values"]
-        }
+        # wednesday_data={
+        #     "labels": days["Wednesday"]["times"],
+        #     "values": days["Wednesday"]["values"]
+        # }
 
-        wednesday_data={
-            "labels": days["Wednesday"]["times"],
-            "values": days["Wednesday"]["values"]
-        }
+        # thursday_data={
+        #     "labels": days["Thursday"]["times"],
+        #     "values": days["Thursday"]["values"]
+        # }
 
-        thursday_data={
-            "labels": days["Thursday"]["times"],
-            "values": days["Thursday"]["values"]
-        }
-
-        friday_data={
-            "labels": days["Friday"]["times"],
-            "values": days["Friday"]["values"]
-        }
+        # friday_data={
+        #     "labels": days["Friday"]["times"],
+        #     "values": days["Friday"]["values"]
+        # }
 
         formatted_days = {}
 
@@ -331,27 +325,6 @@ def get_week_chart_data():
 
             # Create a new dictionary entry with formatted times and values
             formatted_days[day] = {"times": formatted_times, "values": values}
-
-            #print(formatted_days)
-
-            # averaged_values = defaultdict(list)
-
-            # # Iterate over each day
-            # for day, data in formatted_days.items():
-            #     times = data["times"]
-            #     values = data["values"]
-                
-            #     # Iterate over each label and value
-            #     for time, value in zip(times, values):
-            #         averaged_values[time].append(value)
-
-            # # Calculate the average for each time
-            # averages = {time: sum(values) / len(values) for time, values in averaged_values.items()}
-
-            # # Create a new dictionary with time-labels, averages, and their corresponding days
-            # averaged_data = {"days": list(formatted_days.keys()), "times": list(averages.keys()), "averages": list(averages.values())}
-
-            # print(averaged_data)
 
             averaged_data = {}
 
@@ -383,7 +356,6 @@ def get_week_chart_data():
                 # Store the hourly averages for the specific day
                 averaged_data[day] = hourly_averages
 
-            #print(averaged_data)
             desired_labels = [str(hour).zfill(2) for hour in range(8, 18)]
 
             # Filter out labels not within the desired range for each day
@@ -391,8 +363,6 @@ def get_week_chart_data():
             for day, labels in averaged_data.items():
                 filtered_labels = {label: value for label, value in labels.items() if label in desired_labels}
                 filtered_data[day] = filtered_labels
-
-    
 
     except Exception as e:
         print("This is the error: ", e)
@@ -403,21 +373,24 @@ def get_week_chart_data():
 
     chart_data = json.dumps(filtered_data, default=str)
     chart_data = eval(chart_data)
-    print(chart_data)
     return jsonify(chart_data, date_monday, date_friday, week)
 
-@app.route('/get_chart_data', methods=['POST'])
+
+@app.route('/get_chart_data', methods=['POST']) # Responds with content of either todays or monthly content
 def get_chart_data():
 
-    print(request.referrer)
-    if(request.referrer == f"{domainname}/monat" or request.referrer == f"{domainname}/month"):
-        print("Monat geht hier rein")
+    if(request.referrer == f"{domainname}/monat"
+       or request.referrer == f"{domainname}/month"):
+
         selected_option = request.json['selected_option2']
         selected_month = request.json['selected_option1'].split("-")[1]
         selected_year = request.json['selected_option1'].split("-")[0]
     
-    if(f"{domainname}/heute" in request.referrer or f"{domainname}/today" in request.referrer):
+    if(f"{domainname}/heute" in request.referrer 
+       or f"{domainname}/today" in request.referrer):
+        
         selected_option = request.json['selected_option1']
+
         match selected_option:
             case "area-a":
                 selected_option ="A"
@@ -443,13 +416,15 @@ def get_chart_data():
     
     try:
         query=0
-        if(request.referrer == f"{domainname}/monat" or request.referrer == f"{domainname}/month"):
+        if(request.referrer == f"{domainname}/monat" 
+           or request.referrer == f"{domainname}/month"):
             query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
             if(not selected_option or not selected_month):
                 return (0,0)
             else:
                 cursor.execute(query, (selected_option,selected_month,selected_year))
-        elif(f"{domainname}/heute" in request.referrer or f"{domainname}/today" in request.referrer):
+        elif(f"{domainname}/heute" in request.referrer 
+             or f"{domainname}/today" in request.referrer):
             query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
             if(not selected_option):
                 return (0,0)
@@ -460,34 +435,44 @@ def get_chart_data():
         queryoutput = cursor.fetchall()
         chart_data = json.dumps(queryoutput, default=str)
         data = eval(chart_data)
+
         # Process the retrieved data as needed
         chart_data = []
         chart_labels = []
         
         for row in data:
             # Assuming the chart data is in a specific column of the retrieved data
-            if(request.referrer == f"{domainname}/monat" or request.referrer == f"{domainname}/month"):
+            if(request.referrer == f"{domainname}/monat" 
+               or request.referrer == f"{domainname}/month"):
                 chart_labels.append(row[0].split()[0].split("-")[2])
-            elif(f"{domainname}/heute" in request.referrer or f"{domainname}/today" in request.referrer):
+            elif(f"{domainname}/heute" in request.referrer 
+                 or f"{domainname}/today" in request.referrer):
                 chart_labels.append(row[0].split()[1].split(":")[0])
-                print(chart_labels)
                 
             chart_data.append(row[1])
 
     except Exception as e:
         print("This is the error: ", e)
+
     finally:
         # Close the MySQL connection
         cursor.close()
         connection.close()
 
-    unique_labels, averaged_data  = calculate_average(chart_data, chart_labels) #TODO: care when there is no data, still need to fix, handle with None type stuff
-    for i in range(len(unique_labels)):
-        # Add ":00" to each entry
-        unique_labels[i] += ":00"
+    unique_labels, averaged_data  = calculate_average(chart_data, chart_labels)
+
+    if(f"{domainname}/heute" in request.referrer 
+       or f"{domainname}/today" in request.referrer):
+
+        for i in range(len(unique_labels)):
+            # Add ":00" to each entry
+            unique_labels[i] += ":00"
+
     if (averaged_data == []):
         return jsonify(averaged_data,unique_labels,)
+    
     return jsonify(averaged_data,unique_labels, min(averaged_data), max(averaged_data),)
+
 
 def calculate_average(values, labels):
     if len(values) != len(labels):
@@ -515,23 +500,14 @@ def calculate_average(values, labels):
     
     return unique_labels, averages
 
+
 def get_latest_data():
-    #  a = random.randint(30, 70)
-    #  b = random.randint(30, 70)
-    #  c = random.randint(30, 70)
-    #  d = random.randint(30, 70)
-    #  e = random.randint(30, 70)
-    #  f = random.randint(30, 70)
-    #  g = random.randint(30, 70)
-    #  h = random.randint(30, 70)
 
     connection = pool.get_connection()
     cursor = connection.cursor()    
     
     
     try:
-        #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
-        #anpassen, dass durchschnitt von dem bereich kommt und nicht nur das letzte
         query = """
             SELECT s.area AS Area, AVG(m.value) AS value
             FROM measurement m
@@ -548,70 +524,23 @@ def get_latest_data():
     
         cursor.execute(query)
         results = cursor.fetchall()
+
         data = [row[1] for row in results]
-        # data ={
-        #     'a':results[0],
-        #     'b':results[1],
-        #     'c':results[2],
-        #     'd':results[3],
-        #     'e':results[4],
-        #     'f':results[5],
-        #     'g':results[6],
-        #     'h':results[7],
-        # }
+
     except Exception as e:
         print("This is the error: ", e)
+
     finally:
         cursor.close()
         connection.close()
     
-    
     return data
+
 
 @app.route('/refresh_overview', methods=['POST', 'GET'])
 def refresh_overview():
-    # #  a = random.randint(30, 70)
-    # #  b = random.randint(30, 70)
-    # #  c = random.randint(30, 70)
-    # #  d = random.randint(30, 70)
-    # #  e = random.randint(30, 70)
-    # #  f = random.randint(30, 70)
-    # #  g = random.randint(30, 70)
-    # #  h = random.randint(30, 70)
-
-    # connection = mysql.connector.connect(**mysql_config)
-    # cursor = connection.cursor()    
-            
-    # #query ="SELECT value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area IN (%s,%s,%s,%s,%s,%s,%s,%s) ORDER BY time DESC LIMIT 1;" #TODO vielleicht nochangeben, dass es heute sein muss?
-    # query = """
-    #     SELECT s.area, m.value
-    #         FROM measurement m
-    #     JOIN soundmeter s ON m.soundmeter_id = s.id
-    #     WHERE s.area IN (%s, %s, %s, %s, %s, %s, %s, %s)
-    #     AND m.time = (
-    #         SELECT MAX(time)
-    #         FROM measurement
-    #         WHERE soundmeter_id = m.soundmeter_id
-    #     )
-    # """
-    # values =("A","B","C","D","E","F","G","H")
-
-    # cursor.execute(query, values)
-    # results = cursor.fetchall()
-    # data = [row[1] for row in results]
-    # # data ={
-    # #     'a':results[0],
-    # #     'b':results[1],
-    # #     'c':results[2],
-    # #     'd':results[3],
-    # #     'e':results[4],
-    # #     'f':results[5],
-    # #     'g':results[6],
-    # #     'h':results[7],
-    # # }
-    # cursor.close()
-    # connection.close()
     return jsonify(get_latest_data())
+
 
 @app.route("/download_excel", methods=["POST"])
 def download_excel():
@@ -620,17 +549,14 @@ def download_excel():
     ids = data.get("ids")
     datetime1 = data.get("datetime1")
     datetime2 = data.get("datetime2")
-    #==============
+
     connection = pool.get_connection()
     cursor = connection.cursor()
     
-
     try:
-        ####
         areas = [element.split("-")[1].upper() for element in ids]
         placeholders = ', '.join(['%s'] * len(areas))
     
-        ####
         query = f"""
             SELECT s.area, m.value, m.time
                 FROM measurement m
@@ -638,9 +564,7 @@ def download_excel():
                 WHERE s.area IN ({placeholders})
                 AND m.time BETWEEN %s AND %s
         """
-        print(query)
         values = areas + [datetime1, datetime2]  # Concatenate the values into a single list
-        #print(values)
         cursor.execute(query, values)
     
         # Fetch all the rows from the result set
@@ -662,12 +586,13 @@ def download_excel():
         # Save the workbook
         file_path = "./downloaded_data.xls"
         workbook.save(file_path)
+
     except Exception as e:
         print("This is the error: ", e)
+
     finally:
         cursor.close()
         connection.close()
-    
     
     return send_file(file_path, as_attachment=True)
 
@@ -675,7 +600,7 @@ def format_week_dates(week_value):
     # Splitting the week value into year and week parts
     year, week = map(int, week_value.split('-W'))
 
-    # Calculating the first day (Monday) and fifth day (Friday)
+    # Calculating the first day (Monday) to the sixth day (Saturday)
     first_day = datetime.datetime.strptime(f"{year}-W{week}-1", "%Y-W%W-%w")
     second_day = first_day + timedelta(days=1)
     third_day = first_day + timedelta(days=2)
@@ -693,6 +618,7 @@ def format_week_dates(week_value):
     
     return first_day_formatted, second_day_formatted, third_day_formatted, fourth_day_formatted, fifth_day_formatted,sixth_day_formatted, week
 
+
 if __name__ == '__main__':
-    #scheduler.start()
+    #scheduler.start()  #uncomment to active the mail-warnings
     app.run(debug=True, use_reloader=False)
