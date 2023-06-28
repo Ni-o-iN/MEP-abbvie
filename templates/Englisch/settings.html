@@ -1,11 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <!---
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        --->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin</title>
+    <link rel="stylesheet" , href="{{url_for('static', filename='style.css')}}">
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="navbar">
+            <div class="menu">
+                <p>
+                    <a href="{{url_for('overview')}}">Overview</a>
+                </p>
+                <p>
+                    <a href="{{url_for('today')}}">Today</a>
+                </p>
+                <p>
+                    <a href="{{url_for('week')}}">Calender Week</a>
+                </p>
+                <p>
+                    <a href="{{url_for('month')}}">Month</a>
+                </p>
+                <p>
+                    <a href="{{url_for('download_english')}}">Download</a>
+                </p>
+                <p>
+                    Admin
+                </p>
+                <div class="language-container">
+                    <div>
+                        <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}"
+                            alt="Englische Flagge">
+                    </div>
+                    <div class="all-languages">
+                        <a href="{{url_for('admin_german')}}">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kleines-menu">
+            <div class="menu-icons">
+                <a href="{{url_for('overview')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/übersicht.png')}}">
+                </a>
+                <a href="{{url_for('today')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/heute.png')}}">
+                </a>
+                <a href="{{url_for('week')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/kalenderwoche.png')}}">
+                </a>
+                <a href="{{url_for('month')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/monat.png')}}">
+                </a>
+                <a href="{{url_for('download_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/download.png')}}">
+                </a>
+                <a href="{{url_for('admin_english')}}">
+                    <img class="menu-icon" src="{{url_for('static', filename='bilder/admin.png')}}">
+                </a>
+            </div>
+            <div class="language-container">
+                <div>
+                    <img src="{{url_for('static', filename='bilder/englische-flagge.jpg')}}" alt="Englische Flagge">
+                </div>
+                <div class="all-languages">
+                    <a href="{{url_for('admin_german')}}" id="german_page">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Englische Flagge">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="settings-headline">
+                When should be measured?
+            </div>
+            <div class="settings-block">
+                <p>
+                    <label for="start-time">Start of measurements</label>
+                    <input type="time" id="start-time" name="start-time">
+                    <label for="end-time">End of measurements</label>
+                    <input type="time" id="end-time" name="end-time">
+                <p>
+                    <label for="start-pause">Beginning of the lunch break</label>
+                    <input type="time" id="start-pause" name="start-pause">
+                    <label for="end-pause">End of the lunch break</label>
+                    <input type="time" id="end-pause" name="end-pause">
+                </p>
+                <input type="submit" id="time-submit" type="submit" value="Save">
+            </div>
+            <div class="settings-headline">
+                Adjust volume thresholds for area
+            </div>
+            <div class="settings-block">
+                <p class="row-admin">
+                    <label for="area-select">area</label>
+                    <select id="area-select" name="area-select">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="G">H</option>
+                    </select>
+                    <input id="volume-selection-input" type="number" min="0">
+                    <label id="decibel-label">dB</label>
+                </p>
+                <input type="submit" id="volume-submit" type="submit" value="Save">
+            </div>
+            <div class="settings-headline">
+                When not to send notifications when the volume is exceeded?
+            </div>
+            <div class="settings-block">
+                <p class="row-admin">
+                    <label for="start-no-notification"></label>
+                    <input type="time" id="start-no-notification" name="start-no-notification">
+                    <span id="line"> - </span>
+                    <label for="end-no-notification"></label>
+                    <input type="time" id="end-no-notification" name="end-no-notification">
+                    <input id="reason" type="text">
+                    <label>Reason</label>
+                </p>
+                <input type="submit" id="no-notification-submit" type="submit" value="Save">
+            </div>
+            <div class="settings-headline">
+                Which soundmeter do you want to remove?
+            </div>
+            <div class="settings-block">
+                <p class="row-admin">
+                    <label for="soundmeter-id">Soundmeter</label>
+                    <select id="soundmeter" name="soundmeter-id">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                    </select>
+                </p>
+                <input type="submit" id="soundmeter-delete-submit" type="submit" value="Remove">
+            </div>
+            <div class="settings-headline">
+                Add soundmeter:
+            </div>
+            <div class="settings-block">
+                <p class="row-admin">
+                    <label for="soundmeter-id">Soundmeter</label>
+                    <select id="soundmeter" name="soundmeter-id">
+                        <option value="26">26</option>
+                    </select>
+                </p>
+                <input type="submit" id="soundmeter-delete-submit" type="submit" value="Add">
+            </div>
+        </div>
+
 </body>
+
 </html>
