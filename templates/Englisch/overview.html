@@ -16,20 +16,6 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-overview.jpg')}}">
-                <!--<div class="info-measure-system-overview">
-                    Every second a measuring device measures a value.<br>
-                    After 10 seconds the average value of all values from one area is calculated.<br>
-                    From this follows the rating and the display as color.
-                </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <div class="info-overview-areas">
-                    The areas are clickable and lead to the today page of the selected area.
-                </div>-->
             </div>
         </div>
         <div class="navbar">
@@ -90,7 +76,8 @@
                 </div>
                 <div class="all-languages">
                     <a href="{{url_for('index')}}" id="english_page">
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutsche Flagge">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="Deutsche Flagge">
                     </a>
                 </div>
             </div>
@@ -106,8 +93,8 @@
                             <span class="floor-name">Floor 1</span>
                         </div>
                         <div class="floor1-overview">
-                            <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}" class="responsiv-floor"
-                                alt="stockwerk1">
+                            <img src="{{url_for('static', filename='bilder/Stockwerk1selber.jpg')}}"
+                                class="responsiv-floor" alt="stockwerk1">
                             <a id="area-a" data-name="area-a"
                                 href="{{url_for('today', stockwerk='floor1', bereich='area-a')}}">A</a>
                             <a id="area-b" data-name="area-b"
@@ -145,62 +132,62 @@
             </div>
         </div>
 
-    <script>
-        function eval_decibel(decibel) {
+        <script>
+            function eval_decibel(decibel) {
 
-            if (decibel > 55) {
-                return "rgba(220, 0, 0, 0.5)";
-            } else if (decibel > 50) {
-                return "rgba(220, 220, 0, 0.5)";
-            } else {
-                return "rgba(0, 158, 0, 0.5)";
+                if (decibel > 55) {
+                    return "rgba(220, 0, 0, 0.5)";
+                } else if (decibel > 50) {
+                    return "rgba(220, 220, 0, 0.5)";
+                } else {
+                    return "rgba(0, 158, 0, 0.5)";
+                }
             }
-        }
-    
-        function refresh_overview() {
-            $.post("/refresh_overview", function (data) {
-                document.getElementById("area-a").style.background = eval_decibel(data[0]);
-                document.getElementById("area-b").style.background = eval_decibel(data[1]);
-                document.getElementById("area-c").style.background = eval_decibel(data[2]);
-                document.getElementById("area-d").style.background = eval_decibel(data[3]);
-                document.getElementById("area-e").style.background = eval_decibel(data[4]);
-                document.getElementById("area-f").style.background = eval_decibel(data[5]);
-                document.getElementById("area-g").style.background = eval_decibel(data[6]);
-                document.getElementById("area-h").style.background = eval_decibel(data[7]);
+
+            function refresh_overview() {
+                $.post("/refresh_overview", function (data) {
+                    document.getElementById("area-a").style.background = eval_decibel(data[0]);
+                    document.getElementById("area-b").style.background = eval_decibel(data[1]);
+                    document.getElementById("area-c").style.background = eval_decibel(data[2]);
+                    document.getElementById("area-d").style.background = eval_decibel(data[3]);
+                    document.getElementById("area-e").style.background = eval_decibel(data[4]);
+                    document.getElementById("area-f").style.background = eval_decibel(data[5]);
+                    document.getElementById("area-g").style.background = eval_decibel(data[6]);
+                    document.getElementById("area-h").style.background = eval_decibel(data[7]);
+                });
+            }
+
+            // $(document).ready(function () {
+            //     // refresh_overview(); // Call refresh_overview on page load
+            //     setInterval(refresh_overview, 10000);// Call refresh_overview every 10 seconds
+            // });
+
+            refresh_overview();
+
+            setInterval(refresh_overview, 5500);
+
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     //refresh_overview();
+            //     setInterval(refresh_overview, 10000);
+            // });
+
+            // Info
+            // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+            document.getElementById("infoButton").addEventListener("click", function () {
+                document.getElementById("infoModal").style.display = "block";
             });
-        }
-    
-        // $(document).ready(function () {
-        //     // refresh_overview(); // Call refresh_overview on page load
-        //     setInterval(refresh_overview, 10000);// Call refresh_overview every 10 seconds
-        // });
 
-        refresh_overview();
-
-        setInterval(refresh_overview, 5500);
-        
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     //refresh_overview();
-        //     setInterval(refresh_overview, 10000);
-        // });
-    
-        // Info
-        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
-        document.getElementById("infoButton").addEventListener("click", function () {
-            document.getElementById("infoModal").style.display = "block";
-        });
-    
-        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
-        document.getElementsByClassName("close")[0].addEventListener("click", function () {
-            document.getElementById("infoModal").style.display = "none";
-        });
-    
-        window.onclick = function (event) {
-            if (event.target == document.getElementById("infoModal")) {
+            // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+            document.getElementsByClassName("close")[0].addEventListener("click", function () {
                 document.getElementById("infoModal").style.display = "none";
-            }
-        };
-    </script>
+            });
+
+            window.onclick = function (event) {
+                if (event.target == document.getElementById("infoModal")) {
+                    document.getElementById("infoModal").style.display = "none";
+                }
+            };
+        </script>
 
 </body>
 

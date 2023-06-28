@@ -16,23 +16,6 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <img class="img-info" src="{{url_for('static', filename='bilder/Info/Info-calendar-week.jpg')}}">
-                <!--<div class="info-floor">
-                    2. Choose a floor.
-                </div>
-                <div class="info-area">
-                    3. An area can be selected only after you have selected a floor.
-                </div>
-                <div class="info-weekpicker">
-                    1. Select here the calendar week over which you would like to have a view.
-                </div>
-                <div class="info-kwday">
-                    You can remove the respective line chart from the graph by clicking on the days and add it again by clicking on it again.
-                </div>
-                <div class="info-measure-system">
-                    Every second a measuring device measures a value.<br>
-                    After one hour the average value of all values from one area is calculated.<br> 
-                    Measured from X:30h to X:29:59h.
-                </div>-->
             </div>
         </div>
         <div class="navbar">
@@ -62,7 +45,8 @@
                     </div>
                     <div class="all-languages">
                         <a href="{{url_for('woche')}}" id="german_page">
-                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                            <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                                alt="Deutschland Flagge">
                         </a>
                     </div>
                 </div>
@@ -99,7 +83,8 @@
                 </div>
                 <div class="all-languages">
                     <a href="{{url_for('woche')}}" id="english_page">
-                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}" alt="Deutschland Flagge">
+                        <img src="{{url_for('static', filename='bilder/deutschland-flagge.jpg')}}"
+                            alt="Deutschland Flagge">
                     </a>
                 </div>
             </div>
@@ -122,7 +107,7 @@
             <div class="today-week-month-display">
                 <div id="info_for_week"></div>
                 <div id="info_for_week_1"></div>
-                <div class="legend-box"> <!--Hier vielleicht erstmal disablen bis ein Graph ausgewählt wurde-->
+                <div class="legend-box">
                     <button id="mo" onclick="toggleData(0, 'button1', 'mo')" class="item">
                         <span id="button1Text">Monday</span>
                     </button>
@@ -161,9 +146,9 @@
                         var date_monday = response[1];
                         var date_friday = response[2];
 
-                        var monday_split =date_monday.split("-");
+                        var monday_split = date_monday.split("-");
                         date_monday = monday_split[2] + "." + monday_split[1] + "." + monday_split[0];
-                        var friday_split =date_friday.split("-");
+                        var friday_split = date_friday.split("-");
                         date_friday = friday_split[2] + "." + friday_split[1] + "." + friday_split[0];
 
                         var week = response[3];
@@ -437,39 +422,39 @@
             });
 
             //Info
-        // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
-        document.getElementById("infoButton").addEventListener("click", function () {
-            document.getElementById("infoModal").style.display = "block";
-        });
+            // Wenn der Info-Button geklickt wird, öffnet sich das Hilfe-Fenster
+            document.getElementById("infoButton").addEventListener("click", function () {
+                document.getElementById("infoModal").style.display = "block";
+            });
 
-        // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
-        document.getElementsByClassName("close")[0].addEventListener("click", function () {
-            document.getElementById("infoModal").style.display = "none";
-        });
-
-        window.onclick = function (event) {
-            if (event.target == document.getElementById("infoModal")) {
+            // Wenn das Schließen-Symbol oder der Hintergrund des Info-Fensters geklickt wird, wird es geschlossen
+            document.getElementsByClassName("close")[0].addEventListener("click", function () {
                 document.getElementById("infoModal").style.display = "none";
-            }
-        };
-        
+            });
+
+            window.onclick = function (event) {
+                if (event.target == document.getElementById("infoModal")) {
+                    document.getElementById("infoModal").style.display = "none";
+                }
+            };
+
             function toggleData(value, buttonId, day, short) {
-            const visibiltyData = myChart.isDatasetVisible(value);
-            var textElement = document.getElementById(buttonId + "Text");
-            if (visibiltyData === true) {
-                myChart.hide(value);
-                textElement.classList.add("strikethrough");
-                document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+                const visibiltyData = myChart.isDatasetVisible(value);
+                var textElement = document.getElementById(buttonId + "Text");
+                if (visibiltyData === true) {
+                    myChart.hide(value);
+                    textElement.classList.add("strikethrough");
+                    document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = 'grey';
+                }
+                else {
+                    document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+                }
+                if (visibiltyData === false) {
+                    myChart.show(value);
+                    textElement.classList.remove("strikethrough");
+                    document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
+                }
             }
-            else {
-                document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
-            }
-            if (visibiltyData === false) {
-                myChart.show(value);
-                textElement.classList.remove("strikethrough");
-                document.getElementById(day).style.backgroundColor = myChart.data.datasets[value].backgroundColor = legendColors[value];
-            }
-        }
         });
 
         const legendColors = ['rgb(70, 0, 250)', 'rgb(135, 206, 250)', 'rgb(64, 224, 208)', 'rgb(150, 131, 236)', 'rgb(204, 204, 255)']
