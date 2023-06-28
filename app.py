@@ -82,7 +82,7 @@ def schedulerWarnung():
     cur_warnung = con_warnung.cursor()
     
     try:
-        query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time >= NOW() - INTERVAL 60 SECOND;'
+        query_warnung = 'SELECT m.value, s.area FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE m.time BETWEEN NOW() - INTERVAL 60 SECOND AND NOW();'
         cur_warnung.execute(query_warnung)
         result_warnung = cur_warnung.fetchall()
         
@@ -119,7 +119,7 @@ def schedulerWarnung():
                     else:
                         area_limits_global[letter] = 1
     
-                    #falls in einem Bereich bereits 5 Warnungen gesendet wurden werden restlich ignoriert
+                    #falls in einem Bereich bereits 2 Warnungen gesendet wurden werden restlich ignoriert
                     if letter in daily_warning_counter and daily_warning_counter[letter] > 2:
                         print(f'Warnungslimit für Bereich {letter} erreicht')
                         if area_limits_global[letter] == 4:
