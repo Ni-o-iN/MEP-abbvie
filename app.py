@@ -25,6 +25,8 @@ daily_warning_counter = {}
 current_date = datetime.datetime.now().hour
 
 
+domainname = "http://127.0.0.1:5000" 
+
 # MySQL connection configuration
 mysql_config = {
     'user': '141.19.176.122',
@@ -42,6 +44,7 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
 #Funktion zur Mail Versendung
 def send_email_warning(letter):
     
+    #Unsere Testmail
     recipient_email = "audio.architects@outlook.de"
     
     sender_email = "audio.architects@outlook.de" 
@@ -52,8 +55,8 @@ def send_email_warning(letter):
     
 
     #Nachricht erstellen
-    subject = f"Warnung: Bereich {letter} erreicht Wert 4"
-    body = f"Der Bereich {letter} hat den Wert 4 erreicht!"
+    subject = f"Bereich {letter}: Lautstärke-Warnung"
+    body = "Aufgrund des erhöhten Lärmpegels wird darauf hingewiesen, dass Maßnahmen zur Lärmreduzierung erforderlich sind!"
     
     #E-Mail erstellen
     message = MIMEText(body)
@@ -125,7 +128,12 @@ def schedulerWarnung():
                    
                     if area_limits_global[letter] == 4:
                         print(f"Warnung: Der Bereich für den Buchstaben {letter} hat den Wert 4 erreicht!")
+                        querynotification = "INSERT INTO notification (time, area) VALUES (NOW(), %s)"
+                        cur_notification = con_warnung.cursor()
+                        cur_notification.execute(querynotification, (letter, ))
+                        con_warnung.commit()
                         send_email_warning(letter)
+                        cur_notification.close()
                         
                         if letter in daily_warning_counter:
                             daily_warning_counter[letter] += 1
@@ -158,7 +166,7 @@ def reset_warning_counter():
 
 
 #Scheduler Job und Trigger zuweisen
-scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, trigger = 'interval', seconds = 60)
+scheduler.add_job(id='Scheduled Task', func= schedulerWarnung, max_instances= 3, trigger = 'interval', seconds = 10)
 
 
 @app.route('/')
@@ -386,9 +394,6 @@ def get_week_chart_data():
 
     
 
-
-        
-
     except Exception as e:
         print("This is the error: ", e)
 
@@ -405,13 +410,13 @@ def get_week_chart_data():
 def get_chart_data():
 
     print(request.referrer)
-    if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+    if(request.referrer == f"{domainname}/monat" or request.referrer == f"{domainname}/month"):
         print("Monat geht hier rein")
         selected_option = request.json['selected_option2']
         selected_month = request.json['selected_option1'].split("-")[1]
         selected_year = request.json['selected_option1'].split("-")[0]
     
-    if("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
+    if(f"{domainname}/heute" in request.referrer or f"{domainname}/today" in request.referrer):
         selected_option = request.json['selected_option1']
         match selected_option:
             case "area-a":
@@ -438,13 +443,13 @@ def get_chart_data():
     
     try:
         query=0
-        if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+        if(request.referrer == f"{domainname}/monat" or request.referrer == f"{domainname}/month"):
             query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND MONTH(m.time) = %s AND YEAR(m.time) = %s;"
             if(not selected_option or not selected_month):
                 return (0,0)
             else:
                 cursor.execute(query, (selected_option,selected_month,selected_year))
-        elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
+        elif(f"{domainname}/heute" in request.referrer or f"{domainname}/today" in request.referrer):
             query = "SELECT time, value FROM measurement m JOIN soundmeter s ON m.soundmeter_id = s.id WHERE s.area = %s AND DATE(m.time) = CURDATE();"
             if(not selected_option):
                 return (0,0)
@@ -461,9 +466,9 @@ def get_chart_data():
         
         for row in data:
             # Assuming the chart data is in a specific column of the retrieved data
-            if(request.referrer == "http://127.0.0.1:5000/monat" or request.referrer == "http://127.0.0.1:5000/month"):
+            if(request.referrer == f"{domainname}/monat" or request.referrer == f"{domainname}/month"):
                 chart_labels.append(row[0].split()[0].split("-")[2])
-            elif("http://127.0.0.1:5000/heute" in request.referrer or "http://127.0.0.1:5000/today" in request.referrer):
+            elif(f"{domainname}/heute" in request.referrer or f"{domainname}/today" in request.referrer):
                 chart_labels.append(row[0].split()[1].split(":")[0])
                 print(chart_labels)
                 
@@ -686,5 +691,5 @@ def format_week_dates(week_value):
     return first_day_formatted, second_day_formatted, third_day_formatted, fourth_day_formatted, fifth_day_formatted,sixth_day_formatted, week
 
 if __name__ == '__main__':
-    #scheduler.start()
+    scheduler.start()
     app.run(debug=True, use_reloader=False)
