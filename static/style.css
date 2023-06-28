@@ -963,6 +963,12 @@ input[type="datetime-local"] {
   align-items: center;
 }
 
+.row-admin {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
 #error_message{
   display:none;
   color: red;
