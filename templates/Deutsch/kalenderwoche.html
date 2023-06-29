@@ -175,10 +175,38 @@
                         var week = response[3];
 
                         console.log(data_dict);
+
+                        for (let day in data_dict) {
+                            let data = data_dict[day];
+                                for (let hour in data) {
+                                    if (data[hour] === 0) {
+                                        data_dict[day][hour] = null;
+                                    }
+                                }
+                        }
+
                         console.log(date_monday);
                         console.log(date_friday);
                         console.log(week);
+                        console.log(Object.values(data_dict["Thursday"]));
 
+                        // const converted_dict = {};
+                        // for (const weekday in data_dict) {
+                        //     const converted_weekday = {};
+                        //     for (const label in data_dict[weekday]) {
+                        //         converted_weekday[String(label)] = data_dict[weekday][label];
+                        //     }
+                        // converted_dict[weekday] = converted_weekday;
+                        // }
+                        // data_dict = converted_dict;
+                        
+
+                        // const data_arr = Object.entries(data_dict).map(([weekday, values]) => ({
+                        // weekday,
+                        // values
+                        // }));
+
+                        // const thursdayData = data_arr.find(item => item.weekday === 'Thursday');
 
                         // Clear the existing chart
                         if (myChart !== null) {
@@ -225,7 +253,8 @@
                                     data: Object.values(data_dict["Monday"]),
                                     tension: 0.3,
                                     pointRadius: 5,
-                                    pointHoverRadius: 7
+                                    pointHoverRadius: 7,
+                                    spanGaps: false
                                 },
                                 {
                                     label: 'Dienstag',
@@ -234,7 +263,8 @@
                                     data: Object.values(data_dict["Tuesday"]),
                                     tension: 0.3,
                                     pointRadius: 5,
-                                    pointHoverRadius: 7
+                                    pointHoverRadius: 7,
+                                    spanGaps: false
                                 },
                                 {
                                     label: 'Mittwoch',
@@ -243,7 +273,8 @@
                                     data: Object.values(data_dict["Wednesday"]),
                                     tension: 0.3,
                                     pointRadius: 5,
-                                    pointHoverRadius: 7
+                                    pointHoverRadius: 7,
+                                    spanGaps: false
                                 },
                                 {
                                     label: 'Donnerstag',
@@ -252,7 +283,8 @@
                                     data: Object.values(data_dict["Thursday"]),
                                     tension: 0.3,
                                     pointRadius: 5,
-                                    pointHoverRadius: 7
+                                    pointHoverRadius: 7,
+                                    spanGaps: false
                                 },
                                 {
                                     label: 'Freitag',
@@ -261,7 +293,8 @@
                                     data: Object.values(data_dict["Friday"]),
                                     tension: 0.3,
                                     pointRadius: 5,
-                                    pointHoverRadius: 7
+                                    pointHoverRadius: 7,
+                                    spanGaps: false
                                 }]
                             },
                             options: {
@@ -320,6 +353,9 @@
                             },
                             plugins: [statusTracker, /*Chart.pluginService*/]
                         });
+                        console.log("nach chart")
+                        console.log(Object.values(data_dict["Thursday"]));
+                        console.log(data_dict);
 
                         // Chart.plugins.register({
                         //     afterDraw: function (chart) {

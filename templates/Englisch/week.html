@@ -173,6 +173,15 @@
                         console.log(date_friday);
                         console.log(week);
 
+                        for (let day in data_dict) {
+                            let data = data_dict[day];
+                                for (let hour in data) {
+                                    if (data[hour] === 0) {
+                                        data_dict[day][hour] = null;
+                                    }
+                                }
+                        }
+
 
                         // Clear the existing chart
                         if (myChart !== null) {

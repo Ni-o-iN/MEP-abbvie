@@ -28,11 +28,11 @@ current_date = datetime.datetime.now().hour
 domainname = "http://127.0.0.1:5000" 
 
 # MySQL connection configuration
-mysql_config = {
-    'user': '141.19.176.122',
-    'password': 'j3Remy.J0hn',
-    'host': '141.19.143.13',
-    'database': 'calmvie',
+mysql_config = {    #change this to your own database
+    'user': '',
+    'password': '',
+    'host': '',
+    'database': '',
     'raise_on_warnings': True
 }
 # Pool of MySQL Connections, to handle multiple requests
@@ -43,16 +43,16 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     **mysql_config)
 
 #Funktion zur Mail Versendung
-def send_email_warning(letter):
+def send_email_warning(letter): #adjust this variables to your email address and recipients
     
     #Unsere Testmail
-    recipient_email = "audio.architects@outlook.de"
+    recipient_email = ""
     
-    sender_email = "audio.architects@outlook.de" 
-    username = "audio.architects@outlook.de"
-    password = "dnlcj!MEP23"   
-    smtp_server = "smtp.office365.com"
-    smtp_port = 587
+    sender_email = "" 
+    username = ""
+    password = ""   
+    smtp_server = ""
+    smtp_port = 1 #this aswell
     
 
     #Nachricht erstellen
@@ -100,7 +100,6 @@ def schedulerWarnung():
                 counts[letter] = 1
     
         averages = {letter: sums[letter] / counts[letter] for letter in sums}
-        print(averages)
         
         
         #Query für Lautstärkelimit aller Bereiche ausführen

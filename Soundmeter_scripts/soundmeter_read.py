@@ -4,13 +4,13 @@ import colorama
 from colorama import Fore, Back, Style
 import mysql.connector 
 
-config = {  
-	"user": "damian",
-	"password": "j3Remy.J0hn",
-	"host": "141.19.143.13",   
-	"database": "calmvie"
+config = {     #add your own config in this variables
+	'user': '',
+    'password': '',
+    'host': '',
+    'database': '',
+    'raise_on_warnings': True
 }
-
 
 db = mysql.connector.connect(**config)
 #need to change to specific id of soundmeter
