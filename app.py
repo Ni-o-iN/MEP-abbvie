@@ -619,5 +619,5 @@ def format_week_dates(week_value):
 
 
 if __name__ == '__main__':
-    #scheduler.start()  #uncomment to active the mail-warnings
+    #scheduler.start()  #uncomment to activate the mail-warnings
     app.run(debug=True, use_reloader=False)
